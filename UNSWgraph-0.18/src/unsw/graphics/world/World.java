@@ -21,7 +21,7 @@ public class World extends Application3D {
     private Terrain terrain;
 
     public World(Terrain terrain) {
-    	super("Assignment 2", 800, 600);
+    	super("Assignment 2", 1800, 1600);
         this.terrain = terrain;
    
     }
@@ -41,6 +41,7 @@ public class World extends Application3D {
 	@Override
 	public void display(GL3 gl) {
 		super.display(gl);
+		// each 1s, 60 frames, this display should be called
 	}
 
 	@Override

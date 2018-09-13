@@ -7,6 +7,8 @@ import java.util.List;
 
 import unsw.graphics.Vector3;
 import unsw.graphics.geometry.Point2D;
+import unsw.graphics.geometry.Point3D;
+import unsw.graphics.geometry.TriangleMesh;
 
 
 
@@ -23,6 +25,10 @@ public class Terrain {
     private List<Tree> trees;
     private List<Road> roads;
     private Vector3 sunlight;
+    // from on, they are mine
+    TriangleMesh triMesh;
+    ArrayList< Point3D > vertices;
+    
 
     /**
      * Create a new terrain
@@ -37,7 +43,33 @@ public class Terrain {
         trees = new ArrayList<Tree>();
         roads = new ArrayList<Road>();
         this.sunlight = sunlight;
+        
+        // DEBUG
+        
+        this.creatMesh();
     }
+    
+    public ArrayList< Point3D > createVertices() {
+    	ArrayList< Point3D > temp = new ArrayList< Point3D >();
+    	int how_many = this.width * this.depth;
+    	// the order we generate the vertices decide the face order
+    	// 讨论下 要按什么顺序生成face
+    	for( int i = 0 ; i < how_many ; i++ ) {
+    		
+    	}
+    	
+    	return temp;
+    }
+    
+    public void creatMesh() {
+    	this.triMesh = new TriangleMesh(  );
+    }
+    
+    public void recursively_draw() {
+    	
+    }
+    
+    
 
     public List<Tree> trees() {
         return trees;
