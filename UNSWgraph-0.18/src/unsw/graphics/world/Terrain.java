@@ -17,7 +17,7 @@ import unsw.graphics.geometry.Point2D;
  */
 public class Terrain {
 
-    private int width;
+	private int width;
     private int depth;
     private float[][] altitudes;
     private List<Tree> trees;
@@ -95,11 +95,47 @@ public class Terrain {
      * @return
      */
     public float altitude(float x, float z) {
-        float altitude = 0;
+    	// debug for array
+    	// TODO: Implement this
+    	for( int i = 0 ; i < this.width ; i++ ) {
+    		for( int j = 0 ; j < this.depth ; j++ ) {
+    			System.out.print( this.altitudes[ i ][ j ] + "    " );
+    		}
+    		System.out.println();
+    	}
+    	float result;
+        int isInteger_x = Math.round( x );
+        int isInteger_z = Math.round( z );
+        boolean result_x =  ( (float)isInteger_x == x );
+        boolean result_z =  ( (float)isInteger_z == z );
+        if ( result_x == false || result_z == false ) {
+        	// using interpolated
+        	float y = z;
+        	int x1 = (int)Math.floor( x );
+        	int x2 = (int)Math.ceil( x );
+        	int x3 = x1;
+        	int x4 = x2;
+        	int z1 = (int)Math.floor( z );
+        	int z2 = z1;
+        	int z3 = (int)Math.ceil( z );
+        	int z4 = z3;
+        	
+        	float R1 = ( ( z - z1 ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z3 ];
+        	R1 = R1 + ( ( z3 - z ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z1 ];
+        	
+        	float R2 = ( ( z - z2 ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z4 ];
+        	R2 = R2 + ( ( z4 - z ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z2 ];
+        	
+        	result = ( ( x - x1 ) / ( x2 - x1 ) ) * R2;
+        	result = result + ( ( x2 - x ) / ( x2 - x1 ) ) * R1;
+        }
+        else {
+        	result = this.altitudes[ isInteger_x ][ isInteger_z ];
+        }
 
-        // TODO: Implement this
+
         
-        return altitude;
+        return result;
     }
 
     /**
