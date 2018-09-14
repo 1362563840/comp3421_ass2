@@ -32,6 +32,10 @@ public class Point3D {
         this.y = y;
         this.z = z;
     }
+    
+    public void print_out() {
+    	System.out.println( "Point : " + this.x + " " + this.y + " " + this.z );
+    }
 
     /**
      * Draw this point as a dot in the given coordinate frame.

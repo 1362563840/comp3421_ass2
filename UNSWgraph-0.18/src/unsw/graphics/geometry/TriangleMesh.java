@@ -123,6 +123,7 @@ public class TriangleMesh {
      * @param vertexNormals
      */
     public TriangleMesh(List<Point3D> vertices, boolean faceNormals) {
+    	System.out.println( "debug " + vertices.size() );
         this.vertices = new Point3DBuffer(vertices);
         if (faceNormals) {
             normals = new Point3DBuffer(vertices.size());
@@ -374,6 +375,8 @@ public class TriangleMesh {
     }
 
     public void draw(GL3 gl, CoordFrame3D frame) {
+    	
+    	
         gl.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, indicesName);
 
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, verticesName);

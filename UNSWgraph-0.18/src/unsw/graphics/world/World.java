@@ -8,6 +8,7 @@ import com.jogamp.opengl.GL3;
 import unsw.graphics.Application3D;
 import unsw.graphics.Matrix4;
 import unsw.graphics.Shader;
+import unsw.graphics.*;
 
 
 
@@ -41,7 +42,9 @@ public class World extends Application3D {
 	@Override
 	public void display(GL3 gl) {
 		super.display(gl);
+		
 		// each 1s, 60 frames, this display should be called
+		this.terrain.recursively_draw( gl , CoordFrame3D.identity() );
 	}
 
 	@Override
@@ -54,6 +57,8 @@ public class World extends Application3D {
 	public void init(GL3 gl) {
 		super.init(gl);
 		
+		// Our codes :
+		this.terrain.creatMesh();
 		
 	}
 

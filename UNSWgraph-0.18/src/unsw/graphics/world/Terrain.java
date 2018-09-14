@@ -5,6 +5,9 @@ package unsw.graphics.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jogamp.opengl.GL3;
+
+import unsw.graphics.CoordFrame3D;
 import unsw.graphics.Vector3;
 import unsw.graphics.geometry.Point2D;
 import unsw.graphics.geometry.Point3D;
@@ -43,32 +46,90 @@ public class Terrain {
         trees = new ArrayList<Tree>();
         roads = new ArrayList<Road>();
         this.sunlight = sunlight;
+        this.vertices = new ArrayList< Point3D >();
         
-        // DEBUG
-        
-        this.creatMesh();
     }
     
-    public ArrayList< Point3D > createVertices() {
-    	ArrayList< Point3D > temp = new ArrayList< Point3D >();
-    	int how_many = this.width * this.depth;
-    	// the order we generate the vertices decide the face order
-    	// discuss which order to generate the triangle
-    	for( int i = 0 ; i < how_many ; i++ ) {
-                
+    public void order_vertics() {
+    	int current_x = 0;
+    	int current_z = 1;
+    	boolean odd_even = true;
+    	assert( this.width > 0 );
+    	assert( this.depth > 0 );
+    	System.out.println( "Width is " + this.width );
+    	System.out.println( "depth is " + this.depth );
+    	// always counter clock wise
+    	// 
+    	for ( ; ; ) {
+    		
+    		if ( odd_even == true ) {
+    			float a = altitudes[ current_x ][ current_z ];
+    			float b = altitudes[ current_x + 1  ][ current_z - 1 ];
+    			float c = altitudes[ current_x ][ current_z - 1 ];
+//    			System.out.println( "current_x is " + current_x );
+//    			System.out.println( "a is " + a );
+//    			System.out.println( "current_z is " + current_z );
+    			this.vertices.add( new Point3D( current_x , a , current_z ) );
+    			this.vertices.add( new Point3D( current_x + 1 , b , current_z - 1 ) );
+    			this.vertices.add( new Point3D( current_x , c , current_z - 1 ) );
+    			
+    			System.out.println( "this is odd" );
+    			this.vertices.get( this.vertices.size() - 3 ).print_out();
+    			this.vertices.get( this.vertices.size() - 2 ).print_out();
+    			this.vertices.get( this.vertices.size() - 1 ).print_out();
+    		}
+    		else {
+    			float a = altitudes[ current_x ][ current_z ];
+    			float b = altitudes[ current_x + 1  ][ current_z ];
+    			float c = altitudes[ current_x + 1 ][ current_z - 1 ];
+    			this.vertices.add( new Point3D( current_x , a , current_z ) );
+    			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
+    			this.vertices.add( new Point3D( current_x + 1 , c , current_z - 1 ) );
+    			
+    			System.out.println( "this is even" );
+    			this.vertices.get( this.vertices.size() - 3 ).print_out();
+    			this.vertices.get( this.vertices.size() - 2 ).print_out();
+    			this.vertices.get( this.vertices.size() - 1 ).print_out();
+    			
+    			current_x = current_x + 1;
+    		}
+    		
+    		if ( current_x == this.width - 1 && current_z == this.depth - 1  ) {
+    			break;
+    		}
+    		
+    		if ( current_x == this.width - 1 ) {
+    			current_x = 0;
+    			current_z = current_z + 1;
+    		}
+    		
+    		odd_even = !odd_even;
+    		
     	}
-    	
-    	return temp;
     }
+    
+    
     
     public void creatMesh() {
-//    	this.triMesh = new TriangleMesh(  );
+    	this.order_vertics();
+    	System.out.println( this.vertices.size() );
+    	this.triMesh = new TriangleMesh( this.vertices , true );
     }
     
-    public void recursively_draw() {
-    	
+    public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
+    	// if Terrain has offset, need to adjust frame before passing to its children
+    	this.drawSelf( gl , frame );
+    	for( int i = 0 ; i < this.trees.size() ; i++ ) {
+    		this.trees.get( i ).drawSelf( gl , frame );
+    	}
+    	for( int i = 0 ; i < this.roads.size() ; i++ ) {
+    		this.roads.get( i ).drawSelf( gl , frame );
+    	}
     }
     
+    public void drawSelf( GL3 gl , CoordFrame3D frame ) {
+    	this.triMesh.draw( gl , frame );
+    }
     
 
     public List<Tree> trees() {
@@ -129,8 +190,8 @@ public class Terrain {
     public float altitude(float x, float z) {
     	// debug for array
     	// TODO: Implement this
-    	for( int i = 0 ; i < this.width ; i++ ) {
-    		for( int j = 0 ; j < this.depth ; j++ ) {
+    	for ( int i = 0 ; i < this.width ; i++ ) {
+    		for ( int j = 0 ; j < this.depth ; j++ ) {
     			System.out.print( this.altitudes[ i ][ j ] + "    " );
     		}
     		System.out.println();

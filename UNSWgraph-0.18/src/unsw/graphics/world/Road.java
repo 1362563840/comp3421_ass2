@@ -2,6 +2,9 @@ package unsw.graphics.world;
 
 import java.util.List;
 
+import com.jogamp.opengl.GL3;
+
+import unsw.graphics.CoordFrame3D;
 import unsw.graphics.geometry.Point2D;
 
 /**
@@ -24,7 +27,12 @@ public class Road {
         this.width = width;
         this.points = spine;
     }
-
+    
+    // TODO
+    public void drawSelf( GL3 gl , CoordFrame3D frame ) {
+    	
+    }
+    
     /**
      * The width of the road.
      * 
