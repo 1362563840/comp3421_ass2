@@ -53,16 +53,16 @@ public class Terrain {
     	ArrayList< Point3D > temp = new ArrayList< Point3D >();
     	int how_many = this.width * this.depth;
     	// the order we generate the vertices decide the face order
-    	// 讨论下 要按什么顺序生成face
+    	// discuss which order to generate the triangle
     	for( int i = 0 ; i < how_many ; i++ ) {
-    		
+                
     	}
     	
     	return temp;
     }
     
     public void creatMesh() {
-    	this.triMesh = new TriangleMesh(  );
+//    	this.triMesh = new TriangleMesh(  );
     }
     
     public void recursively_draw() {
