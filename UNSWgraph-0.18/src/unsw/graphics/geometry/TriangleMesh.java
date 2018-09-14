@@ -391,6 +391,9 @@ public class TriangleMesh {
         }
         Shader.setModelMatrix(gl, frame.getMatrix());
         if (indices != null) {
+        	// TODO
+//        	gl.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, indicesName);
+        	// TODO
             gl.glDrawElements(GL3.GL_TRIANGLES, indices.capacity(),
                     GL.GL_UNSIGNED_INT, 0);
         } else {

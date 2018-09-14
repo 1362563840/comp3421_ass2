@@ -51,6 +51,7 @@ public class World extends Application3D {
 	public void destroy(GL3 gl) {
 		super.destroy(gl);
 		
+		// Terrain recursively destory
 	}
 
 	@Override
