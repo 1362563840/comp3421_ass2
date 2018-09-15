@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GL3;
 
 import unsw.graphics.Application2D;
+import unsw.graphics.Shader;
 import unsw.graphics.geometry.Triangle2D;
 
 public class TwoTriangles extends Application2D {
@@ -24,6 +25,7 @@ public class TwoTriangles extends Application2D {
         super.display(gl);
         Triangle2D tri1 = new Triangle2D(0, 0, 1, 1, -1, 1);
         Triangle2D tri2 = new Triangle2D(0, 0, -1, -1, 1, -1);
+        Shader.setPenColor(gl, Color.RED);
         tri1.draw(gl);
         tri2.draw(gl);
     }

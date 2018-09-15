@@ -1,13 +1,12 @@
 package unsw.graphics.world;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.jogamp.opengl.GL3;
 
-import unsw.graphics.Application3D;
-import unsw.graphics.Matrix4;
-import unsw.graphics.Shader;
+import unsw.graphics.geometry.Triangle3D;
 import unsw.graphics.*;
 
 
@@ -42,9 +41,19 @@ public class World extends Application3D {
 	@Override
 	public void display(GL3 gl) {
 		super.display(gl);
-		System.out.println( "shoudl be seocond" );
+		// adjust frustrum
+		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
+		CoordFrame3D frame = CoordFrame3D.identity()
+                .translate(0, 0, -10)
+                .scale(0.5f, 0.5f, 0.5f);
 		// each 1s, 60 frames, this display should be called
-		this.terrain.recursively_draw( gl , CoordFrame3D.identity() );
+		this.terrain.recursively_draw( gl , frame );
+		Triangle3D t1 = new Triangle3D( 0 , 0 , 0,
+				  1 , 1 , 0, 
+				  -1 , 1 , 0);
+
+		Shader.setPenColor( gl , Color.YELLOW);
+		t1.draw( gl , frame);
 	}
 
 	@Override

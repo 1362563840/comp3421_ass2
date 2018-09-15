@@ -81,6 +81,8 @@ public class TriangleMesh {
      */
     private int indicesName;
     
+    
+    
     /**
      * Create a triangle mesh with the given lists of vertices, normals, and 
      * indices
@@ -123,7 +125,7 @@ public class TriangleMesh {
      * @param vertexNormals
      */
     public TriangleMesh(List<Point3D> vertices, boolean faceNormals) {
-    	System.out.println( "debug " + vertices.size() );
+    	System.out.println( " constructor 127 passed vertices is " + vertices.size() );
         this.vertices = new Point3DBuffer(vertices);
         if (faceNormals) {
             normals = new Point3DBuffer(vertices.size());
@@ -391,12 +393,11 @@ public class TriangleMesh {
         }
         Shader.setModelMatrix(gl, frame.getMatrix());
         if (indices != null) {
-        	// TODO
-//        	gl.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, indicesName);
-        	// TODO
+//        	System.out.println("wrong method");
             gl.glDrawElements(GL3.GL_TRIANGLES, indices.capacity(),
                     GL.GL_UNSIGNED_INT, 0);
         } else {
+//        	System.out.println("correct method" + vertices.capacity() );
             gl.glDrawArrays(GL3.GL_TRIANGLES, 0, vertices.capacity());
         }
     }

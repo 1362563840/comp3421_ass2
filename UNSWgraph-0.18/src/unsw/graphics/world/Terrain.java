@@ -2,15 +2,18 @@ package unsw.graphics.world;
 
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.jogamp.opengl.GL3;
 
 import unsw.graphics.CoordFrame3D;
+import unsw.graphics.Shader;
 import unsw.graphics.Vector3;
 import unsw.graphics.geometry.Point2D;
 import unsw.graphics.geometry.Point3D;
+import unsw.graphics.geometry.Triangle3D;
 import unsw.graphics.geometry.TriangleMesh;
 
 
@@ -52,6 +55,7 @@ public class Terrain {
     
     public void init( GL3 gl ) {
     	this.creatMesh();
+    	this.triMesh.init( gl );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
     		this.trees.get( i ).init( gl );
     	}
@@ -82,10 +86,10 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z - 1 ) );
     			this.vertices.add( new Point3D( current_x , c , current_z - 1 ) );
     			
-    			System.out.println( "this is odd" );
-    			this.vertices.get( this.vertices.size() - 3 ).print_out();
-    			this.vertices.get( this.vertices.size() - 2 ).print_out();
-    			this.vertices.get( this.vertices.size() - 1 ).print_out();
+//    			System.out.println( "this is odd" );
+//    			this.vertices.get( this.vertices.size() - 3 ).print_out();
+//    			this.vertices.get( this.vertices.size() - 2 ).print_out();
+//    			this.vertices.get( this.vertices.size() - 1 ).print_out();
     		}
     		else {
     			float a = altitudes[ current_x ][ current_z ];
@@ -95,10 +99,10 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
     			this.vertices.add( new Point3D( current_x + 1 , c , current_z - 1 ) );
     			
-    			System.out.println( "this is even" );
-    			this.vertices.get( this.vertices.size() - 3 ).print_out();
-    			this.vertices.get( this.vertices.size() - 2 ).print_out();
-    			this.vertices.get( this.vertices.size() - 1 ).print_out();
+//    			System.out.println( "this is even" );
+//    			this.vertices.get( this.vertices.size() - 3 ).print_out();
+//    			this.vertices.get( this.vertices.size() - 2 ).print_out();
+//    			this.vertices.get( this.vertices.size() - 1 ).print_out();
     			
     			current_x = current_x + 1;
     		}
@@ -122,19 +126,26 @@ public class Terrain {
     public void creatMesh() {
     	this.order_vertics();
     	System.out.println( ">>>" +this.vertices.size() );
+    	for ( int i = 0 ; i < this.vertices.size() ; i = i + 3 ) {
+    		System.out.println( "-------------" );
+			this.vertices.get( i ).print_out();
+			this.vertices.get( i + 1 ).print_out();
+			this.vertices.get( i + 2 ).print_out();
+    		
+		}
     	this.triMesh = new TriangleMesh( this.vertices , true );
     }
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
     	
     	CoordFrame3D f1 = frame.translate( 0.5f , 0.5f , -0.5f ).scale( 0.3f , 0.3f , 0.3f );
-    	CoordFrame3D f2 = frame.translate( -0.5f , -0.5f , 0.5f ).scale( 0.3f , 0.3f , 0.3f );
+    	CoordFrame3D f2 = frame.scale( 0.5f , 0.5f , 0.5f );
     	// if Terrain has offset, need to adjust frame before passing to its children
-//    	this.drawSelf( gl , frame );
-    	System.out.println( "There are "  + this.trees.size() + " trees" );
+    	this.drawSelf( gl , frame );
+//    	System.out.println( "There are "  + this.trees.size() + " trees" );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
     		if ( i == 1 ) {
-    			this.trees.get( i ).drawSelf( gl , f1 );
+//    			this.trees.get( i ).drawSelf( gl , f1 );
     		}
     		else {
     			this.trees.get( i ).drawSelf( gl , f2 );
@@ -146,12 +157,22 @@ public class Terrain {
     }
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
-    	if ( this.triMesh == null ) {
-    		System.out.println( "triMesh is not initalized" );
-    	}
-    	else {
-    		System.out.println( "already initalized" );
-    	}
+//    	if ( this.triMesh == null ) {
+//    		System.out.println( "triMesh is not initalized" );
+//    	}
+//    	else {
+//    		System.out.println( "already initalized" );
+//    	}
+    	
+    	Triangle3D t1 = new Triangle3D( 0 , 0 , 0,
+    								  1 , 1 , 0, 
+    								  -1 , 1 , 0);
+    	
+    	Shader.setPenColor( gl , Color.YELLOW);
+    	t1.draw(gl);
+    	
+    	
+    	Shader.setPenColor(gl, Color.black);
     	this.triMesh.draw( gl , frame );
     }
     

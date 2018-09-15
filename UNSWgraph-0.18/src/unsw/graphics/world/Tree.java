@@ -1,5 +1,6 @@
 package unsw.graphics.world;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import com.jogamp.opengl.GL;
@@ -35,7 +36,7 @@ public class Tree {
     }
     
     public void init( GL3 gl ) {
-    	System.out.println( "WTF" );
+    	System.out.println( "initial for tree texture" );
     	this.tree.init( gl );
     	this.texture = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
     }
@@ -70,6 +71,7 @@ public class Tree {
     	}
     	gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
+//        Shader.setPenColor( gl , Color.WHITE );
         this.tree.draw( gl , frame );
     }
     
