@@ -50,6 +50,15 @@ public class Terrain {
         
     }
     
+    public void init( GL3 gl ) {
+    	this.creatMesh();
+    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+    		this.trees.get( i ).init( gl );
+    	}
+    	
+    	// TODO need to init road init()
+    }
+    
     public void order_vertics() {
     	int current_x = 0;
     	int current_z = 1;
@@ -112,22 +121,37 @@ public class Terrain {
     
     public void creatMesh() {
     	this.order_vertics();
-    	System.out.println( this.vertices.size() );
+    	System.out.println( ">>>" +this.vertices.size() );
     	this.triMesh = new TriangleMesh( this.vertices , true );
     }
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
+    	
+    	CoordFrame3D f1 = frame.translate( 0.5f , 0.5f , -0.5f ).scale( 0.3f , 0.3f , 0.3f );
+    	CoordFrame3D f2 = frame.translate( -0.5f , -0.5f , 0.5f ).scale( 0.3f , 0.3f , 0.3f );
     	// if Terrain has offset, need to adjust frame before passing to its children
-    	this.drawSelf( gl , frame );
-    	for( int i = 0 ; i < this.trees.size() ; i++ ) {
-    		this.trees.get( i ).drawSelf( gl , frame );
+//    	this.drawSelf( gl , frame );
+    	System.out.println( "There are "  + this.trees.size() + " trees" );
+    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+    		if ( i == 1 ) {
+    			this.trees.get( i ).drawSelf( gl , f1 );
+    		}
+    		else {
+    			this.trees.get( i ).drawSelf( gl , f2 );
+    		}
     	}
-    	for( int i = 0 ; i < this.roads.size() ; i++ ) {
+    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
     		this.roads.get( i ).drawSelf( gl , frame );
     	}
     }
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
+    	if ( this.triMesh == null ) {
+    		System.out.println( "triMesh is not initalized" );
+    	}
+    	else {
+    		System.out.println( "already initalized" );
+    	}
     	this.triMesh.draw( gl , frame );
     }
     

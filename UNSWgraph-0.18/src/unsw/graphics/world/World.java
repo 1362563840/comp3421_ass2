@@ -22,7 +22,7 @@ public class World extends Application3D {
     private Terrain terrain;
 
     public World(Terrain terrain) {
-    	super("Assignment 2", 1800, 1600);
+    	super("Assignment 2", 1200, 1000);
         this.terrain = terrain;
    
     }
@@ -42,7 +42,7 @@ public class World extends Application3D {
 	@Override
 	public void display(GL3 gl) {
 		super.display(gl);
-		
+		System.out.println( "shoudl be seocond" );
 		// each 1s, 60 frames, this display should be called
 		this.terrain.recursively_draw( gl , CoordFrame3D.identity() );
 	}
@@ -58,8 +58,11 @@ public class World extends Application3D {
 	public void init(GL3 gl) {
 		super.init(gl);
 		
+		System.out.println( "shoudl be first " );
 		// Our codes :
-		this.terrain.creatMesh();
+		this.terrain.init( gl );
+		System.out.println( "shoudl be third " );
+		//TODO terrian init() need to be called
 		
 	}
 

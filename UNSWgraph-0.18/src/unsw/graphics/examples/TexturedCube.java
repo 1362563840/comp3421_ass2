@@ -105,7 +105,8 @@ public class TexturedCube extends Application3D {
                 new Point3D(-1,-1,-1), 
                 new Point3D(-1,1,-1),
                 new Point3D(-1,-1,1),  //Repeating the starting vertices 
-                new Point3D(-1,1,1))); // as they have their own tex coords 
+                new Point3D(-1,1,1)
+                )); // as they have their own tex coords 
         
         texCoordBuffer = new Point2DBuffer(Arrays.asList(
                 new Point2D(0,0),
