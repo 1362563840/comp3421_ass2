@@ -26,13 +26,18 @@ import unsw.graphics.*;
 public class World extends Application3D implements KeyListener{
 
     private Terrain terrain;
-    CoordFrame3D main_frame;
-    float z;
+    private CoordFrame3D main_frame;
+    private float z;
+    private float clockwise;
+    private float anticlockwise;
+    private Camera3D camera3d;
     
     public World(Terrain terrain) {
     	super("Assignment 2", 1200, 1000);
         this.terrain = terrain;
-   
+        this.clockwise = 0;
+        this.anticlockwise = 0;
+        this.camera3d = new Camera3D();
     }
    
     /**
@@ -53,11 +58,16 @@ public class World extends Application3D implements KeyListener{
 		// adjust frustrum
 		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
 		CoordFrame3D frame = CoordFrame3D.identity()
-                .translate(0, 0, -10)
-                .scale(0.5f, 0.5f, 0.5f);
+//                .translate(0, 0, -3 + this.z )
+                .translate(0, 0, -15  )
+//                .scale(0.7f, 0.7f, 0.7f)
+                .rotateY( this.clockwise )
+                .rotateY( this.anticlockwise );
+		//------------------------------------------
+		this.camera3d.setView(gl);
+		
 		// each 1s, 60 frames, this display should be called
 		this.terrain.recursively_draw( gl , frame );
-		
 		
 		// Debug -------------------------------------
 		
@@ -65,31 +75,32 @@ public class World extends Application3D implements KeyListener{
 				  1 , 1 , 0, 
 				  -1 , 1 , 0);
 
-		Shader.setPenColor( gl , Color.RED);
-//		t1.draw( gl , frame);
-		
-		ArrayList< Point3D > a = new ArrayList< Point3D >();
-		a.add( new Point3D(  -5 , 0 , 0 ) );
-		a.add( new Point3D(  5 , 0 , 0 ) );
-		a.add( new Point3D(  0 , 5 , 0 ) );
-		
-		ArrayList< Point2D > b = new ArrayList< Point2D >();
-		b.add( new Point2D( 0 , 0 ) );
-		b.add( new Point2D( 0.5f , 1 ) );
-		b.add( new Point2D( 1 , 0 ) );
-		
-//		this.main_frame.traslate
-//		CoordFrame3D frame1 = CoordFrame3D.identity().translate( 0 , 0 , -15 );
-		this.main_frame.translate(0, 0, this.z);
-		TriangleMesh b_mesh = new TriangleMesh( a , true , b ); 
-		b_mesh.init( gl );
-		
-		Texture texture = new Texture(gl, "res/textures/canLabel.bmp", "bmp", false);
-		Shader.setInt(gl, "tex", 0);
-        gl.glActiveTexture(GL.GL_TEXTURE0);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getId());
+//		Shader.setPenColor( gl , Color.RED);
+////		t1.draw( gl , frame);
+//		
+//		ArrayList< Point3D > a = new ArrayList< Point3D >();
+//		a.add( new Point3D(  -5 , 0 , 0 ) );
+//		a.add( new Point3D(  5 , 0 , 0 ) );
+//		a.add( new Point3D(  0 , 5 , 0 ) );
+//		
+//		ArrayList< Point2D > b = new ArrayList< Point2D >();
+//		b.add( new Point2D( 0 , 0 ) );
+//		b.add( new Point2D( 0.5f , 1 ) );
+//		b.add( new Point2D( 1 , 0 ) );
+//		
+////		this.main_frame.traslate
+////		CoordFrame3D frame1 = CoordFrame3D.identity().translate( 0 , 0 , -15 );
+//		this.main_frame.translate(0, 0, this.z);
+//		TriangleMesh b_mesh = new TriangleMesh( a , true , b ); 
+//		b_mesh.init( gl );
+//		
+//		Texture texture = new Texture(gl, "res/textures/canLabel.bmp", "bmp", false);
+//		Shader.setInt(gl, "tex", 0);
+//        gl.glActiveTexture(GL.GL_TEXTURE0);
+//        gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getId());
         
-		b_mesh.draw( gl , main_frame );
+//		b_mesh.draw( gl , main_frame );
+//		b_mesh.draw( gl , frame );
 	}
 
 	@Override
@@ -102,6 +113,9 @@ public class World extends Application3D implements KeyListener{
 	@Override
 	public void init(GL3 gl) {
 		super.init(gl);
+//		this.getWindow().addKeyListener( this );
+		this.getWindow().addKeyListener( this.camera3d );
+		this.z = -15;
 		this.z = -15;
 		this.main_frame = CoordFrame3D.identity().translate( 0 , 0 , z );
 		System.out.println( "shoudl be first " );
@@ -114,29 +128,19 @@ public class World extends Application3D implements KeyListener{
 	@Override
     public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
-			case KeyEvent.VK_UP:
-				System.out.println( "shift keyboard pressed1" );
-	            if (e.isShiftDown()) {
-	            	System.out.println( "shift keyboard pressed" );
-	            }
-	            else {
-//	                myPos = new Point2D(myPos.getX() - 1, myPos.getY());
-	            	System.out.println( "keyboard pressed" );
-	            	this.main_frame.translate( 0 , 0 , -1 );
-	            	this.z--;
-	            }
-	            break;
-			case KeyEvent.VK_DOWN:
-				System.out.println( "shift keyboard pressed2" );
-	            if (e.isShiftDown()) {
-	            }
-	                
-	            else {
-	            	this.z++;
-	            	this.main_frame.translate( 0 , 0 , 1 );
-//	            	myPos = new Point2D(myPos.getX(), myPos.getY() - 1);
-	            }
-	            break;    
+//			case KeyEvent.VK_UP:
+//            	this.z--;
+//	            break;
+//			case KeyEvent.VK_DOWN:
+//            	this.z++;
+//	            break;    
+//			case KeyEvent.VK_LEFT:
+//            	this.clockwise++;
+//	            break;    
+//			case KeyEvent.VK_RIGHT:
+//            	this.anticlockwise--;
+//	            break;        
+	        
 		}
 	}
 

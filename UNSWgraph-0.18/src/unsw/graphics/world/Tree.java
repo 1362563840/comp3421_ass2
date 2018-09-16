@@ -38,7 +38,7 @@ public class Tree {
     public void init( GL3 gl ) {
     	System.out.println( "initial for tree texture" );
     	this.tree.init( gl );
-    	this.texture = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
+    	this.texture = new Texture( gl, "res/textures/canLabel.bmp", "bmp", false );
     }
     
     /**
@@ -70,7 +70,7 @@ public class Tree {
     		System.out.println( "fuckyou" );
     	}
     	Shader.setInt(gl, "tex", 0);
-    	gl.glActiveTexture(GL.GL_TEXTURE0);
+    	gl.glActiveTexture(GL.GL_TEXTURE1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
 //        Shader.setPenColor( gl , Color.WHITE );
         this.tree.draw( gl , frame );

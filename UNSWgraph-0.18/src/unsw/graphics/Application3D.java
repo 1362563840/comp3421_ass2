@@ -74,8 +74,8 @@ public abstract class Application3D extends Application {
     public void init(GL3 gl) {
     	
     	// DEBUG
-        shader = new Shader(gl, "shaders/vertex_3d.glsl",
-                "shaders/fragment_3d.glsl");
+        shader = new Shader(gl, "shaders/vertex_tex_3d.glsl",
+                "shaders/fragment_tex_3d.glsl");
         shader.use(gl);
         
         // DEBUG

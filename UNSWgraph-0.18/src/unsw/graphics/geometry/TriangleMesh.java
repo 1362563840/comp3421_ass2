@@ -389,12 +389,6 @@ public class TriangleMesh {
             gl.glVertexAttribPointer(Shader.NORMAL, 3, GL.GL_FLOAT, false, 0, 0);
         }
         if (texCoords != null) {
-            //------------------------------------------------------------------------------
-        	Texture texture = new Texture(gl, "C:\\Users\\Athos\\Desktop\\3421\\comp3421_ass2\\UNSWgraph-0.18\\res\\textures\\canLabel.bmp", "bmp", false);
-    		Shader.setInt(gl, "tex", 0);
-            gl.glActiveTexture(GL.GL_TEXTURE0);
-            gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getId());
-            //------------------------------------------------------------------------------
             gl.glBindBuffer(GL.GL_ARRAY_BUFFER, texCoordsName);
             gl.glVertexAttribPointer(Shader.TEX_COORD, 2, GL.GL_FLOAT, false, 0, 0);
         }

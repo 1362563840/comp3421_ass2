@@ -102,9 +102,12 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z - 1 ) );
     			this.vertices.add( new Point3D( current_x , c , current_z - 1 ) );
     			
+//    			this.texCoords.add( new Point2D( 0 , 0 ) );
+//    			this.texCoords.add( new Point2D( 1 , 1 ) );
+//    			this.texCoords.add( new Point2D( 0 , 1 ) );
     			this.texCoords.add( new Point2D( 0 , 0 ) );
-    			this.texCoords.add( new Point2D( 1 , 1 ) );
-    			this.texCoords.add( new Point2D( 0 , 1 ) );
+    			this.texCoords.add( new Point2D( 0.5f , 1 ) );
+    			this.texCoords.add( new Point2D( 1 , 0 ) );
 //    			System.out.println( "this is odd" );
 //    			this.vertices.get( this.vertices.size() - 3 ).print_out();
 //    			this.vertices.get( this.vertices.size() - 2 ).print_out();
@@ -117,10 +120,13 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x , a , current_z ) );
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
     			this.vertices.add( new Point3D( current_x + 1 , c , current_z - 1 ) );
+//    			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
+    			
+    			
     			
     			this.texCoords.add( new Point2D( 0 , 0 ) );
+    			this.texCoords.add( new Point2D( 0.5f , 1 ) );
     			this.texCoords.add( new Point2D( 1 , 0 ) );
-    			this.texCoords.add( new Point2D( 1 , 1 ) );
     			
 //    			System.out.println( "this is even" );
 //    			this.vertices.get( this.vertices.size() - 3 ).print_out();
@@ -150,7 +156,7 @@ public class Terrain {
      */
     public void import_texture( GL3 gl ) {
     	
-    	this.text_graph = new Texture( gl , "res/textures/grass.bmp" , "bmp" , false );
+//    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
     	
     	
     }
@@ -181,7 +187,7 @@ public class Terrain {
 //    			this.trees.get( i ).drawSelf( gl , f1 );
     		}
     		else {
-    			this.trees.get( i ).drawSelf( gl , f2 );
+//    			this.trees.get( i ).drawSelf( gl , f2 );
     		}
     	}
     	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
@@ -190,29 +196,40 @@ public class Terrain {
     }
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
-//    	if ( this.triMesh == null ) {
-//    		System.out.println( "triMesh is not initalized" );
-//    	}
-//    	else {
-//    		System.out.println( "already initalized" );
-//    	}
     	
-    	Triangle3D t1 = new Triangle3D( 0 , 0 , 0,
-    								  1 , 1 , 0, 
-    								  -1 , 1 , 0);
-    	
-//    	Shader.setPenColor( gl , Color.YELLOW);
-    	t1.draw(gl);
-    	
-    	
-//    	Shader.setPenColor(gl, Color.black);
-    	
+    	Shader.setPenColor( gl , Color.WHITE);
+    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
     	Shader.setInt(gl, "tex", 0);
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
+        this.triMesh.draw( gl , frame );
+//    	Shader.setPenColor(gl, Color.black);
+    	
+    	Shader.setPenColor( gl , Color.GREEN);
+//		t1.draw( gl , frame);
+		
+		ArrayList< Point3D > a = new ArrayList< Point3D >();
+		a.add( new Point3D(  -5 , 0 , 0 ) );
+		a.add( new Point3D(  5 , 0 , 0 ) );
+		a.add( new Point3D(  0 , 5 , 0 ) );
+		
+		ArrayList< Point2D > b = new ArrayList< Point2D >();
+		b.add( new Point2D( 0 , 0 ) );
+		b.add( new Point2D( 0.5f , 1 ) );
+		b.add( new Point2D( 1 , 0 ) );
+		
+//		this.main_frame.traslate
+//		CoordFrame3D frame1 = CoordFrame3D.identity().translate( 0 , 0 , -15 );
+		TriangleMesh b_mesh = new TriangleMesh( a , true , b ); 
+		b_mesh.init( gl );
+		
+		Texture texture = new Texture(gl, "res/textures/canLabel.bmp", "bmp", false);
+		Shader.setInt(gl, "tex", 0);
+        gl.glActiveTexture(GL.GL_TEXTURE1);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getId());
+    	b_mesh.draw( gl , frame );
         
 //        Shader.setViewMatrix(gl, Matrix4.translation(0, 0, -20));
-    	this.triMesh.draw( gl , frame );
     	
     }
     
