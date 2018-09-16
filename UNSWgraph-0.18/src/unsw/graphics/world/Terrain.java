@@ -3,13 +3,23 @@ package unsw.graphics.world;
 
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.util.awt.ImageUtil;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 
 import unsw.graphics.CoordFrame3D;
+import unsw.graphics.Matrix4;
 import unsw.graphics.Shader;
+import unsw.graphics.Texture;
 import unsw.graphics.Vector3;
 import unsw.graphics.geometry.Point2D;
 import unsw.graphics.geometry.Point3D;
@@ -32,8 +42,11 @@ public class Terrain {
     private List<Road> roads;
     private Vector3 sunlight;
     // from on, they are mine
-    TriangleMesh triMesh;
-    ArrayList< Point3D > vertices;
+    private TriangleMesh triMesh;
+    private ArrayList< Point3D > vertices;
+    
+    private Texture text_graph;
+    private ArrayList< Point2D > texCoords;
     
 
     /**
@@ -51,15 +64,18 @@ public class Terrain {
         this.sunlight = sunlight;
         this.vertices = new ArrayList< Point3D >();
         
+        this.texCoords = new ArrayList< Point2D >();
+        
     }
     
     public void init( GL3 gl ) {
+    	this.import_texture( gl );
     	this.creatMesh();
     	this.triMesh.init( gl );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
     		this.trees.get( i ).init( gl );
     	}
-    	
+    	// Question Do I need to texture init()
     	// TODO need to init road init()
     }
     
@@ -86,6 +102,9 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z - 1 ) );
     			this.vertices.add( new Point3D( current_x , c , current_z - 1 ) );
     			
+    			this.texCoords.add( new Point2D( 0 , 0 ) );
+    			this.texCoords.add( new Point2D( 1 , 1 ) );
+    			this.texCoords.add( new Point2D( 0 , 1 ) );
 //    			System.out.println( "this is odd" );
 //    			this.vertices.get( this.vertices.size() - 3 ).print_out();
 //    			this.vertices.get( this.vertices.size() - 2 ).print_out();
@@ -98,6 +117,10 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x , a , current_z ) );
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
     			this.vertices.add( new Point3D( current_x + 1 , c , current_z - 1 ) );
+    			
+    			this.texCoords.add( new Point2D( 0 , 0 ) );
+    			this.texCoords.add( new Point2D( 1 , 0 ) );
+    			this.texCoords.add( new Point2D( 1 , 1 ) );
     			
 //    			System.out.println( "this is even" );
 //    			this.vertices.get( this.vertices.size() - 3 ).print_out();
@@ -121,7 +144,16 @@ public class Terrain {
     	}
     }
     
-    
+    /**
+     * read texture file
+     * @param gl
+     */
+    public void import_texture( GL3 gl ) {
+    	
+    	this.text_graph = new Texture( gl , "res/textures/grass.bmp" , "bmp" , false );
+    	
+    	
+    }
     
     public void creatMesh() {
     	this.order_vertics();
@@ -133,7 +165,8 @@ public class Terrain {
 			this.vertices.get( i + 2 ).print_out();
     		
 		}
-    	this.triMesh = new TriangleMesh( this.vertices , true );
+    	System.out.println( "texture coordinate size is " + this.texCoords.size() );
+    	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
     }
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
@@ -168,12 +201,19 @@ public class Terrain {
     								  1 , 1 , 0, 
     								  -1 , 1 , 0);
     	
-    	Shader.setPenColor( gl , Color.YELLOW);
+//    	Shader.setPenColor( gl , Color.YELLOW);
     	t1.draw(gl);
     	
     	
-    	Shader.setPenColor(gl, Color.black);
+//    	Shader.setPenColor(gl, Color.black);
+    	
+    	Shader.setInt(gl, "tex", 0);
+        gl.glActiveTexture(GL.GL_TEXTURE0);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
+        
+//        Shader.setViewMatrix(gl, Matrix4.translation(0, 0, -20));
     	this.triMesh.draw( gl , frame );
+    	
     }
     
 

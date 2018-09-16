@@ -80,6 +80,7 @@ public class Camera implements KeyListener {
             break;
 
         case KeyEvent.VK_UP:
+        	System.out.println( "shift keyboard pressed" );
             if (e.isShiftDown())
                 myScale /= 1.1;
             else

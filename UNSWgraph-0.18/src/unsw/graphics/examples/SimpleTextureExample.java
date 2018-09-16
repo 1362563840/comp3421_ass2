@@ -160,10 +160,15 @@ public class SimpleTextureExample extends Application3D implements KeyListener {
         quad.put(3, -10, 10, 0);
 
         Point2DBuffer quadTexCoords = new Point2DBuffer(4);
-        quadTexCoords.put(0, 0f, 0f);
-        quadTexCoords.put(1, 1f, 0f);
-        quadTexCoords.put(2, 1f, 1f);
-        quadTexCoords.put(3, 0f, 1f);
+//        quadTexCoords.put(0, 0f, 0f);
+//        quadTexCoords.put(1, 1f, 0f);
+//        quadTexCoords.put(2, 1f, 1f);
+//        quadTexCoords.put(3, 0f, 1f);
+        
+        quadTexCoords.put(0, 1f, 0f);
+        quadTexCoords.put(1, 1f, 1f);
+        quadTexCoords.put(2, 0f, 1f);
+        quadTexCoords.put(3, 0f, 0f);
 
         // Copy across the buffer for the vertex positions
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, names[0]);

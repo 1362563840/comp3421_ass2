@@ -72,9 +72,13 @@ public abstract class Application3D extends Application {
 
     @Override
     public void init(GL3 gl) {
+    	
+    	// DEBUG
         shader = new Shader(gl, "shaders/vertex_3d.glsl",
                 "shaders/fragment_3d.glsl");
         shader.use(gl);
+        
+        // DEBUG
 
         // Make points big (10 pixels wide) so we can see them clearly
         gl.glPointSize(10);

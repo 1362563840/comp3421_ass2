@@ -25,6 +25,7 @@ import unsw.graphics.CoordFrame3D;
 import unsw.graphics.Point2DBuffer;
 import unsw.graphics.Point3DBuffer;
 import unsw.graphics.Shader;
+import unsw.graphics.Texture;
 import unsw.graphics.Vector3;
 
 /**
@@ -72,7 +73,7 @@ public class TriangleMesh {
     private int normalsName;
     
     /**
-     * The name of the normal buffer according to OpenGL
+     * The name of the tex buffer according to OpenGL
      */
     private int texCoordsName;
 
@@ -125,7 +126,7 @@ public class TriangleMesh {
      * @param vertexNormals
      */
     public TriangleMesh(List<Point3D> vertices, boolean faceNormals) {
-    	System.out.println( " constructor 127 passed vertices is " + vertices.size() );
+//    	System.out.println( " constructor 127 passed vertices is " + vertices.size() );
         this.vertices = new Point3DBuffer(vertices);
         if (faceNormals) {
             normals = new Point3DBuffer(vertices.size());
@@ -388,6 +389,12 @@ public class TriangleMesh {
             gl.glVertexAttribPointer(Shader.NORMAL, 3, GL.GL_FLOAT, false, 0, 0);
         }
         if (texCoords != null) {
+            //------------------------------------------------------------------------------
+        	Texture texture = new Texture(gl, "C:\\Users\\Athos\\Desktop\\3421\\comp3421_ass2\\UNSWgraph-0.18\\res\\textures\\canLabel.bmp", "bmp", false);
+    		Shader.setInt(gl, "tex", 0);
+            gl.glActiveTexture(GL.GL_TEXTURE0);
+            gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getId());
+            //------------------------------------------------------------------------------
             gl.glBindBuffer(GL.GL_ARRAY_BUFFER, texCoordsName);
             gl.glVertexAttribPointer(Shader.TEX_COORD, 2, GL.GL_FLOAT, false, 0, 0);
         }

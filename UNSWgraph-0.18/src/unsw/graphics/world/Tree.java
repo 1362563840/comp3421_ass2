@@ -69,6 +69,7 @@ public class Tree {
     	if ( texture == null ) {
     		System.out.println( "fuckyou" );
     	}
+    	Shader.setInt(gl, "tex", 0);
     	gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
 //        Shader.setPenColor( gl , Color.WHITE );
