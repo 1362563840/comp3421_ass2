@@ -184,7 +184,7 @@ public class Terrain {
 //    	System.out.println( "There are "  + this.trees.size() + " trees" );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
     		if ( i == 1 ) {
-//    			this.trees.get( i ).drawSelf( gl , f1 );
+    			this.trees.get( i ).drawSelf( gl , f1 );
     		}
     		else {
 //    			this.trees.get( i ).drawSelf( gl , f2 );
