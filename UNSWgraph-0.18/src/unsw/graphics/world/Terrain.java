@@ -205,31 +205,8 @@ public class Terrain {
         this.triMesh.draw( gl , frame );
 //    	Shader.setPenColor(gl, Color.black);
     	
-    	Shader.setPenColor( gl , Color.GREEN);
-//		t1.draw( gl , frame);
 		
-		ArrayList< Point3D > a = new ArrayList< Point3D >();
-		a.add( new Point3D(  -5 , 0 , 0 ) );
-		a.add( new Point3D(  5 , 0 , 0 ) );
-		a.add( new Point3D(  0 , 5 , 0 ) );
-		
-		ArrayList< Point2D > b = new ArrayList< Point2D >();
-		b.add( new Point2D( 0 , 0 ) );
-		b.add( new Point2D( 0.5f , 1 ) );
-		b.add( new Point2D( 1 , 0 ) );
-		
-//		this.main_frame.traslate
-//		CoordFrame3D frame1 = CoordFrame3D.identity().translate( 0 , 0 , -15 );
-		TriangleMesh b_mesh = new TriangleMesh( a , true , b ); 
-		b_mesh.init( gl );
-		
-		Texture texture = new Texture(gl, "res/textures/canLabel.bmp", "bmp", false);
-		Shader.setInt(gl, "tex", 0);
-        gl.glActiveTexture(GL.GL_TEXTURE1);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getId());
-    	b_mesh.draw( gl , frame );
-        
-//        Shader.setViewMatrix(gl, Matrix4.translation(0, 0, -20));
+
     	
     }
     
