@@ -24,11 +24,15 @@ public class Camera3D implements KeyListener {
     private Point3D myPos;
     private float myAngle;
     private float myScale;
+    private float myAngle_X;
+    private float myAngle_Z;
 
     public Camera3D() {
         myPos = new Point3D(0, 0, 0);
         myAngle = 0;
         myScale = 10;
+        myAngle_X = 0;
+        myAngle_Z = 0;
     }
     
     public void draw(GL3 gl, CoordFrame3D frame) {
@@ -48,9 +52,14 @@ public class Camera3D implements KeyListener {
      * @param gl
      */
     public void setView(GL3 gl) {
+    	
+    	// if camera's position is near the hill, then adjust the y direction
+//    	this.myPos = new Point3D( myPos.getX() +   ); 
+    	
+    	
         CoordFrame3D viewFrame = CoordFrame3D.identity()
                 .scale(1/myScale, 1/myScale , 1/myScale )
-                .rotateY(-myAngle)   //.rotateY(-myAngle).rotateX(-myAngle).
+                .rotateX(-myAngle_X).rotateY(-myAngle).rotateZ(-myAngle_Z)   //.rotateY(-myAngle).rotateX(-myAngle).
                 .translate(-myPos.getX(), -myPos.getY() , -myPos.getZ() );
         Shader.setViewMatrix(gl, viewFrame.getMatrix());
     }
@@ -59,34 +68,44 @@ public class Camera3D implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
-            if (e.isShiftDown()) {
-//                myAngle += 5;
-            }
-            else {
-            	myAngle += 5;
-//            	myPos = new Point3D(myPos.getX() - 1, myPos.getY() , 0 );      
-            }
+            myAngle += 5;
             break;
-            
-        case KeyEvent.VK_RIGHT:
-            if (e.isShiftDown()) {
-//                myAngle -= 5;
-            }
-            else {
-            	myAngle -= 5;
-//            	myPos = new Point3D(myPos.getX() + 1, myPos.getY() ,  myPos.getZ() );         
-            }
+        case KeyEvent.VK_RIGHT: 
+        	myAngle -= 5;
             break;
-
         case KeyEvent.VK_DOWN:
-            
-            myPos = new Point3D(myPos.getX(), myPos.getY() , myPos.getZ() + 1 );
+            myPos = new Point3D(myPos.getX(), myPos.getY() ,  myPos.getZ() + 1 );
             break;
-
         case KeyEvent.VK_UP:
-        
-            myPos = new Point3D(myPos.getX(), myPos.getY()  , myPos.getZ() - 1 );
+        	float a = 1;
+        	float a_z = a * (float)Math.cos( Math.toRadians( this.myAngle ) );
+        	float a_x = a * (float)Math.sin( Math.toRadians( this.myAngle ) );
+            myPos = new Point3D(myPos.getX() + a_x , myPos.getY()  , myPos.getZ() - a_z );
             break;
+            
+        case KeyEvent.VK_W:
+            myPos = new Point3D(myPos.getX(), myPos.getY() + 1 , myPos.getZ() );
+            break;
+        
+        case KeyEvent.VK_S:
+            myPos = new Point3D(myPos.getX(), myPos.getY() - 1  , myPos.getZ() );
+            break;
+            
+        case KeyEvent.VK_A:
+            myPos = new Point3D(myPos.getX() - 1, myPos.getY() , myPos.getZ() );
+            break;
+        
+        case KeyEvent.VK_D:
+            myPos = new Point3D(myPos.getX() + 1 , myPos.getY()  , myPos.getZ() );
+            break;
+           
+        case KeyEvent.VK_Z:
+//        	this.
+            break;
+        
+        case KeyEvent.VK_X:
+            break;
+          
         }
 
     }
