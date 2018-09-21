@@ -48,7 +48,7 @@ public class Road {
      * @return
      */
     public int size() {
-        return points.size() / 6;
+        return points.size() / 3;
     }
 
     /**

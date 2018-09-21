@@ -34,7 +34,7 @@ public class ConeExample extends Application3D implements MouseListener{
     private static final int NUM_SLICES = 64;
 	
     private float height = 2;
-    private float radius = 0.5f;
+    private float radius = 2f;
     private TriangleMesh cone;
     
     public ConeExample() {

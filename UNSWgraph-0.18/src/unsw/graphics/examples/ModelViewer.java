@@ -123,7 +123,7 @@ public class ModelViewer extends Application3D {
         // Compute the view transform
         CoordFrame3D view = CoordFrame3D.identity().translate(0, 0, -2)
                 // Uncomment the line below to rotate the camera
-                // .rotateY(rotateY)
+//                 .rotateY(rotateY)
                 .translate(0, 0, 2);
         Shader.setViewMatrix(gl, view.getMatrix());
 
