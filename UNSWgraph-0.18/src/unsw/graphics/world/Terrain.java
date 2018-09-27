@@ -49,6 +49,15 @@ public class Terrain {
     private Texture text_graph;
     private ArrayList< Point2D > texCoords;
     
+    private Rain_particle rain;
+    
+    public int getX_length() {
+    	return this.width;
+    }
+    
+    public int getZ_length() {
+    	return this.depth;
+    }
 
     /**
      * Create a new terrain
@@ -66,6 +75,7 @@ public class Terrain {
         this.vertices = new ArrayList< Point3D >();
         
         this.texCoords = new ArrayList< Point2D >();
+        this.rain = new Rain_particle( this );
         
     }
     
@@ -85,6 +95,8 @@ public class Terrain {
     		this.roads().get( j ).setTerrian( this );
     		this.roads.get( j ).init( gl );
     	}
+    	
+    	this.rain.init( gl );
     	
     	// Question Do I need to texture init()
     	// TODO need to init road init()
@@ -163,19 +175,58 @@ public class Terrain {
 //    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
     	
     	// if Terrain has offset, need to adjust frame before passing to its children
-    	this.drawSelf( gl , frame);
+//    	this.drawSelf( gl , frame);
 //    	this.drawSelf( gl , frame.translate(0, 0, -3) );
-    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
-    		this.trees.get( i ).drawSelf( gl , frame );
-    	}
-    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
-    		this.roads.get( i ).drawSelf( gl , frame );
-    	}
+    	
+    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+    	Shader.setPoint3D(gl, "lightPos", temp_light );
+    	Shader.setColor(gl, "lightIntensity", Color.WHITE);
+		Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+		  
+		// Set the material properties
+		Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+		Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+		Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+		Shader.setFloat(gl, "phongExp", 4f);
+    	
+    	
+        // draw rain
+//      shader1 = new Shader(gl, "shaders/vertex_rain.glsl",
+//      		"shaders/fragment_rain.glsl");
+//      shader1.use( gl );
+    	
+    	//---------------------------------
+        
+//        CoordFrame3D temp_frame = frame.translate( 0 , 0 , -10 ).scale(0.5f, 0.5f, 0.5f);
+//        Triangle3D t1 = new Triangle3D( -1, -1 , 1,
+//        		  						1 , -1 , 1, 
+//        		  						1 , 1 , 1);
+//       
+//        Triangle3D t2 = new Triangle3D( 0 , 1 , 0,
+//				  0 , 0 , 1, 
+//				  1 , 0 , 0);
+//        t1.draw(gl , temp_frame);
+//        t2.draw(gl , temp_frame);
+    	
+    	//----------------------------------
+		Shader.setColor(gl, "ambientCoeff", Color.BLACK);
+		this.rain.drawSelf( gl , frame );
+    	
+    	
+//    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+//    		this.trees.get( i ).drawSelf( gl , frame );
+//    	}
+//    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
+//    		this.roads.get( i ).drawSelf( gl , frame );
+//    	}
     }
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
     	
-    	
+//    	Shader shader1 = new Shader(gl, "shaders/vertex_tex_phong_direction.glsl",
+//        		"shaders/fragment_tex_phong_direction.glsl");
+//        shader1.use( gl );
     	
     	// important here
     	
@@ -199,7 +250,7 @@ public class Terrain {
         this.triMesh.draw( gl , frame );
 //    	Shader.setPenColor(gl, Color.black);
     	
-		
+
 
     	
     }

@@ -31,6 +31,8 @@ in vec2 texCoordFrag;
 // our codes
 uniform vec3 normal_light;
 
+uniform mat4 model_matrix;
+
 uniform float cutOff;
 
 // distance formular factors
@@ -81,7 +83,7 @@ void main()
 
     // ------------------------W
     // our codes
-    vec3  norm_temp = normalize( normal_light );
+    vec3  norm_temp = normalize( view_matrix * vec4( normal_light , 1 ) ).xyz;
 
     if ( degrees( acos( dot( norm_temp , s ) ) ) <= cutOff ){
         outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
