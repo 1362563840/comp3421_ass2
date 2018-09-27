@@ -23,6 +23,8 @@ public class Tree {
     private TriangleMesh tree;
     private Texture texture;
     
+    private Terrain terrian;
+    
     public Tree(float x, float y, float z) {
         position = new Point3D(x, y, z);
         
@@ -39,8 +41,22 @@ public class Tree {
     	System.out.println( "initial for tree texture" );
     	this.tree.init( gl );
     	this.texture = new Texture( gl, "res/textures/canLabel.bmp", "bmp", false );
+    	this.setHeight();
     }
     
+    public void setHeight() {
+    	this.position = new Point3D( 
+    						this.position.getX() , 
+    						this.terrian.altitude(  this.position.getX() ,  this.position.getZ() ) ,
+    						this.position.getZ()
+    						);
+    	
+    	System.out.println( "tree position is ( " + this.position.getX() + " , " + this.position.getY() + " , " + this.position.getZ() + " )" );
+    }
+    
+    public void setTerrian( Terrain terrian ) {
+    	this.terrian = terrian;
+    }
     /**
      * read the ply before displaying in order to increase the spped
      * 
@@ -69,11 +85,13 @@ public class Tree {
     	if ( texture == null ) {
     		System.out.println( "fuckyou" );
     	}
-    	Shader.setInt(gl, "tex", 0);
+    	Shader.setInt(gl, "tex", 1);
     	gl.glActiveTexture(GL.GL_TEXTURE1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
 //        Shader.setPenColor( gl , Color.WHITE );
-        this.tree.draw( gl , frame );
+//        this.position.print_out();
+        this.tree.draw( gl , frame.translate( this.position ).scale(0.5f, 0.1f, 0.5f) );
+//        this.tree.draw( gl , frame.translate( this.position ) );
     }
     
     public void destroy( GL3 gl ) {

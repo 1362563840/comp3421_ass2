@@ -25,18 +25,18 @@ uniform sampler2D tex;
 in vec4 viewPosition;
 in vec3 m;
 
-in vec2 texCoordFrag
+in vec2 texCoordFrag;
 
 // -------------------------
 // our codes
-in vec3 normal_light;
+uniform vec3 normal_light;
 
 uniform float cutOff;
 
 // distance formular factors
-uniform float constant
-uniform float linear
-uniform float quadratic
+uniform float constant;
+uniform float linear;
+uniform float quadratic;
 // -------------------------
 
 
@@ -69,25 +69,27 @@ void main()
     if (dot(m,s) > 0)
         specular = max(lightIntensity*specularCoeff*pow(dot(r,v),phongExp), 0.0);
     else
-        specular = vec3(0);
+        specular = vec3( 0.0 , 0.0 , 0.0 );
 
     // ------------------------
     // our code
     specular = specular * attenuation;
     // ------------------------
 
-    vec4 ambientAndDiffuse = vec4(ambient + diffuse, 1);
+    vec4 ambientAndDiffuse = vec4(ambient + diffuse, 1.0);
 
 
-    // ------------------------
+    // ------------------------W
     // our codes
-    vec3  norm_temp = normalize( normal_light )
+    vec3  norm_temp = normalize( normal_light );
 
-    if ( dot( norm_temp , s ) <= cutOff )
-      outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1);
-    else
-      vec4 dark_ambientAndDiffuse = vec4( 0.2 , 0.2 , 0.2 , 1 );
-      outputColor = dark_ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1);
+    if ( degrees( acos( dot( norm_temp , s ) ) ) <= cutOff ){
+        outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+    }
+    else {
+      vec4 dark_ambientAndDiffuse = vec4( 0.05 , 0.05 , 0.05 , 1.0 );
+      outputColor = dark_ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+    }
     // -------------------------
 
 }

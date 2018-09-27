@@ -42,6 +42,23 @@ public class Matrix4 {
         return new Matrix4(values);
     }
     
+    public void drawMatrix() {
+    	System.out.println( "Begin" );
+    	for( int i = 0 ; i < 4 ; i++ ) {
+    		for( int j = 0 ; j < 4 ; j++ ) {
+//    			System.out.print( this.values[ i + 4 * j  ] + " " );
+    			System.out.printf( "%-10f" , this.values[ i + 4 * j  ] );
+    		}
+    		System.out.println();
+    	}
+    	System.out.println( "End" );
+    }
+    
+    public float getOne( int index ) {
+    	assert( index <= 15 );
+    	return this.values[ index ];
+    } 
+    
     /**
      * Create a translation matrix to the given point.
      * @param x The x coordinate of the new origin

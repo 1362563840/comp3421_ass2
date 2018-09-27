@@ -57,18 +57,48 @@ public class World extends Application3D implements KeyListener{
 		super.display(gl);
 		// adjust frustrum
 		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
+		
+		//  --------------------------------- for torch light
+		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
+		Shader.setPoint3D(gl, "normal_light", this.camera3d.CameraNormal() );
+		
+		Shader.setFloat(gl, "cutOff", 5f );
+		Shader.setFloat(gl, "constant", 1f );
+		Shader.setFloat(gl, "linear", 0.09f );
+		Shader.setFloat(gl, "quadratic", 0.032f );
+		
+        Shader.setColor(gl, "lightIntensity", Color.WHITE);
+        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+        
+        // Set the material properties
+        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+        Shader.setFloat(gl, "phongExp", 4f);
+        //  --------------------------------- for torch light
+		
+        System.out.print( "Camera position is " );
+        this.camera3d.CameraPostion().print_out();
+        System.out.print( "Camera normal is " );
+        this.camera3d.CameraNormal().print_out();
+		
 		CoordFrame3D frame = CoordFrame3D.identity()
 //                .translate(0, 0, -3 + this.z )
-                .translate(0, 0, -15  )
+//                .translate(0, 0, -18  )
 //                .scale(0.7f, 0.7f, 0.7f)
                 .rotateY( this.clockwise )
+//                .translate( 0 , 0 , 2 )
+//                .scale(2f, 2f, 2f)
                 .rotateY( this.anticlockwise );
 		//------------------------------------------
 		this.camera3d.setView(gl);
+		// each time camera view is changed, need to adjust the new normal of the light
+				
+		
 		
 		// each 1s, 60 frames, this display should be called
 		this.terrain.recursively_draw( gl , frame );
-		
+//		this.clockwise += 1;
 		// Debug -------------------------------------
 		
 		Triangle3D t1 = new Triangle3D( 0 , 0 , 0,
@@ -82,11 +112,14 @@ public class World extends Application3D implements KeyListener{
 		super.destroy(gl);
 		
 		// Terrain recursively destory
+		this.terrain.destroy( gl );
 	}
 
 	@Override
 	public void init(GL3 gl) {
-		super.init(gl);
+		super.init(gl);	
+
+		
 //		this.getWindow().addKeyListener( this );
 		this.getWindow().addKeyListener( this.camera3d );
 		this.z = -15;
@@ -97,6 +130,9 @@ public class World extends Application3D implements KeyListener{
 		this.terrain.init( gl );
 		System.out.println( "shoudl be third " );
 		//TODO terrian init() need to be called
+		
+		
+		
 		
 	}
 	@Override

@@ -112,6 +112,13 @@ public class FlatShadedCube extends Application3D {
         // The vector from the point to the light source. 
         Vector3 s = lightPos.minus(p).normalize();
         
+        // debug
+        
+        s = new Vector3( lightPos.getX() + p.getX() , lightPos.getY() + p.getY() , lightPos.getZ() + p.getZ() ).normalize();
+        
+        // debug
+        
+        
         // The ambient intensity (same for all points)
         float ambient = ambientIntensity * ambientCoefficient;
         

@@ -92,7 +92,7 @@ public class BezierInterpolate extends Application2D implements KeyListener {
     		curve.add(new Point2D(getX(t), getY(t)));
     	}
     	
-    	curve.draw(gl);
+    	curve.draw(gl); 
     }
    
 	@Override

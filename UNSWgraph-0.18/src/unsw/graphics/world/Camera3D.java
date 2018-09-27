@@ -28,11 +28,22 @@ public class Camera3D implements KeyListener {
     private float myAngle_Z;
 
     public Camera3D() {
-        myPos = new Point3D(0, 0, 0);
+        myPos = new Point3D(0, 0, 10);
         myAngle = 0;
         myScale = 10;
         myAngle_X = 0;
         myAngle_Z = 0;
+    }
+    
+    public Point3D CameraNormal() {
+    	return new Point3D( (float)Math.sin( Math.toRadians( this.myAngle ) ) ,
+    						0 ,
+    						- (float)Math.cos( Math.toRadians( this.myAngle ) ) 
+    						);
+    }
+    
+    public Point3D CameraPostion() {
+    	return this.myPos;
     }
     
     public void draw(GL3 gl, CoordFrame3D frame) {
@@ -74,13 +85,14 @@ public class Camera3D implements KeyListener {
         	myAngle -= 5;
             break;
         case KeyEvent.VK_DOWN:
-            myPos = new Point3D(myPos.getX(), myPos.getY() ,  myPos.getZ() + 1 );
+        	float x = this.myPos.getX() + (float)Math.sin( Math.toRadians( this.myAngle ) );
+        	float z = this.myPos.getZ() + (float)Math.cos( Math.toRadians( this.myAngle ) );
+            myPos = new Point3D(x , myPos.getY()  , z );
             break;
         case KeyEvent.VK_UP:
-        	float a = 1;
-        	float a_z = a * (float)Math.cos( Math.toRadians( this.myAngle ) );
-        	float a_x = a * (float)Math.sin( Math.toRadians( this.myAngle ) );
-            myPos = new Point3D(myPos.getX() + a_x , myPos.getY()  , myPos.getZ() - a_z );
+        	float x_1 = this.myPos.getX() - (float)Math.sin( Math.toRadians( this.myAngle ) );
+        	float z_1 = this.myPos.getZ() - (float)Math.cos( Math.toRadians( this.myAngle ) );
+            myPos = new Point3D(x_1 , myPos.getY()  , z_1 );
             break;
             
         case KeyEvent.VK_W:

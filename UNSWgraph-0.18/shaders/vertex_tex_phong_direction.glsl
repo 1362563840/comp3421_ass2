@@ -25,7 +25,6 @@ out vec3 m;
 out vec2 texCoordFrag;
 
 void main() {
-
 	// The global position is in homogenous coordinates
     vec4 globalPosition = model_matrix * vec4(position, 1);
 

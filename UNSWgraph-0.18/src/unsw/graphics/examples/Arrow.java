@@ -155,7 +155,7 @@ public class Arrow extends Application3D implements MouseListener{
         back.init(gl);
         sidesMesh.init(gl);
         meshes.add(front);
-        meshes.add(back);
+//        meshes.add(back);
         meshes.add(sidesMesh);
     }
 

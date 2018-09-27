@@ -46,7 +46,7 @@ public class ModelViewer extends Application3D {
 
     public ModelViewer() throws IOException {
         super("Model viewer", 600, 600);
-        model = new TriangleMesh("res/models/bunny.ply", true, true);
+        model = new TriangleMesh("res/models/bunny_res4.ply", true, true);
         base = new TriangleMesh("res/models/cube_normals.ply", true, true);
     }
 
@@ -67,21 +67,26 @@ public class ModelViewer extends Application3D {
         }
         
         Shader shader = null;
-        if (USE_CUBEMAP) {
-            shader = new Shader(gl, "shaders/vertex_phong.glsl",
-                    "shaders/fragment_cubemap.glsl");
-        } else if (USE_LIGHTING && USE_TEXTURE) {
+//        Shader shader = new Shader( gl , "shaders/vertex_gouraud.glsl" , "shaders/fragment_gouraud.glsl" );
+//        Shader shader = new Shader( gl , "shaders/vertex_phong.glsl" , "shaders/fragment_phong.glsl" );
+//        Shader shader = new Shader( gl , "shaders/vertex_flat.glsl" , "shaders/fragment_flat.glsl" );
+//        if (USE_CUBEMAP) {
+//            shader = new Shader(gl, "shaders/vertex_phong.glsl",
+//                    "shaders/fragment_cubemap.glsl");
+//        } else if (USE_LIGHTING && USE_TEXTURE) {
             shader = new Shader(gl, "shaders/vertex_tex_phong.glsl",
                     "shaders/fragment_tex_phong.glsl");
-        } else if (USE_LIGHTING) {
-            shader = new Shader(gl, "shaders/vertex_phong.glsl",
-                    "shaders/fragment_phong.glsl");
-        } else if (USE_TEXTURE) {
-            shader = new Shader(gl, "shaders/vertex_tex_3d.glsl",
-                    "shaders/fragment_tex_3d.glsl");
-        } else {
-            shader = new Shader(gl, "shaders/vertex_3d.glsl", "shaders/fragment_3d.glsl");
-        }
+//            shader = new Shader(gl, "shaders/vertex_tex_phong_direction.glsl",
+//                    "shaders/fragment_tex_phong_direction.glsl");
+//        } else if (USE_LIGHTING) {
+//            shader = new Shader(gl, "shaders/vertex_phong.glsl",
+//                    "shaders/fragment_phong.glsl");
+//        } else if (USE_TEXTURE) {
+//            shader = new Shader(gl, "shaders/vertex_tex_3d.glsl",
+//                    "shaders/fragment_tex_3d.glsl");
+//        } else {
+//            shader = new Shader(gl, "shaders/vertex_3d.glsl", "shaders/fragment_3d.glsl");
+//        }
         shader.use(gl);
     }
 
@@ -121,7 +126,7 @@ public class ModelViewer extends Application3D {
         }
         
         // Compute the view transform
-        CoordFrame3D view = CoordFrame3D.identity().translate(0, 0, -2)
+        CoordFrame3D view = CoordFrame3D.identity().translate(0, 0, -4)
                 // Uncomment the line below to rotate the camera
 //                 .rotateY(rotateY)
                 .translate(0, 0, 2);

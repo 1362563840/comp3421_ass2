@@ -21,6 +21,7 @@ import unsw.graphics.Matrix4;
 import unsw.graphics.Shader;
 import unsw.graphics.Texture;
 import unsw.graphics.Vector3;
+import unsw.graphics.Vector4;
 import unsw.graphics.geometry.Point2D;
 import unsw.graphics.geometry.Point3D;
 import unsw.graphics.geometry.Triangle3D;
@@ -69,12 +70,51 @@ public class Terrain {
     }
     
     public void init( GL3 gl ) {
+    	
+//    	for ( int i = 0 ; i < this.width ; i++ ) {
+//    		for ( int j = 0 ; j < this.depth ; j++ ) {
+//    			System.out.print( this.altitudes[ i ][ j ] + "    " );
+//    		}
+//    		System.out.println();
+//    	}
+    	this.order_vertics();
+    	
+//    	for ( int i = 0 ; i < this.vertices.size() ; i = i + 1 ) {
+//    		System.out.println( "-------------" );
+//			this.vertices.get( i ).print_out();   		
+//		}
+//    	
+//    	System.out.println( "there are " + this.roads().get(0).size() + " control points" );
+    	
     	this.import_texture( gl );
     	this.creatMesh();
     	this.triMesh.init( gl );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+    		this.trees.get( i ).setTerrian( this );
     		this.trees.get( i ).init( gl );
     	}
+    	
+    	for( int j = 0 ; j < this.roads().size() ; j++ ) {
+    		this.roads().get( j ).setTerrian( this );
+    		this.roads.get( j ).init( gl );
+    	}
+    	
+//    	// important here
+//    	Shader.setPoint3D(gl, "lightPos", this.getSunlight().asPoint3D() );
+//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
+//        Shader.setColor(gl, "ambientIntensity", new Color(0.8f, 0.8f, 0.8f));
+//        
+//        // Set the material properties
+//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+//        Shader.setColor(gl, "specularCoeff", new Color(0.8f, 0.8f, 0.8f));
+//        Shader.setFloat(gl, "phongExp", 4f);
+    	// important here
+    	Point3D debug = this.getSunlight().asPoint3D();
+//    	System.out.println( "debug is " + debug.getX() + " " + debug.getY() + " " + debug.getZ() );
+    	
+//    	System.out.println( "sunlight is " + this.getSunlight().getX() + " " + this.getSunlight().getY() + " " + this.getSunlight().getZ() );
+    	
     	// Question Do I need to texture init()
     	// TODO need to init road init()
     }
@@ -155,40 +195,36 @@ public class Terrain {
      * @param gl
      */
     public void import_texture( GL3 gl ) {
-    	
-//    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
-    	
-    	
+    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
     }
     
     public void creatMesh() {
-    	this.order_vertics();
+//    	this.order_vertics();
     	System.out.println( ">>>" +this.vertices.size() );
-    	for ( int i = 0 ; i < this.vertices.size() ; i = i + 3 ) {
-    		System.out.println( "-------------" );
-			this.vertices.get( i ).print_out();
-			this.vertices.get( i + 1 ).print_out();
-			this.vertices.get( i + 2 ).print_out();
-    		
-		}
+//    	for ( int i = 0 ; i < this.vertices.size() ; i = i + 3 ) {
+//    		System.out.println( "-------------" );
+//			this.vertices.get( i ).print_out();
+//			this.vertices.get( i + 1 ).print_out();
+//			this.vertices.get( i + 2 ).print_out();
+//    		
+//		}
     	System.out.println( "texture coordinate size is " + this.texCoords.size() );
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
     }
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
     	
-    	CoordFrame3D f1 = frame.translate( 0.5f , 0.5f , -0.5f ).scale( 0.3f , 0.3f , 0.3f );
-    	CoordFrame3D f2 = frame.scale( 0.5f , 0.5f , 0.5f );
+//    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
+//    	CoordFrame3D f2 = frame.scale( 0.5f , 0.5f , 0.5f );
+    	
     	// if Terrain has offset, need to adjust frame before passing to its children
-    	this.drawSelf( gl , frame );
-//    	System.out.println( "There are "  + this.trees.size() + " trees" );
+    	this.drawSelf( gl , frame);
+//    	this.drawSelf( gl , frame.translate(0, 0, -3) );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
-    		if ( i == 1 ) {
-    			this.trees.get( i ).drawSelf( gl , f1 );
-    		}
-    		else {
-//    			this.trees.get( i ).drawSelf( gl , f2 );
-    		}
+
+    		
+    		this.trees.get( i ).drawSelf( gl , frame );
+    		
     	}
     	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
     		this.roads.get( i ).drawSelf( gl , frame );
@@ -197,8 +233,25 @@ public class Terrain {
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
     	
+    	
+    	
+    	// important here
+    	
+    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+    	
+//    	Shader.setPoint3D(gl, "lightPos", temp_light );
+//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
+//        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+//        
+//        // Set the material properties
+//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+//        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+//        Shader.setFloat(gl, "phongExp", 4f);
+//    	
     	Shader.setPenColor( gl , Color.WHITE);
-    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
+//    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
     	Shader.setInt(gl, "tex", 0);
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
@@ -266,22 +319,24 @@ public class Terrain {
      * @param z
      * @return
      */
+    int debug = 0;
     public float altitude(float x, float z) {
     	// debug for array
     	// TODO: Implement this
-    	for ( int i = 0 ; i < this.width ; i++ ) {
-    		for ( int j = 0 ; j < this.depth ; j++ ) {
-    			System.out.print( this.altitudes[ i ][ j ] + "    " );
-    		}
-    		System.out.println();
-    	}
+//    	for ( int i = 0 ; i < this.width ; i++ ) {
+//    		for ( int j = 0 ; j < this.depth ; j++ ) {
+//    			System.out.print( this.altitudes[ i ][ j ] + "    " );
+//    		}
+//    		System.out.println();
+//    	}
     	float result;
         int isInteger_x = Math.round( x );
         int isInteger_z = Math.round( z );
         boolean result_x =  ( (float)isInteger_x == x );
         boolean result_z =  ( (float)isInteger_z == z );
-        if ( result_x == false || result_z == false ) {
+        if ( result_x == false && result_z == false ) {
         	// using interpolated
+        	
         	float y = z;
         	int x1 = (int)Math.floor( x );
         	int x2 = (int)Math.ceil( x );
@@ -292,16 +347,108 @@ public class Terrain {
         	int z3 = (int)Math.ceil( z );
         	int z4 = z3;
         	
-        	float R1 = ( ( z - z1 ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z3 ];
-        	R1 = R1 + ( ( z3 - z ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z1 ];
+        	float diff = ( x - x1 ) + ( z - z1 );
         	
-        	float R2 = ( ( z - z2 ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z4 ];
-        	R2 = R2 + ( ( z4 - z ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z2 ];
+        	// in the right triangle
+        	if ( diff >= 1 ) {
+        		float R2 = ( ( z - z2 ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z4 ];
+            	R2 = R2 + ( ( z4 - z ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z2 ];
+            	
+//            	result = R2;
+            	
+//            	float R1 = ( ( x - x1 ) / ( x2 - x1 ) ) * this.altitudes[ x2 ][ z3 ];
+//            	R1 = R1 + ( ( x2 - x ) / ( x2 - x1 ) ) * this.altitudes[ x1 ][ z3 ];
+            	
+            	Point2D v1 = new Point2D( x2 , z3 );
+            	float alt_v1 = this.altitude( v1.getX() , v1.getY() );
+            	Point2D v2 = new Point2D( x1 , z1 );
+            	float alt_v2 = this.altitude( v2.getX() , v2.getY() );
+            	Point2D v3 = new Point2D( x2 , z1 );
+            	float alt_v3 = this.altitude( v3.getX() , v3.getY() );
+            	
+            	float numerator = ( v2.getY() - v3.getY() ) * ( x - v3.getX() ) + ( v3.getX() - v2.getX() ) * ( z - v3.getY() );
+            	float Denominato = ( v2.getY() - v3.getY() ) * ( v1.getX() - v3.getX() ) + ( v3.getX() - v2.getX() ) * ( v1.getY() - v3.getY() );
+            	
+            	float w_v1 = numerator / Denominato;
+            	
+            	float numerator_1 = ( v3.getY() - v1.getY() ) * ( x - v3.getX() ) + ( v1.getX() - v3.getX() ) * ( z - v3.getY() );
+            	float Denominato_2 = ( v2.getY() - v3.getY() ) * ( v1.getX() - v3.getX() ) + ( v3.getX() - v2.getX() ) * ( v1.getY() - v3.getY() );
+            	
+            	float w_v2 = numerator_1 / Denominato_2;
+            	
+            	float w_v3 = 1 - w_v1 - w_v2;
+
+//            	System.out.println( " w_v1 is " + w_v1 + " alt_v1 is " + alt_v1 + " w_v2 is " + w_v2 + " alt_v2 is " + alt_v2 + " w_v3 is " + w_v3 + " alt_v3 is " + alt_v3 );
+            	
+            	result = w_v1 * alt_v1 + w_v2 * alt_v2 + w_v3 * alt_v3;
+        	}
+        	// in the left triangle
+        	else {
+        		float R1 = ( ( z - z1 ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z3 ];
+            	R1 = R1 + ( ( z3 - z ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z1 ];
+            	
+//            	result = R1;
+//            	
+//            	float R2 = ( ( x - x1 ) / ( x2 - x1 ) ) * this.altitudes[ x2 ][ z3 ];
+//            	R1 = R1 + ( ( x2 - x ) / ( x2 - x1 ) ) * this.altitudes[ x1 ][ z3 ];
+            	
+            	Point2D v1 = new Point2D( x1 , z3 );
+            	float alt_v1 = this.altitude( v1.getX() , v1.getY() );
+            	Point2D v2 = new Point2D( x1 , z1 );
+            	float alt_v2 = this.altitude( v2.getX() , v2.getY() );
+            	Point2D v3 = new Point2D( x2 , z3 );
+            	float alt_v3 = this.altitude( v3.getX() , v3.getY() );
+            	
+            	float numerator = ( v2.getY() - v3.getY() ) * ( x - v3.getX() ) + ( v3.getX() - v2.getX() ) * ( z - v3.getY() );
+            	float Denominato = ( v2.getY() - v3.getY() ) * ( v1.getX() - v3.getX() ) + ( v3.getX() - v2.getX() ) * ( v1.getY() - v3.getY() );
+            	
+            	float w_v1 = numerator / Denominato;
+            	
+            	float numerator_1 = ( v3.getY() - v1.getY() ) * ( x - v3.getX() ) + ( v1.getX() - v3.getX() ) * ( z - v3.getY() );
+            	float Denominato_2 = ( v2.getY() - v3.getY() ) * ( v1.getX() - v3.getX() ) + ( v3.getX() - v2.getX() ) * ( v1.getY() - v3.getY() );
+            	
+            	float w_v2 = numerator_1 / Denominato_2;
+            	
+            	float w_v3 = 1 - w_v1 - w_v2;
+            	
+            	result = w_v1 * alt_v1 + w_v2 * alt_v2 + w_v3 * alt_v3;
+            	
+        	}
         	
-        	result = ( ( x - x1 ) / ( x2 - x1 ) ) * R2;
-        	result = result + ( ( x2 - x ) / ( x2 - x1 ) ) * R1;
+        	
+        	assert( z3 < this.depth );
+        	assert( x2 < this.width );
+        	
+//        	float R1 = ( ( z - z1 ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z3 ];
+//        	R1 = R1 + ( ( z3 - z ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z1 ];
+//        	
+//        	float R2 = ( ( z - z2 ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z4 ];
+//        	R2 = R2 + ( ( z4 - z ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z2 ];
+//        	
+//        	result = ( ( x - x1 ) / ( x2 - x1 ) ) * R2;
+//        	result = result + ( ( x2 - x ) / ( x2 - x1 ) ) * R1;
+        	
+
+        	
+        }
+        else if ( result_x == true && result_z == false ) {
+        	int z1 = (int)Math.floor( z );
+        	int z3 = (int)Math.ceil( z );
+        	
+        	float R1 = ( ( z - z1 ) / ( z3 - z1 ) ) * this.altitudes[ isInteger_x ][ z3 ];
+        	R1 = R1 + ( ( z3 - z ) / ( z3 - z1 ) ) * this.altitudes[ isInteger_x ][ z1 ];
+        	
+        	result = R1;
+        }
+        else if( result_x == false && result_z == true ) {
+        	int x1 = (int)Math.floor( x );
+        	int x2 = (int)Math.ceil( x );
+        	
+        	result = ( ( x - x1 ) / ( x2 - x1 ) ) * this.altitudes[ x2 ][ isInteger_z ];
+        	result = result + ( ( x2 - x ) / ( x2 - x1 ) ) * this.altitudes[ x1 ][ isInteger_z ];
         }
         else {
+        	assert( result_x == true && result_z == true );
         	result = this.altitudes[ isInteger_x ][ isInteger_z ];
         }
 
@@ -333,6 +480,10 @@ public class Terrain {
     public void addRoad(float width, List<Point2D> spine) {
         Road road = new Road(width, spine);
         roads.add(road);        
+    }
+    
+    public void destroy(GL3 gl) {
+    	
     }
 
 }

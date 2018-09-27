@@ -34,6 +34,50 @@ public class Vector4 {
     }
     
     /**
+     *
+     * This one is only working for local coordinate 
+     * 
+     * Based on the coordinate of the point3D 
+     * 
+     * rotate given the parameter
+     * 
+     * you still need to transfer it to the global by multiply the global transformation
+     * 
+     * this gloabl transformation should just be the frame passed from draw() and then translate the offset. This offset is just the 
+     * 
+     * bezier coordinate
+     * 
+     * this is used to calcuate the rotation in xz coordinate 
+     * 
+     * not in y coordinate
+     * 
+     * It should be just used to draw the roads
+     */
+    public Vector4 rotateY( float degree ) {
+    	float temp = 90 - degree;
+    	
+    	assert ( temp <= 180 );
+    	assert ( temp >= -180 );
+    	
+//    	if ( temp > 0 ) {
+//    		temp = temp - 180;
+//    	}
+    	
+    	assert ( temp <= 180 );
+    	assert ( temp >= -180 );
+    	
+    	
+    	Matrix4 temp_new_coord = Matrix4.identity().rotationY( temp );
+    	Vector4 temp_v = temp_new_coord.multiply( this );
+    	
+    	
+    	// normalize the angle, make sure negative x always clockwise rotate, 
+    	// and positive x always anti-clockwise rotate
+    	
+    	return temp_v;
+    }
+    
+    /**
      * Construct a vector from the given x, y and z values.
      * @param x
      * @param y
