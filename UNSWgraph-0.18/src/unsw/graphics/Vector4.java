@@ -58,10 +58,7 @@ public class Vector4 {
     	
     	assert ( temp <= 180 );
     	assert ( temp >= -180 );
-    	
-//    	if ( temp > 0 ) {
-//    		temp = temp - 180;
-//    	}
+
     	
     	assert ( temp <= 180 );
     	assert ( temp >= -180 );

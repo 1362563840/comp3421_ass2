@@ -71,21 +71,8 @@ public class Terrain {
     
     public void init( GL3 gl ) {
     	
-//    	for ( int i = 0 ; i < this.width ; i++ ) {
-//    		for ( int j = 0 ; j < this.depth ; j++ ) {
-//    			System.out.print( this.altitudes[ i ][ j ] + "    " );
-//    		}
-//    		System.out.println();
-//    	}
     	this.order_vertics();
-    	
-//    	for ( int i = 0 ; i < this.vertices.size() ; i = i + 1 ) {
-//    		System.out.println( "-------------" );
-//			this.vertices.get( i ).print_out();   		
-//		}
-//    	
-//    	System.out.println( "there are " + this.roads().get(0).size() + " control points" );
-    	
+
     	this.import_texture( gl );
     	this.creatMesh();
     	this.triMesh.init( gl );
@@ -98,22 +85,6 @@ public class Terrain {
     		this.roads().get( j ).setTerrian( this );
     		this.roads.get( j ).init( gl );
     	}
-    	
-//    	// important here
-//    	Shader.setPoint3D(gl, "lightPos", this.getSunlight().asPoint3D() );
-//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-//        Shader.setColor(gl, "ambientIntensity", new Color(0.8f, 0.8f, 0.8f));
-//        
-//        // Set the material properties
-//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-//        Shader.setColor(gl, "specularCoeff", new Color(0.8f, 0.8f, 0.8f));
-//        Shader.setFloat(gl, "phongExp", 4f);
-    	// important here
-    	Point3D debug = this.getSunlight().asPoint3D();
-//    	System.out.println( "debug is " + debug.getX() + " " + debug.getY() + " " + debug.getZ() );
-    	
-//    	System.out.println( "sunlight is " + this.getSunlight().getX() + " " + this.getSunlight().getY() + " " + this.getSunlight().getZ() );
     	
     	// Question Do I need to texture init()
     	// TODO need to init road init()
@@ -135,23 +106,15 @@ public class Terrain {
     			float a = altitudes[ current_x ][ current_z ];
     			float b = altitudes[ current_x + 1  ][ current_z - 1 ];
     			float c = altitudes[ current_x ][ current_z - 1 ];
-//    			System.out.println( "current_x is " + current_x );
-//    			System.out.println( "a is " + a );
-//    			System.out.println( "current_z is " + current_z );
+
     			this.vertices.add( new Point3D( current_x , a , current_z ) );
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z - 1 ) );
     			this.vertices.add( new Point3D( current_x , c , current_z - 1 ) );
-    			
-//    			this.texCoords.add( new Point2D( 0 , 0 ) );
-//    			this.texCoords.add( new Point2D( 1 , 1 ) );
-//    			this.texCoords.add( new Point2D( 0 , 1 ) );
+
     			this.texCoords.add( new Point2D( 0 , 0 ) );
     			this.texCoords.add( new Point2D( 0.5f , 1 ) );
     			this.texCoords.add( new Point2D( 1 , 0 ) );
-//    			System.out.println( "this is odd" );
-//    			this.vertices.get( this.vertices.size() - 3 ).print_out();
-//    			this.vertices.get( this.vertices.size() - 2 ).print_out();
-//    			this.vertices.get( this.vertices.size() - 1 ).print_out();
+
     		}
     		else {
     			float a = altitudes[ current_x ][ current_z ];
@@ -160,19 +123,12 @@ public class Terrain {
     			this.vertices.add( new Point3D( current_x , a , current_z ) );
     			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
     			this.vertices.add( new Point3D( current_x + 1 , c , current_z - 1 ) );
-//    			this.vertices.add( new Point3D( current_x + 1 , b , current_z  ) );
-    			
-    			
-    			
+
     			this.texCoords.add( new Point2D( 0 , 0 ) );
     			this.texCoords.add( new Point2D( 0.5f , 1 ) );
     			this.texCoords.add( new Point2D( 1 , 0 ) );
     			
-//    			System.out.println( "this is even" );
-//    			this.vertices.get( this.vertices.size() - 3 ).print_out();
-//    			this.vertices.get( this.vertices.size() - 2 ).print_out();
-//    			this.vertices.get( this.vertices.size() - 1 ).print_out();
-    			
+
     			current_x = current_x + 1;
     		}
     		
@@ -199,15 +155,7 @@ public class Terrain {
     }
     
     public void creatMesh() {
-//    	this.order_vertics();
-    	System.out.println( ">>>" +this.vertices.size() );
-//    	for ( int i = 0 ; i < this.vertices.size() ; i = i + 3 ) {
-//    		System.out.println( "-------------" );
-//			this.vertices.get( i ).print_out();
-//			this.vertices.get( i + 1 ).print_out();
-//			this.vertices.get( i + 2 ).print_out();
-//    		
-//		}
+
     	System.out.println( "texture coordinate size is " + this.texCoords.size() );
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
     }
@@ -215,16 +163,12 @@ public class Terrain {
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
     	
 //    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
-//    	CoordFrame3D f2 = frame.scale( 0.5f , 0.5f , 0.5f );
     	
     	// if Terrain has offset, need to adjust frame before passing to its children
     	this.drawSelf( gl , frame);
 //    	this.drawSelf( gl , frame.translate(0, 0, -3) );
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
-
-    		
     		this.trees.get( i ).drawSelf( gl , frame );
-    		
     	}
     	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
     		this.roads.get( i ).drawSelf( gl , frame );
@@ -251,7 +195,6 @@ public class Terrain {
 //        Shader.setFloat(gl, "phongExp", 4f);
 //    	
     	Shader.setPenColor( gl , Color.WHITE);
-//    	this.text_graph = new Texture( gl, "res/textures/grass.bmp", "bmp", false );
     	Shader.setInt(gl, "tex", 0);
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
@@ -419,16 +362,6 @@ public class Terrain {
         	assert( z3 < this.depth );
         	assert( x2 < this.width );
         	
-//        	float R1 = ( ( z - z1 ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z3 ];
-//        	R1 = R1 + ( ( z3 - z ) / ( z3 - z1 ) ) * this.altitudes[ x1 ][ z1 ];
-//        	
-//        	float R2 = ( ( z - z2 ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z4 ];
-//        	R2 = R2 + ( ( z4 - z ) / ( z4 - z2 ) ) * this.altitudes[ x2 ][ z2 ];
-//        	
-//        	result = ( ( x - x1 ) / ( x2 - x1 ) ) * R2;
-//        	result = result + ( ( x2 - x ) / ( x2 - x1 ) ) * R1;
-        	
-
         	
         }
         else if ( result_x == true && result_z == false ) {

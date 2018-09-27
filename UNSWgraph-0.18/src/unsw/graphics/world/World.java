@@ -76,12 +76,7 @@ public class World extends Application3D implements KeyListener{
         Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
         Shader.setFloat(gl, "phongExp", 4f);
         //  --------------------------------- for torch light
-		
-        System.out.print( "Camera position is " );
-        this.camera3d.CameraPostion().print_out();
-        System.out.print( "Camera normal is " );
-        this.camera3d.CameraNormal().print_out();
-		
+	
 		CoordFrame3D frame = CoordFrame3D.identity()
 //                .translate(0, 0, -3 + this.z )
 //                .translate(0, 0, -18  )
@@ -99,11 +94,6 @@ public class World extends Application3D implements KeyListener{
 		// each 1s, 60 frames, this display should be called
 		this.terrain.recursively_draw( gl , frame );
 //		this.clockwise += 1;
-		// Debug -------------------------------------
-		
-		Triangle3D t1 = new Triangle3D( 0 , 0 , 0,
-				  1 , 1 , 0, 
-				  -1 , 1 , 0);
 
 	}
 
@@ -137,21 +127,7 @@ public class World extends Application3D implements KeyListener{
 	}
 	@Override
     public void keyPressed(KeyEvent e) {
-		switch(e.getKeyCode()) {
-//			case KeyEvent.VK_UP:
-//            	this.z--;
-//	            break;
-//			case KeyEvent.VK_DOWN:
-//            	this.z++;
-//	            break;    
-//			case KeyEvent.VK_LEFT:
-//            	this.clockwise++;
-//	            break;    
-//			case KeyEvent.VK_RIGHT:
-//            	this.anticlockwise--;
-//	            break;        
-	        
-		}
+
 	}
 
 	@Override

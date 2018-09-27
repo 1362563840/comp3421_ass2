@@ -85,63 +85,40 @@ public class Road {
     }
     
     public void init(GL3 gl) {
-//    	System.out.println( "There are " + this.points.size() + " control points" );
-//    	for ( int i = 0 ; i  < this.points.size() ; i++ ) {
-//    		System.out.println( " (  " + this.points.get( i ).getX() + " , " + this.points.get( i ).getY() + " )" );
-//    	}
-//    	
-//    	
-//    	// for each curve
-//    	for ( int i = 0 ; i < this.size() ; i++ ) {
-//    		
-    		// how many segments from 0 to size for a curve
-    		// x is x, y is z
-    		for ( float j = 0 ; j < this.size() ; j = j + my_step_increment ) { 
-    			// important here, you get the point in curve
-    			// you get the slope ratio and calculate the angle
-    			
-    			
-    			
-    			
-//    			Point2D temp_middle_2 = this.point( i * 3 + j );
-//    			
-//    			Point2D temp_middle_2_tangnet = this.point_tangent( i * 3 + j );
-    					
-				Point2D temp_middle_2 = this.point( j );
-    			
-    			Point2D temp_middle_2_tangnet = this.point_tangent( j );
+    	
+    	// algorithm is provided in function point
+    	// there are several curves perhaps, but the algorithm is
+    	// you only need to let t start from 0 to this.size
+		for ( float j = 0 ; j < this.size() ; j = j + my_step_increment ) { 
+			// important here, you get the point in curve
+			// you get the slope ratio and calculate the angle
+					
+			Point2D temp_middle_2 = this.point( j );
+			
+			Point2D temp_middle_2_tangnet = this.point_tangent( j );
 
-    			float slope_angle = this.calculateDegree( temp_middle_2_tangnet.getX() , temp_middle_2_tangnet.getY() );
-    			
-    			float altitude_middle = this.terrian.altitude( temp_middle_2.getX() , temp_middle_2.getY() );
-    			Matrix4 temp_this_layer = Matrix4.identity().translation( temp_middle_2.getX() , altitude_middle , temp_middle_2.getY() );
-    			Point3D temp_middle_3 = new Point3D( 0 , 0 , 0 );
-    			
-    			// this one is just translate towards positive x with width / 2
-    			Point3D temp_right_3 = temp_middle_3.translate( this.width / 2 , 0 , 0 );
-    			Point3D temp_right_3_rotate = temp_right_3.asHomogenous().rotateY( slope_angle ).asPoint3D();
-    			
-    			// this one is just translate towards positive x with - width / 2
-    			Point3D temp_left_3 = temp_middle_3.translate( - this.width / 2 , 0 , 0 );
-    			Point3D temp_left_3_rotate = temp_left_3.asHomogenous().rotateY( slope_angle ).asPoint3D();
-    			
-    			this.middle.add( temp_middle_3 );
-    			this.left.add( temp_left_3_rotate );
-    			this.right.add( temp_right_3_rotate );
-    			this.this_layer_global_trans.add( temp_this_layer );
-    			
-//    			temp_middle_3.print_out();
-//    			temp_left_3_rotate.print_out();
-//    			temp_right_3_rotate.print_out();
-//    			
-//    			temp_this_layer.drawMatrix();
-    			
-    			
-    		}
+			float slope_angle = this.calculateDegree( temp_middle_2_tangnet.getX() , temp_middle_2_tangnet.getY() );
+			
+			float altitude_middle = this.terrian.altitude( temp_middle_2.getX() , temp_middle_2.getY() );
+			Matrix4 temp_this_layer = Matrix4.identity().translation( temp_middle_2.getX() , altitude_middle , temp_middle_2.getY() );
+			Point3D temp_middle_3 = new Point3D( 0 , 0 , 0 );
+			
+			// this one is just translate towards positive x with width / 2
+			Point3D temp_right_3 = temp_middle_3.translate( this.width / 2 , 0 , 0 );
+			Point3D temp_right_3_rotate = temp_right_3.asHomogenous().rotateY( slope_angle ).asPoint3D();
+			
+			// this one is just translate towards positive x with - width / 2
+			Point3D temp_left_3 = temp_middle_3.translate( - this.width / 2 , 0 , 0 );
+			Point3D temp_left_3_rotate = temp_left_3.asHomogenous().rotateY( slope_angle ).asPoint3D();
+			
+			this.middle.add( temp_middle_3 );
+			this.left.add( temp_left_3_rotate );
+			this.right.add( temp_right_3_rotate );
+			this.this_layer_global_trans.add( temp_this_layer );		
+			
+		}
     		
-    		System.out.println( " arraylist size is " + this.middle.size() );
-    		
-//    	}
+
     	
     	this.import_texture( gl );
     }
@@ -165,8 +142,7 @@ public class Road {
 //        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
 //        Shader.setColor(gl, "specularCoeff", new Color(0.8f, 0.8f, 0.8f));
 //        Shader.setFloat(gl, "phongExp", 4f);
-        
-        
+
         Shader.setInt(gl, "tex", 2);
         gl.glActiveTexture(GL.GL_TEXTURE2);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
@@ -234,12 +210,11 @@ public class Road {
     		this.right_global.add( temm_p3_right );
     	}
     	
-    	for( int i = 0 ; i < this.left_global.size() - 1 ; i++ ) {
-    		
-//    		this.vertices.add( this.left_global.get( i ) );
-//    		this.vertices.add( this.right_global.get( i ) );
-//    		this.vertices.add( this.right_global.get( i + 1 ) );
-    		
+    	
+    	// anticlock or clock to draw road vary
+    	// one can see from above
+    	// one can see from below
+    	for( int i = 0 ; i < this.left_global.size() - 1 ; i++ ) {   		
     		
     		this.vertices.add( this.left_global.get( i ) );
     		this.vertices.add( this.right_global.get( i + 1 ) );
@@ -249,11 +224,6 @@ public class Road {
     		this.textCoord.add( new Point2D( 1 , 0 ) );
     		this.textCoord.add( new Point2D( 1 , 1 ) );
     		
-//    		
-//    		this.vertices.add( this.right_global.get( i + 1 ) );
-//    		this.vertices.add( this.left_global.get( i + 1 ) );
-//    		this.vertices.add( this.left_global.get( i ) );
-    		
     		this.vertices.add( this.left_global.get( i  ) );
     		this.vertices.add( this.left_global.get( i + 1 ) );
     		this.vertices.add( this.right_global.get( i + 1 ) );
@@ -261,9 +231,7 @@ public class Road {
     		this.textCoord.add( new Point2D( 0 , 0 ) );
     		this.textCoord.add( new Point2D( 1 , 1 ) );
     		this.textCoord.add( new Point2D( 0 , 1 ) );
-    		
-    		
-    		
+
     	}
     	
     }
@@ -347,10 +315,6 @@ public class Road {
         Point2D p2 = points.get(i++);
         Point2D p3 = points.get(i++);
            
-        
-//        float x = b_tangent(0, t) * p0.getX() + b_tangent(1, t) * p1.getX() + b_tangent(2, t) * p2.getX() + b_tangent(3, t) * p3.getX();
-//        float y = b_tangent(0, t) * p0.getY() + b_tangent(1, t) * p1.getY() + b_tangent(2, t) * p2.getY() + b_tangent(3, t) * p3.getY();  
-        
         float x = b_tangent(0, t) * p0.getX() + b_tangent(1, t) * p1.getX() + b_tangent(2, t) * p2.getX() + b_tangent(3, t) * p3.getX();
         float y = b_tangent(0, t) * p0.getY() + b_tangent(1, t) * p1.getY() + b_tangent(2, t) * p2.getY() + b_tangent(3, t) * p3.getY();  
         
@@ -426,9 +390,7 @@ public class Road {
     		debug++;
     	}
     	return degree;
-    	
-    	
-    	
+
     }
     
    
