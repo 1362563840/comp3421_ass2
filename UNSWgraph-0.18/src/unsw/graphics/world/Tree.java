@@ -38,7 +38,6 @@ public class Tree {
     }
     
     public void init( GL3 gl ) {
-    	System.out.println( "initial for tree texture" );
     	this.tree.init( gl );
     	this.texture = new Texture( gl, "res/textures/canLabel.bmp", "bmp", false );
     	this.setHeight();

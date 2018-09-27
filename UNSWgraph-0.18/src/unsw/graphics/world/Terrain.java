@@ -96,8 +96,7 @@ public class Terrain {
     	boolean odd_even = true;
     	assert( this.width > 0 );
     	assert( this.depth > 0 );
-    	System.out.println( "Width is " + this.width );
-    	System.out.println( "depth is " + this.depth );
+
     	// always counter clock wise
     	// 
     	for ( ; ; ) {
@@ -156,7 +155,6 @@ public class Terrain {
     
     public void creatMesh() {
 
-    	System.out.println( "texture coordinate size is " + this.texCoords.size() );
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
     }
     
@@ -266,12 +264,7 @@ public class Terrain {
     public float altitude(float x, float z) {
     	// debug for array
     	// TODO: Implement this
-//    	for ( int i = 0 ; i < this.width ; i++ ) {
-//    		for ( int j = 0 ; j < this.depth ; j++ ) {
-//    			System.out.print( this.altitudes[ i ][ j ] + "    " );
-//    		}
-//    		System.out.println();
-//    	}
+
     	float result;
         int isInteger_x = Math.round( x );
         int isInteger_z = Math.round( z );
@@ -320,8 +313,6 @@ public class Terrain {
             	float w_v2 = numerator_1 / Denominato_2;
             	
             	float w_v3 = 1 - w_v1 - w_v2;
-
-//            	System.out.println( " w_v1 is " + w_v1 + " alt_v1 is " + alt_v1 + " w_v2 is " + w_v2 + " alt_v2 is " + alt_v2 + " w_v3 is " + w_v3 + " alt_v3 is " + alt_v3 );
             	
             	result = w_v1 * alt_v1 + w_v2 * alt_v2 + w_v3 * alt_v3;
         	}

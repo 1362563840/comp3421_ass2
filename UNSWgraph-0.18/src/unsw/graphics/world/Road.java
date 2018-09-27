@@ -77,7 +77,6 @@ public class Road {
         this.vertices = new ArrayList< Point3D >();
         this.textCoord = new ArrayList< Point2D >();
         
-        System.out.println( "width is in road " + this.width );
     }
     
     public void setTerrian( Terrain terrian ) {
@@ -177,11 +176,6 @@ public class Road {
      * @param global_frame
      */
     public void renewCoord( CoordFrame3D global_frame ) {
-    	if ( debug_1 == 0 ) {
-    		System.out.println( "global frame is " );
-        	global_frame.getMatrix().drawMatrix();
-        	debug_1++;
-    	}
 
     	
     	//multiply global_frame by this_layer_global_trans to get global frame
@@ -385,10 +379,7 @@ public class Road {
      */
     public float calculateDegree( float x , float y ) {
     	float degree = (float)Math.toDegrees( Math.atan2( y , x ) );
-    	if ( debug == 0 ) {
-    		System.out.println( " x is " + x + " y is " + y + " angle is " + degree );
-    		debug++;
-    	}
+
     	return degree;
 
     }

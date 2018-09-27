@@ -115,10 +115,8 @@ public class World extends Application3D implements KeyListener{
 		this.z = -15;
 		this.z = -15;
 		this.main_frame = CoordFrame3D.identity().translate( 0 , 0 , z );
-		System.out.println( "shoudl be first " );
 		// Our codes :
 		this.terrain.init( gl );
-		System.out.println( "shoudl be third " );
 		//TODO terrian init() need to be called
 		
 		
