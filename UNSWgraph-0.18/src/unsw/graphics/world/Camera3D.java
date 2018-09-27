@@ -115,7 +115,18 @@ public class Camera3D implements KeyListener {
         
         case KeyEvent.VK_X:
             break;
-          
+        
+        // Sight up
+        // Dunno this may affect setView?
+        case KeyEvent.VK_T:
+            myAngle_X += 5;
+            break;
+                
+        // Sight down
+        // May Afffect setView as well?
+        case KeyEvent.VK_G:
+            myAngle_X -= 5;
+            break;
         }
 
     }
