@@ -37,7 +37,7 @@ public class World extends Application3D implements KeyListener{
         this.terrain = terrain;
         this.clockwise = 0;
         this.anticlockwise = 0;
-        this.camera3d = new Camera3D();
+        this.camera3d = new Camera3D(terrain);
     }
    
     /**
@@ -136,7 +136,7 @@ public class World extends Application3D implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		
 	}
 }
