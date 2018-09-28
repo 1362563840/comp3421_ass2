@@ -56,15 +56,13 @@ public class World extends Application3D implements KeyListener{
 	public void display(GL3 gl) {
 		super.display(gl);
 		
-		this.camera3d.setView(gl);
-		// adjust frustrum
 		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
 		
 		//  --------------------------------- for torch light
 		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
 //		Shader.setPoint3D(gl, "lightPos", this.terrain.getSunlight().asPoint3D() );
-		Shader.setPoint3D(gl, "normal_light" , this.camera3d.CameraNormal() );
-		this.camera3d.CameraNormal().print_out();
+//		Shader.setPoint3D(gl, "normal_light" , this.camera3d.CameraNormal() );
+//		this.camera3d.CameraNormal().print_out();
 		
 		Shader.setFloat(gl, "cutOff", 10f );
 		Shader.setFloat(gl, "constant", 1f );
@@ -92,12 +90,12 @@ public class World extends Application3D implements KeyListener{
 		//------------------------------------------
 //		this.camera3d.setView(gl);
 		// each time camera view is changed, need to adjust the new normal of the light
-				
+		this.camera3d.setView(gl);		
 		
 		
 		// each 1s, 60 frames, this display should be called
 		this.terrain.recursively_draw( gl , frame );
-		this.clockwise += 1;
+//		this.clockwise += 1;
 
 	}
 
