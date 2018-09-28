@@ -55,20 +55,22 @@ public class World extends Application3D implements KeyListener{
 	@Override
 	public void display(GL3 gl) {
 		super.display(gl);
-		// adjust frustrum
+		
 		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
 		
 		//  --------------------------------- for torch light
 		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
-		Shader.setPoint3D(gl, "normal_light", this.camera3d.CameraNormal() );
+//		Shader.setPoint3D(gl, "lightPos", this.terrain.getSunlight().asPoint3D() );
+//		Shader.setPoint3D(gl, "normal_light" , this.camera3d.CameraNormal() );
+//		this.camera3d.CameraNormal().print_out();
 		
-		Shader.setFloat(gl, "cutOff", 5f );
+		Shader.setFloat(gl, "cutOff", 10f );
 		Shader.setFloat(gl, "constant", 1f );
 		Shader.setFloat(gl, "linear", 0.09f );
 		Shader.setFloat(gl, "quadratic", 0.032f );
 		
         Shader.setColor(gl, "lightIntensity", Color.WHITE);
-        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+        Shader.setColor(gl, "ambientIntensity", new Color(0.7f, 0.7f, 0.7f));
         
         // Set the material properties
         Shader.setColor(gl, "ambientCoeff", Color.WHITE);
@@ -84,11 +86,11 @@ public class World extends Application3D implements KeyListener{
                 .rotateY( this.clockwise )
 //                .translate( 0 , 0 , 2 )
 //                .scale(2f, 2f, 2f)
-                .rotateY( this.anticlockwise );
+                ;
 		//------------------------------------------
-		this.camera3d.setView(gl);
+//		this.camera3d.setView(gl);
 		// each time camera view is changed, need to adjust the new normal of the light
-				
+		this.camera3d.setView(gl);		
 		
 		
 		// each 1s, 60 frames, this display should be called

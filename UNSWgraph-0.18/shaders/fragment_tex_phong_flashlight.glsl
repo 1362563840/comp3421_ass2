@@ -29,7 +29,7 @@ in vec2 texCoordFrag;
 
 // -------------------------
 // our codes
-uniform vec3 normal_light;
+in vec3 normal_light;
 
 uniform mat4 model_matrix;
 
@@ -53,7 +53,7 @@ void main()
     // our code
     vec3 temp_vec3 = ( view_matrix*vec4(lightPos,1) - viewPosition ).xyz;
     float distance = length( temp_vec3 );
-    float attenuation = 1.0 / ( constant + linear * distance +
+    float attenuation = 1.5 / ( constant + linear * distance +
     		    quadratic * (distance * distance));
     // ------------------------
 
@@ -83,9 +83,13 @@ void main()
 
     // ------------------------W
     // our codes
-    vec3  norm_temp = normalize( view_matrix * vec4( normal_light , 1 ) ).xyz;
+    // vec3  norm_temp = normalize( view_matrix * vec4( normal_light , 1 ) ).xyz;
 
-    if ( degrees( acos( dot( norm_temp , s ) ) ) <= cutOff ){
+    // if ( degrees( acos( dot( norm_temp , s ) ) ) <= cutOff ){
+    // vec4  norm_temp_1 = view_matrix * vec4( normal_light , 1 ) ;
+    // vec3  norm_temp = normalize( normal_light ).xyz;
+    // because s is from obejct's position to source, so need to make it reverse
+    if ( degrees( acos( dot( normal_light , -s ) ) ) <= cutOff ){
         outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
     }
     else {

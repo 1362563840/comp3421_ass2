@@ -32,7 +32,7 @@ void main()
     // to calculate the new vector(parallel to the given source position/vector)
     // + should give the new vector
     // because the light vector is in local, so convert it to view
-    vec4 newSourcePosition = view_matrix*model_matrix*vec4(lightPos,0) + viewPosition;
+    vec4 newSourcePosition = view_matrix*vec4(lightPos,0) + viewPosition;
     vec3 s = normalize( newSourcePosition - viewPosition ).xyz;
     vec3 v = normalize(-viewPosition.xyz);
     vec3 r = normalize(reflect(-s,m));

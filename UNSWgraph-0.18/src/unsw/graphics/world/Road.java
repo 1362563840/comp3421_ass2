@@ -82,7 +82,7 @@ public class Road {
         this.vertices = new ArrayList< Point3D >();
         this.textCoord = new ArrayList< Point2D >();
         
-        this.true_width = ( this.width / 2f ) * 0.25f;
+        this.true_width = ( this.width / 1f ) * 0.25f;
         
     }
     
@@ -134,7 +134,7 @@ public class Road {
     	
 //    	frame = frame.translate(0f, 0.5f, 0f);
     	
-    	this.renewCoord( frame );
+    	this.renewCoord( CoordFrame3D.identity() );
     	
     	this.create_mesh( gl );
     	
