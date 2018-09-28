@@ -102,6 +102,13 @@ public class Terrain {
     	// TODO need to init road init()
     }
     
+    /**
+     * These two method is for camera usage
+     * @return
+     */
+    public int getWidth() { return this.width; }
+    public int getDepth() { return this.depth; }
+     
     public void order_vertics() {
     	int current_x = 0;
     	int current_z = 1;
@@ -315,6 +322,8 @@ public class Terrain {
     public float altitude(float x, float z) {
     	// debug for array
     	// TODO: Implement this
+		if (x > 9 || x < 0 || z > 9 || z < 0 ) return 0;
+
 
     	float result;
         int isInteger_x = Math.round( x );
