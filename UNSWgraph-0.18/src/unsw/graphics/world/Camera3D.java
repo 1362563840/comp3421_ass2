@@ -113,7 +113,7 @@ public class Camera3D implements KeyListener {
 //            myPos = new Point3D(myPos.getX() + (float)0.1 , myPos.getY()  , myPos.getZ() );
 //            break;
 //           
-//        }
+        }
 
     }
 
