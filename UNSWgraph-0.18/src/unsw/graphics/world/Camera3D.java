@@ -30,16 +30,15 @@ public class Camera3D implements KeyListener {
     public Camera3D() {
         myPos = new Point3D(0, 0, 10);
         myAngle = 0;
-        myScale = 0;
-        myScale = 10;
+        myScale = 1;
         myAngle_X = 0;
         myAngle_Z = 0;
     }
     
     public Point3D CameraNormal() {
-    	return new Point3D( (float)Math.sin( Math.toRadians( this.myAngle ) ) ,
+    	return new Point3D( - (float)Math.sin( Math.toRadians( this.myAngle ) ) ,
     						0 ,
-    						- (float)Math.cos( Math.toRadians( this.myAngle ) ) 
+    						 (float)Math.cos( Math.toRadians( this.myAngle ) ) 
     						);
     }
     
@@ -61,10 +60,6 @@ public class Camera3D implements KeyListener {
      * @param gl
      */
     public void setView(GL3 gl) {
-    	
-    	// if camera's position is near the hill, then adjust the y direction
-//    	this.myPos = new Point3D( myPos.getX() +   ); 
-    	
     	
         CoordFrame3D viewFrame = CoordFrame3D.identity()
                 .scale(1/myScale, 1/myScale , 1/myScale )
