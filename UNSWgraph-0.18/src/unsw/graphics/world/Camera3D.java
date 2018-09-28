@@ -79,10 +79,10 @@ public class Camera3D implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
-            myAngle += 1;
+            myAngle += 5;
             break;
         case KeyEvent.VK_RIGHT: 
-        	myAngle -= 1;
+        	myAngle -= 5;
             break;
         case KeyEvent.VK_DOWN:
         	float x = this.myPos.getX() + (float)Math.sin( Math.toRadians( this.myAngle ) );
@@ -98,11 +98,11 @@ public class Camera3D implements KeyListener {
             break;
             
         case KeyEvent.VK_W:
-            myPos = new Point3D(myPos.getX(), myPos.getY() + (float)0.1 , myPos.getZ() );
+            myPos = new Point3D(myPos.getX(), myPos.getY() + 1f , myPos.getZ() );
             break;
         
         case KeyEvent.VK_S:
-            myPos = new Point3D(myPos.getX(), myPos.getY() - (float)0.1  , myPos.getZ() );
+            myPos = new Point3D(myPos.getX(), myPos.getY() - 1f  , myPos.getZ() );
             break;
             
 //        case KeyEvent.VK_A:
