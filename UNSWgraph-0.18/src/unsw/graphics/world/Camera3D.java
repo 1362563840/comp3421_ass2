@@ -93,23 +93,11 @@ public class Camera3D implements KeyListener {
         case KeyEvent.VK_UP:
         	float x_1 = this.myPos.getX() - (float)Math.sin( Math.toRadians( this.myAngle ) );
         	float z_1 = this.myPos.getZ() - (float)Math.cos( Math.toRadians( this.myAngle ) );
-            //Point3D tempMyPos = new Point3D(x_1 , myPos.getY()  , z_1 );
-            //System.out.println("Be""X: "+myPos.getX()+"Y: "+myPos.getY()+"Z: "+myPos.getZ());
-            /*if (!throughWall(tempMyPos)) {
-                //System.out.println(throughWall(tempMyPos));
-                myPos = tempMyPos;
-            }
-            else {
-                //System.out.println(throughWall(tempMyPos));
-                myPos = climb(tempMyPos);
-            }*/
-            /*System.out.println("New position has"+"X: "+myPos.getX()+"Y: "+myPos.getY()+"Z: "+myPos.getZ());
-            System.out.println("Terrain: "+myTer.altitude(myPos.getX(), myPos.getZ()));*/
-            //System.out.println(throughWall());
+
             myPos = new Point3D(x_1, myPos.getY(), z_1);
             break;
             
-        /*case KeyEvent.VK_W:
+        case KeyEvent.VK_W:
             myPos = new Point3D(myPos.getX(), myPos.getY() + (float)0.1 , myPos.getZ() );
             break;
         
@@ -117,21 +105,15 @@ public class Camera3D implements KeyListener {
             myPos = new Point3D(myPos.getX(), myPos.getY() - (float)0.1  , myPos.getZ() );
             break;
             
-        case KeyEvent.VK_A:
-            myPos = new Point3D(myPos.getX() - (float)0.1, myPos.getY() , myPos.getZ() );
-            break;
-        
-        case KeyEvent.VK_D:
-            myPos = new Point3D(myPos.getX() + (float)0.1 , myPos.getY()  , myPos.getZ() );
-            break;
-           
-        case KeyEvent.VK_Z:
-//        	this.
-            break;
-        
-        case KeyEvent.VK_X:
-            break;*/
-        }
+//        case KeyEvent.VK_A:
+//            myPos = new Point3D(myPos.getX() - (float)0.1, myPos.getY() , myPos.getZ() );
+//            break;
+//        
+//        case KeyEvent.VK_D:
+//            myPos = new Point3D(myPos.getX() + (float)0.1 , myPos.getY()  , myPos.getZ() );
+//            break;
+//           
+//        }
 
     }
 
@@ -172,7 +154,6 @@ public class Camera3D implements KeyListener {
                 throughWall = true;
             }
         }
-        System.out.println("Point camera move to Inside terrain: "+insideTerrain+"    through wall: "+throughWall);
         return throughWall;
     }
 
