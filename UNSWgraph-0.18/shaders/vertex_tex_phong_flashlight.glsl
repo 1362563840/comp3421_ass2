@@ -24,6 +24,7 @@ out vec3 m;
 
 out vec2 texCoordFrag;
 
+out vec3 normal_light;
 
 void main() {
 
@@ -40,4 +41,9 @@ void main() {
     m = normalize(view_matrix*model_matrix * vec4(normal, 0)).xyz;
 
     texCoordFrag = texCoord;
+
+    vec4 last_column = view_matrix * vec4( 0 , 0 , 0 , 1 );
+    float x = last_column.x;
+    float z = last_column.z;
+    normal_light = normalize( vec3( x , 0 , z ) );
 }

@@ -29,7 +29,7 @@ in vec2 texCoordFrag;
 
 // -------------------------
 // our codes
-uniform vec3 normal_light;
+in vec3 normal_light;
 
 uniform float cutOff;
 
@@ -81,10 +81,10 @@ void main()
 
     // ------------------------W
     // our codes
-    vec4  norm_temp_1 = view_matrix * vec4( normal_light , 1 ) ;
-    vec3  norm_temp = normalize( norm_temp_1 ).xyz;
+    // vec4  norm_temp_1 = view_matrix * vec4( normal_light , 1 ) ;
+    // vec3  norm_temp = normalize( normal_light ).xyz;
     // because s is from obejct's position to source, so need to make it reverse
-    if ( degrees( acos( dot( norm_temp , -s ) ) ) <= cutOff ){
+    if ( degrees( acos( dot( normal_light , -s ) ) ) <= cutOff ){
         outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
     }
     else {
