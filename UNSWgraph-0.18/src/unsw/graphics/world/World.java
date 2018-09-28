@@ -136,7 +136,7 @@ public class World extends Application3D implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO �Զ����ɵķ������
+		// TODO 
 		
 	}
 }
