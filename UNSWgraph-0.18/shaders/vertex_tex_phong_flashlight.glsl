@@ -42,8 +42,16 @@ void main() {
 
     texCoordFrag = texCoord;
 
-    vec4 last_column = view_matrix * vec4( 0 , 0 , 0 , 1 );
-    float x = last_column.x;
-    float z = last_column.z;
-    normal_light = normalize( vec3( x , 0 , z ) );
+    vec4 first_column = view_matrix * vec4( 1 , 0 , 0 , 0 );
+    float a = first_column.x;
+    float c = first_column.z;
+
+    normal_light = normalize( vec3( a , 0 , -c ) );
+
+
+
+    // vec4 last_column = view_matrix * vec4( 0 , 0 , 0 , 1 );
+    // float x = last_column.x;
+    // float z = last_column.z;
+    // normal_light = normalize( vec3( x , 0 , z ) );
 }

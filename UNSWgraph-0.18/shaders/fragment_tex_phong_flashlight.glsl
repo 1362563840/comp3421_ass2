@@ -29,6 +29,7 @@ in vec2 texCoordFrag;
 
 // -------------------------
 // our codes
+uniform vec3 normal_light_outside;
 in vec3 normal_light;
 
 uniform mat4 model_matrix;
@@ -39,6 +40,8 @@ uniform float cutOff;
 uniform float constant;
 uniform float linear;
 uniform float quadratic;
+
+uniform int isDay;
 // -------------------------
 
 
@@ -63,8 +66,14 @@ void main()
 
     // ------------------------
     // our code
-    ambient = ambient * attenuation;
-    diffuse = diffuse * attenuation;
+    if ( isDay == 0 ) {
+        ambient = ambient * attenuation;
+        diffuse = diffuse * attenuation;
+    }
+    else {
+
+    }
+
     // ------------------------
 
     // Only show specular reflections for the front face
@@ -86,15 +95,36 @@ void main()
     // vec3  norm_temp = normalize( view_matrix * vec4( normal_light , 1 ) ).xyz;
 
     // if ( degrees( acos( dot( norm_temp , s ) ) ) <= cutOff ){
-    // vec4  norm_temp_1 = view_matrix * vec4( normal_light , 1 ) ;
-    // vec3  norm_temp = normalize( normal_light ).xyz;
+    // vec4  norm_temp_1 = view_matrix * vec4( normal_light_outside , 1 );
+    // vec3  norm_temp = normalize( norm_temp_1 ).xyz;
     // because s is from obejct's position to source, so need to make it reverse
-    if ( degrees( acos( dot( normal_light , -s ) ) ) <= cutOff ){
-        outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+
+    // if ( isDay == 0 ) {
+    //     if ( degrees( acos( dot( norm_temp , -s ) ) ) <= cutOff ){
+    //         outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+    //     }
+    //     else {
+    //       vec4 dark_ambientAndDiffuse = vec4( 0.05 , 0.05 , 0.05 , 1.0 );
+    //       outputColor = dark_ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+    //     }
+    // }
+    // else{
+    //     outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+    // }
+
+
+
+    if ( isDay == 0 ) {
+        if ( degrees( acos( dot( normal_light , -s ) ) ) <= cutOff ){
+            outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+        }
+        else {
+          vec4 dark_ambientAndDiffuse = vec4( 0.05 , 0.05 , 0.05 , 1.0 );
+          outputColor = dark_ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+        }
     }
-    else {
-      vec4 dark_ambientAndDiffuse = vec4( 0.05 , 0.05 , 0.05 , 1.0 );
-      outputColor = dark_ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+    else{
+        outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
     }
     // -------------------------
 
