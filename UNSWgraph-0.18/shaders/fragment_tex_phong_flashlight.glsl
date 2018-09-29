@@ -9,7 +9,12 @@ uniform mat4 view_matrix;
 // our codes
 // Light properties
 // light position is just camera position
-uniform vec3 lightPos;
+// uniform vec3 lightPos;
+uniform float x;
+uniform float y;
+uniform float z;
+
+
 uniform vec3 lightIntensity;
 uniform vec3 ambientIntensity;
 // -------------------------
@@ -29,7 +34,7 @@ in vec2 texCoordFrag;
 
 // -------------------------
 // our codes
-uniform vec3 normal_light_outside;
+// uniform vec3 normal_light_outside;
 in vec3 normal_light;
 
 uniform mat4 model_matrix;
@@ -42,19 +47,25 @@ uniform float linear;
 uniform float quadratic;
 
 uniform int isDay;
+
+in vec4 last_column;
 // -------------------------
 
 
 void main()
 {
     // Compute the s, v and r vectors
-    vec3 s = normalize(view_matrix*vec4(lightPos,1) - viewPosition).xyz;
+
+    // view_matrix*vec4(lightPos,1)
+    // vec3 s = normalize(  view_matrix * last_column  - viewPosition).xyz;
+    vec3 s = normalize(  vec4( 0 , 0 , 0 , 1 )  - viewPosition).xyz;
     vec3 v = normalize(-viewPosition.xyz);
     vec3 r = normalize(reflect(-s,m));
 
     // ------------------------
     // our code
-    vec3 temp_vec3 = ( view_matrix*vec4(lightPos,1) - viewPosition ).xyz;
+    // vec3 temp_vec3 = ( view_matrix * last_column - viewPosition ).xyz;
+    vec3 temp_vec3 = ( vec4( 0 , 0 , 0 , 1 )  - viewPosition ).xyz;
     float distance = length( temp_vec3 );
     float attenuation = 1.5 / ( constant + linear * distance +
     		    quadratic * (distance * distance));
@@ -115,7 +126,8 @@ void main()
 
 
     if ( isDay == 0 ) {
-        if ( degrees( acos( dot( normal_light , -s ) ) ) <= cutOff ){
+        if ( degrees( acos( dot( vec3( 0 , 0 , -1 ) , vec3( -s.x , -s.y , -s.z ) ) ) ) <= cutOff ){
+        // if ( degrees( acos( dot( normal_light , vec3( -s.x , -s.y , -s.z ) ) ) ) <= cutOff ){
             outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
         }
         else {

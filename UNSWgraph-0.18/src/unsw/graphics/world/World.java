@@ -32,12 +32,16 @@ public class World extends Application3D implements KeyListener{
     private float anticlockwise;
     private Camera3D camera3d;
     
+    private int DarkMode;
+    
     public World(Terrain terrain) {
-    	super("Assignment 2", 1200, 1000);
+    	super("Assignment 2", 1200, 1200);
         this.terrain = terrain;
         this.clockwise = 0;
         this.anticlockwise = 0;
         this.camera3d = new Camera3D(terrain);
+        
+        this.DarkMode = 0;
     }
    
     /**
@@ -59,10 +63,21 @@ public class World extends Application3D implements KeyListener{
 		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
 		
 		//  --------------------------------- for torch light
-		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
+		Shader.setInt(gl, "isDay", this.DarkMode );
+		
+		if ( this.DarkMode == 0 ) {
+			super.setBackground( new Color( 32 , 32 , 32 ) );
+		}
+		else {
+			super.setBackground( Color.WHITE );
+		}
+		
+//		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
+		Shader.setFloat(gl, "x", this.camera3d.CameraPostion().getX() );
+		Shader.setFloat(gl, "y", this.camera3d.CameraPostion().getY() );
+		Shader.setFloat(gl, "z", this.camera3d.CameraPostion().getZ() );
 //		Shader.setPoint3D(gl, "lightPos", this.terrain.getSunlight().asPoint3D() );
-//		Shader.setPoint3D(gl, "normal_light" , this.camera3d.CameraNormal() );
-//		this.camera3d.CameraNormal().print_out();
+//		Shader.setPoint3D(gl, "normal_light_outside" , this.camera3d.CameraNormal() );
 		
 		Shader.setFloat(gl, "cutOff", 10f );
 		Shader.setFloat(gl, "constant", 1f );
@@ -90,12 +105,24 @@ public class World extends Application3D implements KeyListener{
 		//------------------------------------------
 //		this.camera3d.setView(gl);
 		// each time camera view is changed, need to adjust the new normal of the light
+		
 		this.camera3d.setView(gl);		
 		
 		
 		// each 1s, 60 frames, this display should be called
 		this.terrain.recursively_draw( gl , frame );
 //		this.clockwise += 1;
+		
+//		this.terrain.drawSelf(gl, frame);
+//		
+//		super.s_shader2(gl);
+//
+//		this.terrain.drawRoad(gl, frame);
+//		
+//		super.s_shader1(gl);
+//		
+//		this.terrain.drawTree(gl, frame);
+//		
 
 	}
 
@@ -112,7 +139,7 @@ public class World extends Application3D implements KeyListener{
 		super.init(gl);	
 
 		
-//		this.getWindow().addKeyListener( this );
+		this.getWindow().addKeyListener( this );
 		this.getWindow().addKeyListener( this.camera3d );
 		this.z = -15;
 		this.z = -15;
@@ -127,7 +154,16 @@ public class World extends Application3D implements KeyListener{
 	}
 	@Override
     public void keyPressed(KeyEvent e) {
-
+		switch(e.getKeyCode()) {
+		case KeyEvent.VK_V:
+			if ( this.DarkMode == 0 ) {
+				this.DarkMode = 1;
+			}
+			else {		
+				this.DarkMode = 0;
+			}
+            break;
+		}
 	}
 
 	@Override

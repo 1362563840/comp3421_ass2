@@ -26,6 +26,8 @@ out vec2 texCoordFrag;
 
 out vec3 normal_light;
 
+out vec4 last_column;
+
 void main() {
 
 	  // The global position is in homogenous coordinates
@@ -49,9 +51,8 @@ void main() {
     normal_light = normalize( vec3( a , 0 , -c ) );
 
 
-
-    // vec4 last_column = view_matrix * vec4( 0 , 0 , 0 , 1 );
-    // float x = last_column.x;
-    // float z = last_column.z;
-    // normal_light = normalize( vec3( x , 0 , z ) );
+    //  after inverse, then get the last last_column,
+    // it should be in gloabl palce not camera place
+    last_column = inverse( view_matrix ) * vec4( 0 , 0 , 0 , 1 );
+    // light_pos_inside = last_column.xyz;
 }

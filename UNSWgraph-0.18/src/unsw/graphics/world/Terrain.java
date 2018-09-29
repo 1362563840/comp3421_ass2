@@ -179,24 +179,24 @@ public class Terrain {
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
     	
+//    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+//    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+//    	Shader.setPoint3D(gl, "lightPos", temp_light );
+//    	Shader.setColor(gl, "lightIntensity", Color.WHITE);
+//		Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+//		  
+//		// Set the material properties
+//		Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+//		Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+//		Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+//		Shader.setFloat(gl, "phongExp", 4f);
+    	
 //    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
     	
     	// if Terrain has offset, need to adjust frame before passing to its children
-//    	this.drawSelf( gl , frame);
+    	this.drawSelf( gl , frame);
 //    	this.drawSelf( gl , frame.translate(0, 0, -3) );
-    	
-    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
-    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
-    	Shader.setPoint3D(gl, "lightPos", temp_light );
-    	Shader.setColor(gl, "lightIntensity", Color.WHITE);
-		Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-		  
-		// Set the material properties
-		Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-		Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-		Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-		Shader.setFloat(gl, "phongExp", 4f);
-    	
+    	 	
     	
         // draw rain
 //      shader1 = new Shader(gl, "shaders/vertex_rain.glsl",
@@ -217,17 +217,18 @@ public class Terrain {
 //        t2.draw(gl , temp_frame);
     	
     	//----------------------------------
-		Shader.setColor(gl, "ambientCoeff", Color.BLACK);
-		this.rain.drawSelf( gl , frame );
+//		Shader.setColor(gl, "ambientCoeff", Color.BLACK);
+//		this.rain.drawSelf( gl , frame );
     	
     	
-//    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
-//    		this.trees.get( i ).drawSelf( gl , frame );
-//    	}
-//    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
-//    		this.roads.get( i ).drawSelf( gl , frame );
-//    	}
+    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+    		this.trees.get( i ).drawSelf( gl , frame );
+    	}
+    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
+    		this.roads.get( i ).drawSelf( gl , frame );
+    	}
     }
+    
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
     	
