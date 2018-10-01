@@ -271,7 +271,7 @@ public class Terrain {
     public float altitude(float x, float z) {
     	// debug for array
     	// TODO: Implement this
-		if (x > 9 || x < 0 || z > 9 || z < 0 ) return 0;
+		if (x >= ( this.width - 1 ) || x < 0 || z >= ( this.depth - 1 ) || z < 0 ) return 0;
 
 
     	float result;
