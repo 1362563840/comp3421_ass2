@@ -149,10 +149,10 @@ public class Road {
 //        Shader.setColor(gl, "specularCoeff", new Color(0.8f, 0.8f, 0.8f));
 //        Shader.setFloat(gl, "phongExp", 4f);
 
-        Shader.setInt(gl, "tex", 2);
-        gl.glActiveTexture(GL.GL_TEXTURE2);
+        Shader.setInt(gl, "tex", 3);
+        gl.glActiveTexture(GL.GL_TEXTURE3);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
-        this.triMesh.draw( gl , frame ); 
+        this.triMesh.draw( gl , frame.translate( 0 , 0.01f , 0 ) ); 
         
         this.clear();
     	

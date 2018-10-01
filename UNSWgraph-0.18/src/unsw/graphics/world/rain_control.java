@@ -40,6 +40,8 @@ public class rain_control {
 	private ArrayList< Float > current_life;
 	private ArrayList< rain_test > rain;
 	
+	private ArrayList< Point3D > inital = new ArrayList< Point3D >();
+ 	
 	private int counter;
 	private int Max_regenerate;
 	
@@ -49,7 +51,7 @@ public class rain_control {
 		this.terrian = terrian;
 		this.terrian_max_height = this.terrian.max_height_local();
 		this.offset_height = 3;
-		this.rand = new Random(1);
+		this.rand = new Random(0);
 		
 		this.life = new ArrayList< Float >();
 		this.current_life = new ArrayList< Float >();
@@ -87,15 +89,19 @@ public class rain_control {
 												terrian_max_height + this.offset_height , 
 												temp.getY() ) );
 //			System.out.println( "terrian_max_height + this.offset_height is " + ( terrian_max_height + this.offset_height ) );
-			System.out.println( "" );
+			System.out.println( "??" );
 			// initial rain
 			temp_rain.init(gl);
+			this.inital.add( new Point3D( temp.getX() , 
+												terrian_max_height + this.offset_height , 
+												temp.getY() ) );
 			this.rain.add( temp_rain );
 			System.out.println( "time is " + temp_time );
 			this.life.add( temp_time );
 			this.current_life.add( 0f );
 			
 			this.how_many_existing++;
+			System.out.println( "how " + how_many_existing );
 		}
 		
 	}
@@ -118,14 +124,17 @@ public class rain_control {
 				this.current_life.remove( i );
 				this.life.remove( i );
 				this.how_many_existing--;
+				
+				this.inital.remove(i);
 			}
 			
 		}
 		
 		// increment the counter for current_life
 		for ( int i = 0 ; i < this.rain.size() ; i++ ) {
+			this.inital.get(i).print_out();
 			this.rain.get( i ).drawself(gl, frame);
-			this.current_life.set(  i , this.current_life.get( i ) + 1f );
+			this.current_life.set( i , this.current_life.get( i ) + 1f );
 		}
 		
 		

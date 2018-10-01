@@ -16,7 +16,6 @@ import unsw.graphics.Matrix4;
 import unsw.graphics.Point3DBuffer;
 import unsw.graphics.Shader;
 import unsw.graphics.Texture;
-import unsw.graphics.geometry.Point3D;
 
 /**
  * Displays fireworks using a particle system. Taken from NeHe Lesson #19a:
@@ -26,7 +25,7 @@ import unsw.graphics.geometry.Point3D;
  */
 public class old_particle extends Application3D implements KeyListener {
 
-    private static final int MAX_PARTICLES = 1000; // max number of particles
+    private static final int MAX_PARTICLES = 100; // max number of particles
     private Particle[] particles = new Particle[MAX_PARTICLES];
 
     // Set when the particles first burst
@@ -45,17 +44,14 @@ public class old_particle extends Application3D implements KeyListener {
 
     private Point3DBuffer positions;
     private ColorBuffer colors;
-    
-    private Point3D velocities_Point3D;
-    private Color color_v4;
 
     private int positionsName;
     private int colorsName;
 
     private Shader shader;
 
-    old_particle() {
-        super("old_particle system", 600, 600);
+    public old_particle() {
+        super("Particle system", 600, 600);
         setBackground(Color.BLACK);
     }
 

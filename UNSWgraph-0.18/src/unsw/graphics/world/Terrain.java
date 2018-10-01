@@ -49,7 +49,40 @@ public class Terrain {
     private Texture text_graph;
     private ArrayList< Point2D > texCoords;
     
-    private Rain_particle rain;
+//    private Rain_particle rain;
+    
+    private Color lightIntensity; 
+    
+    private Color ambientIntensity;
+    
+    private Color ambientCoeff;
+    private Color diffuseCoeff;
+    private Color specularCoeff;
+    private float phongExp;
+    
+    private rain_control r_control;
+    
+
+//    /**
+//     * 
+//     * @param gl
+//     * @param frame
+//     */
+//    public void setShader( GL3 gl , CoordFrame3D frame ) {
+//    	this.lightIntensity = Color.WHITE;
+//    	Shader.setColor(gl, "lightIntensity", this.lightIntensity);
+//    	this.ambientIntensity = new Color( 0.4f , 0.4f , 0.4f );
+//    	Shader.setColor(gl, "ambientIntensity", this.ambientIntensity);
+//    	this.ambientCoeff = Color.WHITE;
+//    	Shader.setColor(gl, "ambientCoeff", this.ambientCoeff);
+//    	this.diffuseCoeff = new Color(0.5f, 0.5f, 0.5f);
+//    	Shader.setColor(gl, "diffuseCoeff", this.diffuseCoeff);
+//    	this.specularCoeff = new Color(0.3f, 0.3f, 0.3f);
+//    	Shader.setColor(gl, "specularCoeff", this.specularCoeff);
+//    	this.phongExp = 4f;
+//    	Shader.setFloat(gl, "phongExp", this.phongExp);
+//    }
+    
     
     public int getX_length() {
     	return this.width;
@@ -75,11 +108,14 @@ public class Terrain {
         this.vertices = new ArrayList< Point3D >();
         
         this.texCoords = new ArrayList< Point2D >();
-        this.rain = new Rain_particle( this );
+//        this.rain = new Rain_particle( this );
         
+//        this.r_control = new rain_control( this );
     }
     
     public void init( GL3 gl ) {
+    	// it can not be used in constructor, otherwise the terrian_max_height is worng
+    	this.r_control = new rain_control( this );
     	
     	this.order_vertics();
 
@@ -96,7 +132,8 @@ public class Terrain {
     		this.roads.get( j ).init( gl );
     	}
     	
-    	this.rain.init( gl );
+//    	this.rain.init( gl );
+//    	this.r_control.init( gl );
     	
     	// Question Do I need to texture init()
     	// TODO need to init road init()
@@ -177,56 +214,91 @@ public class Terrain {
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
     }
     
-    public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
+    int mode = 0;
+    
+    
+    public void recursively_draw ( GL3 gl , CoordFrame3D frame , Matrix4 View_trans ) {
     	
+    	
+//    	if (  mode < 2000 ) {
+//    		Shader.setInt(gl, "rain", 0 );
+//    		mode++;
+//    		Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+//        	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+//        	Shader.setPoint3D(gl, "lightPos", temp_light );
+//        	System.out.println("mode is " + mode );
+//    	}
+//    	else {
+//    		Shader.setInt(gl, "rain", 1 );
+//    		mode++;
+//    	}
+//    	
+//    	if ( mode >= 4800 ){
+//    		mode = 0;
+//    	}
+//    	
+//    	
+////    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+////    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+////    	Shader.setPoint3D(gl, "lightPos", temp_light );
+//    	
+////    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
+//
+//    	// if Terrain has offset, need to adjust frame before passing to its children
+//    	this.drawSelf( gl , frame);
+//    	 	
+//    	//---------------------------------
+//        
+//    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+//    		this.trees.get( i ).drawSelf( gl , frame );
+//    	}
+//    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
+//    		this.roads.get( i ).drawSelf( gl , frame );
+//    	}
+//    	
+    	
+    	
+    	// another version for rain
+//    	Shader.setInt(gl, "rain", 1 );
 //    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
 //    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
 //    	Shader.setPoint3D(gl, "lightPos", temp_light );
-//    	Shader.setColor(gl, "lightIntensity", Color.WHITE);
-//		Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-//		  
-//		// Set the material properties
-//		Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-//		Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-//		Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-//		Shader.setFloat(gl, "phongExp", 4f);
-    	
-//    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
-    	
-    	// if Terrain has offset, need to adjust frame before passing to its children
+//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
+//        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+//        
+//        // Set the material properties
+//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+//        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+//        Shader.setFloat(gl, "phongExp", 4f);
+//        Shader.setPenColor( gl , Color.WHITE);
+////    	
+//    	this.r_control.draw(gl, frame);
+//    	
+//    	
+//    	Shader.setInt(gl, "rain", 0 );
+////    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+////    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
     	this.drawSelf( gl , frame);
-//    	this.drawSelf( gl , frame.translate(0, 0, -3) );
-    	 	
-    	
-        // draw rain
-//      shader1 = new Shader(gl, "shaders/vertex_rain.glsl",
-//      		"shaders/fragment_rain.glsl");
-//      shader1.use( gl );
-    	
+	 	
     	//---------------------------------
         
-//        CoordFrame3D temp_frame = frame.translate( 0 , 0 , -10 ).scale(0.5f, 0.5f, 0.5f);
-//        Triangle3D t1 = new Triangle3D( -1, -1 , 1,
-//        		  						1 , -1 , 1, 
-//        		  						1 , 1 , 1);
-//       
-//        Triangle3D t2 = new Triangle3D( 0 , 1 , 0,
-//				  0 , 0 , 1, 
-//				  1 , 0 , 0);
-//        t1.draw(gl , temp_frame);
-//        t2.draw(gl , temp_frame);
-    	
-    	//----------------------------------
-//		Shader.setColor(gl, "ambientCoeff", Color.BLACK);
-//		this.rain.drawSelf( gl , frame );
-    	
-    	
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
     		this.trees.get( i ).drawSelf( gl , frame );
     	}
     	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
     		this.roads.get( i ).drawSelf( gl , frame );
     	}
+    	
+    	
+//    	Shader.setInt(gl, "rain", 1 );
+//    	
+//    	this.r_control.draw(gl, frame);
+//    	
+    	
+    	
+    	
+    	
     }
     
     
@@ -241,19 +313,19 @@ public class Terrain {
     	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
     	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
     	
-//    	Shader.setPoint3D(gl, "lightPos", temp_light );
-//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-//        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-//        
-//        // Set the material properties
-//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-//        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-//        Shader.setFloat(gl, "phongExp", 4f);
+    	Shader.setPoint3D(gl, "lightPos", temp_light );
+        Shader.setColor(gl, "lightIntensity", Color.WHITE);
+        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+        
+        // Set the material properties
+        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+        Shader.setFloat(gl, "phongExp", 4f);
 //    	
     	Shader.setPenColor( gl , Color.WHITE);
-    	Shader.setInt(gl, "tex", 0);
-        gl.glActiveTexture(GL.GL_TEXTURE0);
+    	Shader.setInt(gl, "tex", 1);
+        gl.glActiveTexture(GL.GL_TEXTURE1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
         this.triMesh.draw( gl , frame );
 //    	Shader.setPenColor(gl, Color.black);
@@ -323,7 +395,7 @@ public class Terrain {
     public float altitude(float x, float z) {
     	// debug for array
     	// TODO: Implement this
-		if (x > 9 || x < 0 || z > 9 || z < 0 ) return 0;
+		if (x >= this.width - 1 || x < 0 || z > this.width - 1 || z < 0 ) return 0;
 
 
     	float result;
@@ -434,6 +506,7 @@ public class Terrain {
         }
         else {
         	assert( result_x == true && result_z == true );
+        	System.out.println( "x is " + x + " z is " + z );
         	result = this.altitudes[ isInteger_x ][ isInteger_z ];
         }
 
@@ -469,6 +542,33 @@ public class Terrain {
     
     public void destroy(GL3 gl) {
     	
+    }
+    
+    public void print_altitude() {
+    	for ( int i = 0 ; i < this.width ; i++ ) {
+    		for ( int j = 0 ; j < this.depth ; j++ ) {
+    			System.out.print( this.altitudes[i][j] + "  " );
+    		}
+    		System.out.println();
+    	}
+    }
+    
+    public float max_height_local() {
+    	this.print_altitude();
+    	
+    	assert ( this.width >=1 && this.depth >= 1 );
+    	float max_height = this.altitude(0, 0);
+    	for ( int i = 0 ; i < this.width ; i++ ) {
+    		for ( int j = 0 ; j < this.depth ; j++ ) {
+    			float temp = this.altitude( i , j );
+    			if ( temp > max_height ) {
+    				max_height = temp;
+    			}
+    		}
+    	}
+    	assert ( max_height >= 0 );
+    	System.out.println( "max_height is  " + max_height );
+    	return max_height;
     }
 
 }

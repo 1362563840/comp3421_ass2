@@ -39,8 +39,8 @@ public class ParticleSystem extends Application3D implements KeyListener {
 
     // Texture applied over the shape
     private Texture texture;
-    private String textureFileName = "res/textures/rain_1.bmp";
-    private String textureExt = "bmp";
+    private String textureFileName = "res/textures/star.png";
+    private String textureExt = "png";
 
     private Point3DBuffer velocities;
     private ColorBuffer colors;

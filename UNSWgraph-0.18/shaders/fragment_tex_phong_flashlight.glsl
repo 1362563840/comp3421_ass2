@@ -10,9 +10,9 @@ uniform mat4 view_matrix;
 // Light properties
 // light position is just camera position
 // uniform vec3 lightPos;
-uniform float x;
-uniform float y;
-uniform float z;
+// uniform float x;
+// uniform float y;
+// uniform float z;
 
 
 uniform vec3 lightIntensity;
@@ -34,8 +34,6 @@ in vec2 texCoordFrag;
 
 // -------------------------
 // our codes
-// uniform vec3 normal_light_outside;
-in vec3 normal_light;
 
 uniform mat4 model_matrix;
 
@@ -47,8 +45,6 @@ uniform float linear;
 uniform float quadratic;
 
 uniform int isDay;
-
-in vec4 last_column;
 // -------------------------
 
 
@@ -57,14 +53,12 @@ void main()
     // Compute the s, v and r vectors
 
     // view_matrix*vec4(lightPos,1)
-    // vec3 s = normalize(  view_matrix * last_column  - viewPosition).xyz;
     vec3 s = normalize(  vec4( 0 , 0 , 0 , 1 )  - viewPosition).xyz;
     vec3 v = normalize(-viewPosition.xyz);
     vec3 r = normalize(reflect(-s,m));
 
     // ------------------------
     // our code
-    // vec3 temp_vec3 = ( view_matrix * last_column - viewPosition ).xyz;
     vec3 temp_vec3 = ( vec4( 0 , 0 , 0 , 1 )  - viewPosition ).xyz;
     float distance = length( temp_vec3 );
     float attenuation = 1.5 / ( constant + linear * distance +
@@ -99,30 +93,6 @@ void main()
     // ------------------------
 
     vec4 ambientAndDiffuse = vec4(ambient + diffuse, 1.0);
-
-
-    // ------------------------W
-    // our codes
-    // vec3  norm_temp = normalize( view_matrix * vec4( normal_light , 1 ) ).xyz;
-
-    // if ( degrees( acos( dot( norm_temp , s ) ) ) <= cutOff ){
-    // vec4  norm_temp_1 = view_matrix * vec4( normal_light_outside , 1 );
-    // vec3  norm_temp = normalize( norm_temp_1 ).xyz;
-    // because s is from obejct's position to source, so need to make it reverse
-
-    // if ( isDay == 0 ) {
-    //     if ( degrees( acos( dot( norm_temp , -s ) ) ) <= cutOff ){
-    //         outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
-    //     }
-    //     else {
-    //       vec4 dark_ambientAndDiffuse = vec4( 0.05 , 0.05 , 0.05 , 1.0 );
-    //       outputColor = dark_ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
-    //     }
-    // }
-    // else{
-    //     outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
-    // }
-
 
 
     if ( isDay == 0 ) {

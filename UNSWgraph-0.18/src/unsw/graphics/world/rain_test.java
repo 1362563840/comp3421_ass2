@@ -26,7 +26,7 @@ import unsw.graphics.geometry.Point3D;
  */
 public class rain_test {
 	
-	private final int how_many = 100;
+	private final int how_many = 1;
 
 	private Point3D init_pos;
 		
@@ -63,7 +63,7 @@ public class rain_test {
 	public rain_test(  Point3D initial_pos ) {
 		this.init_pos = initial_pos;
 		// debug
-		init_pos.print_out();
+//		init_pos.print_out();
 		
 		
 		
@@ -99,11 +99,13 @@ public class rain_test {
         System.out.println( "x is " + this.init_pos.getX() + " z is " + this.init_pos.getZ() );
         for ( int i = 0 ; i < this.how_many ; i++ ) {
         	// each
+        	assert ( this.speedX == 0 &&  this.speedY == 0 && this.speedZ == 0 );
         	this.velocities.put( i , this.speedX , this.speedY , this.speedZ );
+//        	this.velocities.put( i , 0 , 0 , 0 );
         	
         	this.colors.put(i, r , g, b,
                     life);
-        	this.inital_position.put( i , this.init_pos.getX() , this.each_y_pos[ i ] + 220f , this.init_pos.getZ() );
+        	this.inital_position.put( i , this.init_pos.getX() , this.each_y_pos[ i ] , this.init_pos.getZ() );
         }
         
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, velocitiesName);
@@ -122,7 +124,7 @@ public class rain_test {
         gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 3 * Float.BYTES,
         		inital_position.getBuffer(), GL.GL_DYNAMIC_DRAW);
         //									4 is because the color has 4 float points
-        gl.glVertexAttribPointer(Shader.INITIAL_POS, 3, GL.GL_FLOAT, false, 0, 0);
+        gl.glVertexAttribPointer(Shader.INIT_POSITION, 3, GL.GL_FLOAT, false, 0, 0);
         
      // Set the point size
         gl.glPointSize(50);
@@ -135,18 +137,21 @@ public class rain_test {
 	 * 
 	 */
 	public void drawself( GL3 gl , CoordFrame3D frame ) {
-		
+//		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+//
+//        // Disable depth testing to get a nice composition
+//        gl.glDisable(GL.GL_DEPTH_TEST);
 		Shader.setPenColor(gl, Color.YELLOW);
         
         Shader.setFloat(gl, "time", this.time);
-        
+//        System.out.println( "here" );
         // Draw the particles
-        Shader.setInt(gl, "tex", 3);
-        gl.glActiveTexture(GL.GL_TEXTURE3);
+        Shader.setInt(gl, "tex", 0);
+        gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL2.GL_TEXTURE_2D, this.text_graph.getId());
+//        System.out.println( "there" );
         gl.glDrawArrays(GL.GL_POINTS, 0, this.how_many);
         this.time = this.time + 0.01f;
-		
 	}
 	
 	public void destroy(GL3 gl) {
@@ -173,9 +178,9 @@ public class rain_test {
         
         speedX = 0f;
 //        speedY = speed * (float) Math.sin(angle) + speedYGlobal;
-        speedY =  - 0.02f;
+        speedY =  0f;
         speedZ = 0f;
-        assert ( speedY < 0 );
+//        assert ( speedY < 0 );
         
         int colorIndex = (int) (((speed - 0.02f) + maxSpeed)
                 / (maxSpeed * 2) * colors_init.length) % colors_init.length;

@@ -41,7 +41,7 @@ public class World extends Application3D implements KeyListener{
         this.anticlockwise = 0;
         this.camera3d = new Camera3D(terrain);
         
-        this.DarkMode = 0;
+        this.DarkMode = 1;
     }
    
     /**
@@ -53,6 +53,7 @@ public class World extends Application3D implements KeyListener{
     public static void main(String[] args) throws FileNotFoundException {
         Terrain terrain = LevelIO.load(new File(args[0]));
         World world = new World(terrain);
+        terrain.print_altitude();
         world.start();
     }
 
@@ -73,16 +74,16 @@ public class World extends Application3D implements KeyListener{
 		}
 		
 //		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
-		Shader.setFloat(gl, "x", this.camera3d.CameraPostion().getX() );
-		Shader.setFloat(gl, "y", this.camera3d.CameraPostion().getY() );
-		Shader.setFloat(gl, "z", this.camera3d.CameraPostion().getZ() );
+//		Shader.setFloat(gl, "x", this.camera3d.CameraPostion().getX() );
+//		Shader.setFloat(gl, "y", this.camera3d.CameraPostion().getY() );
+//		Shader.setFloat(gl, "z", this.camera3d.CameraPostion().getZ() );
 //		Shader.setPoint3D(gl, "lightPos", this.terrain.getSunlight().asPoint3D() );
 //		Shader.setPoint3D(gl, "normal_light_outside" , this.camera3d.CameraNormal() );
 		
-		Shader.setFloat(gl, "cutOff", 10f );
-		Shader.setFloat(gl, "constant", 1f );
-		Shader.setFloat(gl, "linear", 0.09f );
-		Shader.setFloat(gl, "quadratic", 0.032f );
+//		Shader.setFloat(gl, "cutOff", 10f );
+//		Shader.setFloat(gl, "constant", 1f );
+//		Shader.setFloat(gl, "linear", 0.09f );
+//		Shader.setFloat(gl, "quadratic", 0.032f );
 		
         Shader.setColor(gl, "lightIntensity", Color.WHITE);
         Shader.setColor(gl, "ambientIntensity", new Color(0.7f, 0.7f, 0.7f));
@@ -107,10 +108,11 @@ public class World extends Application3D implements KeyListener{
 		// each time camera view is changed, need to adjust the new normal of the light
 		
 		this.camera3d.setView(gl);		
-		
+//		this.camera3d.CameraPostion().print_out();
 		
 		// each 1s, 60 frames, this display should be called
-		this.terrain.recursively_draw( gl , frame );
+//		this.camera3d.View_trans().drawMatrix();
+		this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
 //		this.clockwise += 1;
 		
 //		this.terrain.drawSelf(gl, frame);
@@ -165,7 +167,7 @@ public class World extends Application3D implements KeyListener{
             break;
 		}
 	}
-
+	
 	@Override
 	public void reshape(GL3 gl, int width, int height) {
         super.reshape(gl, width, height);

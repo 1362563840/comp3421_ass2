@@ -57,7 +57,9 @@ public class Shader {
      * debug
      */
     
-    public static final int INITIAL_POS = 4;
+    public static final int INIT_POSITION = 4;
+    
+    public static final int DEBUG = 5;
 
 
     private int id;
@@ -94,8 +96,8 @@ public class Shader {
         gl.glBindAttribLocation(id, NORMAL, "normal");
         gl.glBindAttribLocation(id, TEX_COORD, "texCoord");
         gl.glBindAttribLocation(id, COLOR, "color");
-        gl.glBindAttribLocation(id, INITIAL_POS, "init_position");
-        
+        gl.glBindAttribLocation(id, INIT_POSITION, "init_position");
+//        gl.glBindAttribLocation(id, DEBUG, "debug");
         
         shaderProgram.link(gl, System.err);
         
@@ -107,7 +109,9 @@ public class Shader {
         if (gl.glGetAttribLocation(id, "color") != -1)
             gl.glEnableVertexAttribArray(COLOR);
         if (gl.glGetAttribLocation(id, "init_position") != -1)
-            gl.glEnableVertexAttribArray(INITIAL_POS);
+            gl.glEnableVertexAttribArray(INIT_POSITION);
+//        if (gl.glGetAttribLocation(id, "debug") != -1)
+//            gl.glEnableVertexAttribArray(DEBUG);
         
     }
     

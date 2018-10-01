@@ -83,8 +83,8 @@ public class Tree {
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {	
         	
     	
-    	Shader.setInt(gl, "tex", 1);
-    	gl.glActiveTexture(GL.GL_TEXTURE1);
+    	Shader.setInt(gl, "tex", 2);
+    	gl.glActiveTexture(GL.GL_TEXTURE2);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
 //        Shader.setPenColor( gl , Color.WHITE );
         this.tree.draw( gl , frame.translate( this.position ).scale(0.5f, 0.1f, 0.5f) );
