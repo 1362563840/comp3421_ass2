@@ -26,7 +26,7 @@ import unsw.graphics.geometry.Point3D;
  */
 public class rain_test {
 	
-	private final int how_many = 1;
+	private final int how_many = 2;
 
 	private Point3D init_pos;
 		
@@ -99,7 +99,7 @@ public class rain_test {
         System.out.println( "x is " + this.init_pos.getX() + " z is " + this.init_pos.getZ() );
         for ( int i = 0 ; i < this.how_many ; i++ ) {
         	// each
-        	assert ( this.speedX == 0 &&  this.speedY == 0 && this.speedZ == 0 );
+//        	assert ( this.speedX == 0 &&  this.speedY == 0 && this.speedZ == 0 );
         	this.velocities.put( i , this.speedX , this.speedY , this.speedZ );
 //        	this.velocities.put( i , 0 , 0 , 0 );
         	
@@ -142,6 +142,9 @@ public class rain_test {
 //        // Disable depth testing to get a nice composition
 //        gl.glDisable(GL.GL_DEPTH_TEST);
 		Shader.setPenColor(gl, Color.YELLOW);
+		
+//		Shader.setPoint3D( gl , "debug_v" , new Point3D( 0 , 0.5f , 0 ) );
+//		Shader.setFloat( gl , "y_speed" , 0.5f );
         
         Shader.setFloat(gl, "time", this.time);
 //        System.out.println( "here" );
@@ -151,7 +154,7 @@ public class rain_test {
         gl.glBindTexture(GL2.GL_TEXTURE_2D, this.text_graph.getId());
 //        System.out.println( "there" );
         gl.glDrawArrays(GL.GL_POINTS, 0, this.how_many);
-        this.time = this.time + 0.01f;
+        this.time = this.time + 0.05f;
 	}
 	
 	public void destroy(GL3 gl) {
@@ -178,7 +181,7 @@ public class rain_test {
         
         speedX = 0f;
 //        speedY = speed * (float) Math.sin(angle) + speedYGlobal;
-        speedY =  0f;
+        speedY =  -0.1f;
         speedZ = 0f;
 //        assert ( speedY < 0 );
         

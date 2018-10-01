@@ -91,11 +91,11 @@ public abstract class Application3D extends Application {
 //              "shaders/fragment_tex_phong.glsl");
 //        shader = new Shader(gl, "shaders/vertex_tex_phong_direction.glsl",
 //        		"shaders/fragment_tex_phong_direction.glsl");
-        
-        shader = new Shader(gl, "shaders/c.glsl",
-        		"shaders/d.glsl");
-//    	shader = new Shader(gl, "shaders/test1.glsl",
-//        		"shaders/test2.glsl");
+//        
+//        shader = new Shader(gl, "shaders/c.glsl",
+//        		"shaders/d.glsl");
+    	shader = new Shader(gl, "shaders/test1.glsl",
+        		"shaders/test2.glsl");
         
 //        shader = new Shader(gl, "shaders/vertex_tex_phong_flashlight.glsl",
 //                "shaders/fragment_tex_phong_flashlight.glsl");

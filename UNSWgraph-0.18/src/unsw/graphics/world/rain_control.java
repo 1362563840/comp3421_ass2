@@ -132,6 +132,7 @@ public class rain_control {
 		
 		// increment the counter for current_life
 		for ( int i = 0 ; i < this.rain.size() ; i++ ) {
+			System.out.println( "there are " + this.rain.size() + " rain" );
 			this.inital.get(i).print_out();
 			this.rain.get( i ).drawself(gl, frame);
 			this.current_life.set( i , this.current_life.get( i ) + 1f );

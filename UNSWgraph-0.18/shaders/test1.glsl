@@ -41,6 +41,10 @@ uniform mat4 view_matrix;
 uniform mat4 proj_matrix;
 
 uniform int rain;
+
+in vec3 debug_v;
+
+in float y_speed;
 //------------------------------------------
 
 
@@ -54,7 +58,6 @@ void main() {
 		vec3 velocity = position;
 
 		vec3 pos = init_position + time * velocity; //+ vec3(0, 0.5*gravity*time*time, 0);
-
 		// The global position is in homogenous coordinates
 	    vec4 globalPosition = model_matrix * vec4(pos, 1);
 
@@ -65,7 +68,7 @@ void main() {
 	    gl_Position = proj_matrix * viewPosition;
 
 	    fragColor = color;
-	    fragColor.a = 1 - time*1;
+	    fragColor.a = 1 - time* 0.05f;
 	}
 	else {
 		// The global position is in homogenous coordinates

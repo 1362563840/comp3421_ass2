@@ -110,7 +110,7 @@ public class Terrain {
         this.texCoords = new ArrayList< Point2D >();
 //        this.rain = new Rain_particle( this );
         
-//        this.r_control = new rain_control( this );
+        this.r_control = new rain_control( this );
     }
     
     public void init( GL3 gl ) {
@@ -133,7 +133,7 @@ public class Terrain {
     	}
     	
 //    	this.rain.init( gl );
-//    	this.r_control.init( gl );
+    	this.r_control.init( gl );
     	
     	// Question Do I need to texture init()
     	// TODO need to init road init()
@@ -259,7 +259,7 @@ public class Terrain {
     	
     	
     	// another version for rain
-//    	Shader.setInt(gl, "rain", 1 );
+    	Shader.setInt(gl, "rain", 1 );
 //    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
 //    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
 //    	Shader.setPoint3D(gl, "lightPos", temp_light );
@@ -273,12 +273,12 @@ public class Terrain {
 //        Shader.setFloat(gl, "phongExp", 4f);
 //        Shader.setPenColor( gl , Color.WHITE);
 ////    	
-//    	this.r_control.draw(gl, frame);
+    	this.r_control.draw(gl, frame);
 //    	
 //    	
-//    	Shader.setInt(gl, "rain", 0 );
-////    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
-////    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+    	Shader.setInt(gl, "rain", 0 );
+//    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+//    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
     	this.drawSelf( gl , frame);
 	 	
     	//---------------------------------
@@ -294,7 +294,6 @@ public class Terrain {
 //    	Shader.setInt(gl, "rain", 1 );
 //    	
 //    	this.r_control.draw(gl, frame);
-//    	
     	
     	
     	
