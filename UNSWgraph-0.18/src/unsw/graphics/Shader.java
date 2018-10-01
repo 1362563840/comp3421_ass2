@@ -52,6 +52,12 @@ public class Shader {
      * copy from v20.0
      */
     public static final int COLOR = 3;
+    
+    /**
+     * debug
+     */
+    
+    public static final int INITIAL_POS = 4;
 
 
     private int id;
@@ -88,6 +94,7 @@ public class Shader {
         gl.glBindAttribLocation(id, NORMAL, "normal");
         gl.glBindAttribLocation(id, TEX_COORD, "texCoord");
         gl.glBindAttribLocation(id, COLOR, "color");
+        gl.glBindAttribLocation(id, INITIAL_POS, "init_position");
         
         
         shaderProgram.link(gl, System.err);
@@ -99,8 +106,34 @@ public class Shader {
             gl.glEnableVertexAttribArray(TEX_COORD);
         if (gl.glGetAttribLocation(id, "color") != -1)
             gl.glEnableVertexAttribArray(COLOR);
+        if (gl.glGetAttribLocation(id, "init_position") != -1)
+            gl.glEnableVertexAttribArray(INITIAL_POS);
         
     }
+    
+//    private Matrix4 model_matrix;
+//    private Matrix4 view_matrix;
+//    private Matrix4 proj_matrix;
+//    
+//    /**
+//     * for rain, you need to pass the color vector by yourself -
+//     * also each time you use this function, you need reset Camera3D view
+//     * @param gl
+//     */
+//    public void setShader( GL3 gl ) {
+//    	this.model_matrix = Matrix4.identity();
+//    	Shader.setModelMatrix(gl, model_matrix);
+//    	
+//    	this.view_matrix = Matrix4.identity();
+//    	Shader.setViewMatrix(gl, view_matrix);
+//    	
+//    	Shader.setProjMatrix(gl, Matrix4.orthographic(-1, 1, -1, 1, 1, 10));
+////    	this.proj_matrix = Matrix4.orthographic(-1, 1, -1, 1, 1, 10);
+////    	Shader.setProjMatrix(gl, proj_matrix);  	
+//    	
+//    }
+    
+    
 
     /**
      * "Use" this shader in the given context.
