@@ -273,10 +273,10 @@ public class Terrain {
 //        Shader.setFloat(gl, "phongExp", 4f);
 //        Shader.setPenColor( gl , Color.WHITE);
 ////    	
-    	this.r_control.draw(gl, frame);
+//    	this.r_control.draw(gl, frame);
 //    	
 //    	
-    	Shader.setInt(gl, "rain", 0 );
+//    	Shader.setInt(gl, "rain", 0 );
 //    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
 //    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
     	this.drawSelf( gl , frame);
@@ -291,9 +291,9 @@ public class Terrain {
     	}
     	
     	
-//    	Shader.setInt(gl, "rain", 1 );
-//    	
-//    	this.r_control.draw(gl, frame);
+    	Shader.setInt(gl, "rain", 1 );
+    	
+    	this.r_control.draw(gl, frame);
     	
     	
     	
