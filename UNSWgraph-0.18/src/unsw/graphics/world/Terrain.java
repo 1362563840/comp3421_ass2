@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.awt.ImageUtil;
@@ -34,7 +36,7 @@ import unsw.graphics.geometry.TriangleMesh;
  *
  * @author malcolmr
  */
-public class Terrain {
+public class Terrain implements KeyListener{
 
 	private int width;
     private int depth;
@@ -238,9 +240,9 @@ public class Terrain {
 //    	}
 //    	
 //    	
-////    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
-////    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
-////    	Shader.setPoint3D(gl, "lightPos", temp_light );
+//    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+//    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+//    	Shader.setPoint3D(gl, "lightPos", temp_light );
 //    	
 ////    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
 //
@@ -259,7 +261,7 @@ public class Terrain {
     	
     	
     	// another version for rain
-    	Shader.setInt(gl, "rain", 1 );
+//    	Shader.setInt(gl, "rain", 1 );
 //    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
 //    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
 //    	Shader.setPoint3D(gl, "lightPos", temp_light );
@@ -272,7 +274,7 @@ public class Terrain {
 //        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
 //        Shader.setFloat(gl, "phongExp", 4f);
 //        Shader.setPenColor( gl , Color.WHITE);
-////    	
+//    	
 //    	this.r_control.draw(gl, frame);
 //    	
 //    	
@@ -291,9 +293,9 @@ public class Terrain {
     	}
     	
     	
-    	Shader.setInt(gl, "rain", 1 );
-    	
-    	this.r_control.draw(gl, frame);
+//    	Shader.setInt(gl, "rain", 1 );
+//    	
+//    	this.r_control.draw(gl, frame);
     	
     	
     	
@@ -312,6 +314,7 @@ public class Terrain {
     	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
     	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
     	
+    	Shader.setInt( gl, "flash_switch", this.flash_switch );
     	Shader.setPoint3D(gl, "lightPos", temp_light );
         Shader.setColor(gl, "lightIntensity", Color.WHITE);
         Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
@@ -321,7 +324,7 @@ public class Terrain {
         Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
         Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
         Shader.setFloat(gl, "phongExp", 4f);
-//    	
+    	
     	Shader.setPenColor( gl , Color.WHITE);
     	Shader.setInt(gl, "tex", 1);
         gl.glActiveTexture(GL.GL_TEXTURE1);
@@ -505,7 +508,6 @@ public class Terrain {
         }
         else {
         	assert( result_x == true && result_z == true );
-        	System.out.println( "x is " + x + " z is " + z );
         	result = this.altitudes[ isInteger_x ][ isInteger_z ];
         }
 
@@ -569,5 +571,28 @@ public class Terrain {
     	System.out.println( "max_height is  " + max_height );
     	return max_height;
     }
+    
+    private int flash_switch = 0;
+    
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()) {
+		case KeyEvent.VK_B:
+			if ( this.flash_switch == 0 ) {
+				this.flash_switch = 1;
+			}
+			else {		
+				this.flash_switch = 0;
+			}
+            break;
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

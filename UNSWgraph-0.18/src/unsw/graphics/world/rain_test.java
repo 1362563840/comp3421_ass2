@@ -26,7 +26,7 @@ import unsw.graphics.geometry.Point3D;
  */
 public class rain_test {
 	
-	private final int how_many = 2;
+	private final int how_many = 1;
 
 	private Point3D init_pos;
 		
@@ -108,11 +108,11 @@ public class rain_test {
         	this.inital_position.put( i , this.init_pos.getX() , this.each_y_pos[ i ] , this.init_pos.getZ() );
         }
         
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, velocitiesName);
-        gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 3 * Float.BYTES,
-                velocities.getBuffer(), GL.GL_DYNAMIC_DRAW);
-        //										3 is because the point3D has three pints
-        gl.glVertexAttribPointer(Shader.POSITION, 3, GL.GL_FLOAT, false, 0, 0);
+//        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, velocitiesName);
+//        gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 3 * Float.BYTES,
+//                velocities.getBuffer(), GL.GL_DYNAMIC_DRAW);
+//        //										3 is because the point3D has three pints
+//        gl.glVertexAttribPointer(Shader.POSITION, 3, GL.GL_FLOAT, false, 0, 0);
         
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, colorsName);
         gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 4 * Float.BYTES,
@@ -137,6 +137,27 @@ public class rain_test {
 	 * 
 	 */
 	public void drawself( GL3 gl , CoordFrame3D frame ) {
+		
+		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, velocitiesName);
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 3 * Float.BYTES,
+                velocities.getBuffer(), GL.GL_DYNAMIC_DRAW);
+        //										3 is because the point3D has three pints
+        gl.glVertexAttribPointer(Shader.POSITION, 3, GL.GL_FLOAT, false, 0, 0);
+        
+        
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, colorsName);
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 4 * Float.BYTES,
+                colors.getBuffer(), GL.GL_DYNAMIC_DRAW);
+        //									4 is because the color has 4 float points
+        gl.glVertexAttribPointer(Shader.COLOR, 4, GL.GL_FLOAT, false, 0, 0);
+        
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, initial_position_name);
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, this.how_many * 3 * Float.BYTES,
+        		inital_position.getBuffer(), GL.GL_DYNAMIC_DRAW);
+        //									4 is because the color has 4 float points
+        
+		
+		
 //		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
 //
 //        // Disable depth testing to get a nice composition

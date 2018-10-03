@@ -89,7 +89,9 @@ void main()
 
     // ------------------------
     // our code
-    specular = specular * attenuation;
+    if( isDay == 0 ){
+      specular = specular * attenuation;
+    }
     // ------------------------
 
     vec4 ambientAndDiffuse = vec4(ambient + diffuse, 1.0);
@@ -97,6 +99,7 @@ void main()
 
     if ( isDay == 0 ) {
         if ( degrees( acos( dot( vec3( 0 , 0 , -1 ) , vec3( -s.x , -s.y , -s.z ) ) ) ) <= cutOff ){
+          // if ( dot( vec3( 0 , 0 , -1 ) , vec3( -s.x , -s.y , -s.z ) ) <= cutOff ){
         // if ( degrees( acos( dot( normal_light , vec3( -s.x , -s.y , -s.z ) ) ) ) <= cutOff ){
             outputColor = ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
         }

@@ -73,17 +73,11 @@ public class World extends Application3D implements KeyListener{
 			super.setBackground( Color.WHITE );
 		}
 		
-//		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
-//		Shader.setFloat(gl, "x", this.camera3d.CameraPostion().getX() );
-//		Shader.setFloat(gl, "y", this.camera3d.CameraPostion().getY() );
-//		Shader.setFloat(gl, "z", this.camera3d.CameraPostion().getZ() );
-//		Shader.setPoint3D(gl, "lightPos", this.terrain.getSunlight().asPoint3D() );
-//		Shader.setPoint3D(gl, "normal_light_outside" , this.camera3d.CameraNormal() );
 		
-//		Shader.setFloat(gl, "cutOff", 10f );
-//		Shader.setFloat(gl, "constant", 1f );
-//		Shader.setFloat(gl, "linear", 0.09f );
-//		Shader.setFloat(gl, "quadratic", 0.032f );
+		Shader.setFloat(gl, "cutOff", 10f );
+		Shader.setFloat(gl, "constant", 1f );
+		Shader.setFloat(gl, "linear", 0.09f );
+		Shader.setFloat(gl, "quadratic", 0.032f );
 		
         Shader.setColor(gl, "lightIntensity", Color.WHITE);
         Shader.setColor(gl, "ambientIntensity", new Color(0.7f, 0.7f, 0.7f));
@@ -108,7 +102,7 @@ public class World extends Application3D implements KeyListener{
 		// each time camera view is changed, need to adjust the new normal of the light
 		
 		this.camera3d.setView(gl);		
-//		this.camera3d.CameraPostion().print_out();
+		this.camera3d.CameraPostion().print_out();
 		
 		// each 1s, 60 frames, this display should be called
 //		this.camera3d.View_trans().drawMatrix();
@@ -143,6 +137,7 @@ public class World extends Application3D implements KeyListener{
 		
 		this.getWindow().addKeyListener( this );
 		this.getWindow().addKeyListener( this.camera3d );
+		this.getWindow().addKeyListener( this.terrain );
 		this.z = -15;
 		this.z = -15;
 		this.main_frame = CoordFrame3D.identity().translate( 0 , 0 , z );
