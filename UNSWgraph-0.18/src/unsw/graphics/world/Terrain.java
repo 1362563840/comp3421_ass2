@@ -316,16 +316,7 @@ public class Terrain implements KeyListener{
     	
     	Shader.setInt( gl, "flash_switch", this.flash_switch );
     	Shader.setPoint3D(gl, "lightPos", temp_light );
-        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-        
-        // Set the material properties
-        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-        Shader.setFloat(gl, "phongExp", 4f);
-    	
-    	Shader.setPenColor( gl , Color.WHITE);
+
     	Shader.setInt(gl, "tex", 1);
         gl.glActiveTexture(GL.GL_TEXTURE1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
