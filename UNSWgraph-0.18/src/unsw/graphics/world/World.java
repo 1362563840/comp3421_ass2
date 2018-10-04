@@ -87,6 +87,7 @@ public class World extends Application3D implements KeyListener{
         Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
         Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
         Shader.setFloat(gl, "phongExp", 4f);
+        getDefaultShader().setPenColor(gl, Color.WHITE);
         //  --------------------------------- for torch light
 	
 		CoordFrame3D frame = CoordFrame3D.identity()
