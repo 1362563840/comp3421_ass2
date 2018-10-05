@@ -99,6 +99,7 @@ void main()
 
 
     if ( isDay == 0 ) {
+        float temp_degree = degrees( acos( dot( vec3( 0 , 0 , -1 ) , vec3( -s_flash.x , -s_flash.y , -s_flash.z ) ) ) );
         if ( degrees( acos( dot( vec3( 0 , 0 , -1 ) , vec3( -s_flash.x , -s_flash.y , -s_flash.z ) ) ) ) <= cutOff ){
 
             // torch light is same as sunlight
@@ -107,7 +108,8 @@ void main()
               outputColor = 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
             }
             else {
-              outputColor = ambientAndDiffuse_flash*input_color*texture(tex, texCoordFrag) + vec4(specular_flash, 1.0);
+              outputColor = ( ambientAndDiffuse_flash*input_color*texture(tex, texCoordFrag) + vec4(specular_flash, 1.0) ) *
+                              ( 1.1 -  temp_degree / cutOff )        ;
 
               outputColor = outputColor + 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
             }
