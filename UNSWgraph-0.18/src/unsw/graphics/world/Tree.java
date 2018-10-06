@@ -46,7 +46,7 @@ public class Tree {
     public void setHeight() {
     	this.position = new Point3D( 
     						this.position.getX() , 
-    						this.terrian.altitude(  this.position.getX() ,  this.position.getZ() ) ,
+    						0.5f+this.terrian.altitude(  this.position.getX() ,  this.position.getZ() ) ,
     						this.position.getZ()
     						);
     	
