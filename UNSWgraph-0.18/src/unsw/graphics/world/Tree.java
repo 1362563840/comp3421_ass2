@@ -48,9 +48,8 @@ public class Tree {
     	this.position = new Point3D( 
     						this.position.getX() , 
     						tempAlt,
-    						this.position.getZ() 
+    						this.position.getZ()
     						);
-    	System.out.println("Tree X: "+position.getX()+"Altitude: "+tempAlt+"Z: "+position.getZ());
     }
 
    
