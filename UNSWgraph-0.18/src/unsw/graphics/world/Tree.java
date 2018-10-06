@@ -44,13 +44,17 @@ public class Tree {
     }
     
     public void setHeight() {
+        float tempAlt = 0.5f+this.terrian.altitude(  this.position.getX() ,  this.position.getZ());
     	this.position = new Point3D( 
     						this.position.getX() , 
-    						this.terrian.altitude(  this.position.getX() ,  this.position.getZ() ) ,
-    						this.position.getZ()
+    						tempAlt,
+    						this.position.getZ() 
     						);
-    	
+    	System.out.println("Tree X: "+position.getX()+"Altitude: "+tempAlt+"Z: "+position.getZ());
     }
+
+   
+
     
     public void setTerrian( Terrain terrian ) {
     	this.terrian = terrian;
@@ -84,7 +88,7 @@ public class Tree {
     	gl.glActiveTexture(GL.GL_TEXTURE1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
 //        Shader.setPenColor( gl , Color.WHITE );
-        this.tree.draw( gl , frame.translate( this.position ).scale(0.5f, 0.1f, 0.5f) );
+        this.tree.draw( gl , frame.translate( this.position ).scale(0.5f, 0.1f, 0.1f) );
 //        this.tree.draw( gl , frame.translate( this.position ) );
     }
     

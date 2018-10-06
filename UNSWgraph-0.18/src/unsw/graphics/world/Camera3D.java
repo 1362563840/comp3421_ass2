@@ -98,7 +98,8 @@ public class Camera3D implements KeyListener {
             break;
             
         case KeyEvent.VK_W:
-            myPos = new Point3D(myPos.getX(), myPos.getY() + 1f , myPos.getZ() );
+        	if (e.isShiftDown()) myPos = new Point3D(myPos.getX(), myPos.getY() + 1f , myPos.getZ() );
+        	//myPos = new Point3D(myPos.getX(), myPos.getY() + 1f , myPos.getZ() );
             break;
         
         case KeyEvent.VK_S:
