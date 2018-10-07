@@ -6,7 +6,9 @@ import java.io.IOException;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL3;
 
+import unsw.graphics.Application3D;
 import unsw.graphics.CoordFrame3D;
+import unsw.graphics.Matrix4;
 import unsw.graphics.Shader;
 import unsw.graphics.Texture;
 import unsw.graphics.geometry.Point3D;
@@ -82,6 +84,7 @@ public class Tree {
      */
     // TODO
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {	
+        	
     	
     	Shader.setInt(gl, "tex", 1);
     	gl.glActiveTexture(GL.GL_TEXTURE1);

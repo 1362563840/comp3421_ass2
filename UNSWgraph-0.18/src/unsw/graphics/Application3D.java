@@ -76,16 +76,35 @@ public abstract class Application3D extends Application {
     	// DEBUG
 //        shader = new Shader(gl, "shaders/vertex_tex_3d.glsl",
 //                "shaders/fragment_tex_3d.glsl");
+//        
+//        shader1 = new Shader(gl, "shaders/vertex_tex_phong_direction.glsl",
+//                "shaders/fragment_tex_phong_direction.glsl");
+//        
+//        shader2 = new Shader(gl, "shaders/vertex_tex_phong.glsl",
+//              "shaders/fragment_tex_phong.glsl");
+        
+//        shader = new Shader(gl, "shaders/a.glsl",
+//                "shaders/b.glsl");
 //        shader = new Shader(gl, "shaders/vertex_3d.glsl",
 //                "shaders/fragment_3d.glsl");
 //        shader = new Shader(gl, "shaders/vertex_tex_phong.glsl",
 //              "shaders/fragment_tex_phong.glsl");
-        shader = new Shader(gl, "shaders/vertex_tex_phong_direction.glsl",
-        		"shaders/fragment_tex_phong_direction.glsl");
+//        shader = new Shader(gl, "shaders/vertex_tex_phong_direction.glsl",
+//        		"shaders/fragment_tex_phong_direction.glsl");
+//        
+//        shader = new Shader(gl, "shaders/c.glsl",
+//        		"shaders/d.glsl");
+//    	shader = new Shader(gl, "shaders/test1.glsl",
+//        		"shaders/test2.glsl");
         
 //        shader = new Shader(gl, "shaders/vertex_tex_phong_flashlight.glsl",
 //                "shaders/fragment_tex_phong_flashlight.glsl");
+        shader = new Shader(gl, "shaders/vertex_tex_phong_flashlight.glsl",
+                "shaders/fragment_tex_phong_flashlight.glsl");
+//        shader = new Shader(gl, "shaders/vertex_rain.glsl",
+//        		"shaders/fragment_rain.glsl");
         shader.use(gl);
+
         
         // Make points big (10 pixels wide) so we can see them clearly
         gl.glPointSize(10);
@@ -96,6 +115,9 @@ public abstract class Application3D extends Application {
         // Cull back faces
         gl.glEnable(GL.GL_CULL_FACE);
     }
+    
+   
+    
     
     @Override
     public void reshape(GL3 gl, int width, int height) {

@@ -49,6 +49,11 @@ public class Road {
     private ArrayList< Point2D > textCoord;
     private TriangleMesh triMesh;
     private Texture text_graph;
+    
+    /**
+     * change the width of road in order to have a good looking
+     */
+    private float true_width;
 
     /**
      * Create a new road with the specified spine 
@@ -77,6 +82,8 @@ public class Road {
         this.vertices = new ArrayList< Point3D >();
         this.textCoord = new ArrayList< Point2D >();
         
+        this.true_width = ( this.width / 1f ) * 0.25f;
+        
     }
     
     public void setTerrian( Terrain terrian ) {
@@ -103,11 +110,11 @@ public class Road {
 			Point3D temp_middle_3 = new Point3D( 0 , 0 , 0 );
 			
 			// this one is just translate towards positive x with width / 2
-			Point3D temp_right_3 = temp_middle_3.translate( this.width / 2 , 0 , 0 );
+			Point3D temp_right_3 = new Point3D( this.true_width , 0 , 0 );
 			Point3D temp_right_3_rotate = temp_right_3.asHomogenous().rotateY( slope_angle ).asPoint3D();
 			
 			// this one is just translate towards positive x with - width / 2
-			Point3D temp_left_3 = temp_middle_3.translate( - this.width / 2 , 0 , 0 );
+			Point3D temp_left_3 = new Point3D( - this.true_width , 0 , 0 );
 			Point3D temp_left_3_rotate = temp_left_3.asHomogenous().rotateY( slope_angle ).asPoint3D();
 			
 			this.middle.add( temp_middle_3 );
@@ -124,7 +131,6 @@ public class Road {
     
     // TODO
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
-    	    	
     	this.renewCoord( CoordFrame3D.identity() );
     	
     	this.create_mesh( gl );
@@ -133,6 +139,7 @@ public class Road {
         gl.glActiveTexture(GL.GL_TEXTURE2);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
         this.triMesh.draw( gl , frame.translate(0f, 0.05f, 0f) ); 
+
         
         this.clear();
     	
