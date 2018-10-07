@@ -67,12 +67,8 @@ public class World extends Application3D implements KeyListener{
         //  --------------------------------- for torch light
 	
 		CoordFrame3D frame = CoordFrame3D.identity()
-//                .translate(0, 0, -3 + this.z )
 //                .translate(0, 0, -18  )
-//                .scale(0.7f, 0.7f, 0.7f)
                 .rotateY( this.clockwise )
-//                .translate( 0 , 0 , 2 )
-//                .scale(2f, 2f, 2f)
                 .rotateY( this.anticlockwise );
 		//------------------------------------------
 		this.camera3d.setView(gl);
