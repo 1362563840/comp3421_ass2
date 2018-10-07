@@ -71,13 +71,16 @@ public class World extends Application3D implements KeyListener{
         Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
         Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
         Shader.setFloat(gl, "phongExp", 4f);
+        Shader.setPenColor(gl, Color.WHITE);
 		
 		
 		if ( this.normal_mode == true ) {
+			this.terrain.turn_on_normal();
 			super.setBackground( Color.WHITE );	
 			this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
 		}
 		else {
+			this.terrain.turn_off_normal();
 			super.setBackground( new Color( 32 , 32 , 32 ) );
 			Shader.setFloat(gl, "cutOff", 10f );
 			Shader.setFloat(gl, "constant", 1f );

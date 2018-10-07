@@ -23,6 +23,11 @@ uniform int mode;
 // mode 2 -> torch night
 
 // mode 3 -> rain
+in vec3 init_position;
+// Incoming color
+in vec4 color;
+uniform float time;
+out vec4 fragColor;
 
 // mode 4 -> sun rotate
 // sun_2d is for sun without texture
@@ -88,7 +93,7 @@ void main() {
         viewPosition = view_matrix * globalPosition;
 
         // The position in CVV coordinates
-        gl_Position = proj_matrix * viewPosition
+        gl_Position = proj_matrix * viewPosition;
     }
 
 }

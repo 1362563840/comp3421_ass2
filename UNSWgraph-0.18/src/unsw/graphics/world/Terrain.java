@@ -192,10 +192,11 @@ public class Terrain {
     public void creatMesh() {
 
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
-    }
+    }    
     
-    int mode = 0;
-    
+    private float angle_z = 0;
+    private boolean switch_light = true ;
+    private boolean switch_color = true ;
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame , Matrix4 View_trans ) {
 
@@ -203,14 +204,52 @@ public class Terrain {
     	// first check if sun is rotated
     	
     	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
-    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
-    	
-    	if ( this.sun_on_off == true ) {
-    		// do something about sun's position
-    	}
+    	Point3D temp_light_1 = CoordFrame3D.identity().rotateZ( this.angle_z ).getMatrix().multiply( temp_light_v4 ).asPoint3D();
+    	Point3D temp_light = frame.getMatrix().multiply( temp_light_1.asHomogenous() ).asPoint3D();
+    	Shader.setPoint3D(gl, "lightPos", temp_light );
+ 	
+//    	if ( this.sun_on_off == true ) {
+//    		
+//    		if ( this.angle_z >= 180 ) {
+//        		this.angle_z = 0;
+//        	}
+//        	if ( switch_light == true ) {
+//        		this.angle_z += 0.1f;
+//        	}
+//                	
+//        	if( switch_color == true ) {
+//        		if ( angle_z <= 45 ) {
+//        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0 , 0.8f ) );
+//        		}
+//        		else if ( angle_z <= 135 ) {
+//        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0.8f , 0 ) );
+//        		}
+//        		else {
+//        			Shader.setColor(gl, "lightIntensity", new Color( 0.8f , 0 , 0 ) );
+//        		}
+//        	}
+//        	else {
+//        		Shader.setColor(gl, "lightIntensity", Color.WHITE );
+//        	}
+//        	
+//        	Shader.setInt(gl, "mode", 4);
+//        	temp_light.draw(gl, frame);
+//        	Shader.setPenColor(gl, Color.WHITE);
+//        	
+//        	
+//    	}
     	
     	if ( this.normal_on_off == true ) {
     		Shader.setInt(gl, "mode", 1 );
+    		Shader.setColor(gl, "lightIntensity", Color.WHITE);
+            Shader.setColor(gl, "ambientIntensity", new Color(0.7f, 0.7f, 0.7f));
+            
+            // Set the material properties
+            Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+            Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+            Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+            Shader.setFloat(gl, "phongExp", 4f);
+            Shader.setPenColor(gl, Color.WHITE);
     		
     		this.drawSelf( gl , frame);
     	 	
@@ -477,9 +516,7 @@ public class Terrain {
     	}
     }
     
-    public float max_height_local() {
-    	this.print_altitude();
-    	
+    public float max_height_local() {    	
     	assert ( this.width >=1 && this.depth >= 1 );
     	float max_height = this.altitude(0, 0);
     	for ( int i = 0 ; i < this.width ; i++ ) {

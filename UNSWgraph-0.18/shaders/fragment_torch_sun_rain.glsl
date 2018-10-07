@@ -39,6 +39,7 @@ uniform int isDay;
 uniform int flash_switch;
 
 // mode 3 -> rain ------------------------------------------------
+in vec4 fragColor;
 
 // mode 4 -> sun rotate-------------------------------------------
 // sun_2d is for sun without texture
