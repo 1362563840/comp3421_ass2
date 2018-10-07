@@ -227,6 +227,8 @@ public class Terrain {
     	else {
     		Shader.setInt(gl, "mode", 2 );
     		
+    		Shader.setInt(gl, "flash_switch", this.flash_switch );
+    		
     		this.drawSelf( gl , frame);
     	 	
 	    	//---------------------------------
