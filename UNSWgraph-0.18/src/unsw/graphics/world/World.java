@@ -55,8 +55,6 @@ public class World extends Application3D implements KeyListener{
 	@Override
 	public void display(GL3 gl) {
 		super.display(gl);
-		// adjust frustrum
-		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
 		
 		//  --------------------------------- for torch light
 //		Shader.setPoint3D(gl, "normal_light", this.camera3d.CameraNormal() );
