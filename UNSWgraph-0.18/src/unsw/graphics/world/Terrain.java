@@ -167,11 +167,28 @@ public class Terrain {
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
     	
-//    	CoordFrame3D f1 = frame.translate( 0.5f , 1.8f , 5f ).scale( 0.3f , 0.3f , 0.3f );
+    	
+    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
+    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
+    	
+    	Shader.setPoint3D(gl, "lightPos", temp_light );
+    	
+    	
+        Shader.setColor(gl, "lightIntensity", Color.WHITE);
+        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
+        
+        // Set the material properties
+        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
+        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
+        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
+        Shader.setFloat(gl, "phongExp", 4f);
+        Shader.setPenColor( gl , Color.WHITE);
+    	
     	
     	// if Terrain has offset, need to adjust frame before passing to its children
     	this.drawSelf( gl , frame);
-//    	this.drawSelf( gl , frame.translate(0, 0, -3) );
+    	
+    	
     	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
     		this.trees.get( i ).drawSelf( gl , frame );
     	}
@@ -182,33 +199,12 @@ public class Terrain {
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
     	
-    	
-    	
-    	// important here
-    	
-    	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
-    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
-    	
-//    	Shader.setPoint3D(gl, "lightPos", temp_light );
-//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-//        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-//        
-//        // Set the material properties
-//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-//        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-//        Shader.setFloat(gl, "phongExp", 4f);
-//    	
-    	Shader.setPenColor( gl , Color.WHITE);
+    
     	Shader.setInt(gl, "tex", 0);
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
         this.triMesh.draw( gl , frame );
-//    	Shader.setPenColor(gl, Color.black);
-    	
-		
 
-    	
     }
     
 

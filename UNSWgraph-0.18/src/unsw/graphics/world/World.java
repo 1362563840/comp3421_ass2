@@ -59,22 +59,13 @@ public class World extends Application3D implements KeyListener{
 		// if 0 , 0 , 0 , then the default camera is at same z coordinate with object
 		
 		//  --------------------------------- for torch light
-		Shader.setPoint3D(gl, "lightPos", this.camera3d.CameraPostion() );
-		Shader.setPoint3D(gl, "normal_light", this.camera3d.CameraNormal() );
+//		Shader.setPoint3D(gl, "normal_light", this.camera3d.CameraNormal() );
 		
 		Shader.setFloat(gl, "cutOff", 5f );
 		Shader.setFloat(gl, "constant", 1f );
 		Shader.setFloat(gl, "linear", 0.09f );
 		Shader.setFloat(gl, "quadratic", 0.032f );
 		
-        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-        
-        // Set the material properties
-        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-        Shader.setFloat(gl, "phongExp", 4f);
         //  --------------------------------- for torch light
 	
 		CoordFrame3D frame = CoordFrame3D.identity()

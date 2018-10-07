@@ -86,9 +86,7 @@ public class Tree {
     	Shader.setInt(gl, "tex", 1);
     	gl.glActiveTexture(GL.GL_TEXTURE1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.texture.getId());
-//        Shader.setPenColor( gl , Color.WHITE );
         this.tree.draw( gl , frame.translate( this.position ).scale(0.5f, 0.1f, 0.1f) );
-//        this.tree.draw( gl , frame.translate( this.position ) );
     }
     
     public void destroy( GL3 gl ) {

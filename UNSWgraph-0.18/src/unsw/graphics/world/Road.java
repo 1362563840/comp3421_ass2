@@ -124,28 +124,15 @@ public class Road {
     
     // TODO
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
-    	
-//    	frame = frame.translate(0f, 0.5f, 0f);
-    	
-    	this.renewCoord( frame );
+    	    	
+    	this.renewCoord( CoordFrame3D.identity() );
     	
     	this.create_mesh( gl );
     	
-//    	// important here
-//    	Shader.setPoint3D(gl, "lightPos", this.terrian.getSunlight().asPoint3D() );
-//        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-//        Shader.setColor(gl, "ambientIntensity", new Color(0.8f, 0.8f, 0.8f));
-//        
-//        // Set the material properties
-//        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-//        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-//        Shader.setColor(gl, "specularCoeff", new Color(0.8f, 0.8f, 0.8f));
-//        Shader.setFloat(gl, "phongExp", 4f);
-
         Shader.setInt(gl, "tex", 2);
         gl.glActiveTexture(GL.GL_TEXTURE2);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
-        this.triMesh.draw( gl , frame ); 
+        this.triMesh.draw( gl , frame.translate(0f, 0.05f, 0f) ); 
         
         this.clear();
     	
