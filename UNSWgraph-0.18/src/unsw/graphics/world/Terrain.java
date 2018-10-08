@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.util.awt.ImageUtil;
@@ -49,6 +51,26 @@ public class Terrain {
     private Texture text_graph;
     private ArrayList< Point2D > texCoords;
     
+//    private Rain_particle rain;
+    
+    private Color lightIntensity; 
+    
+    private Color ambientIntensity;
+    
+    private Color ambientCoeff;
+    private Color diffuseCoeff;
+    private Color specularCoeff;
+    private float phongExp;
+    
+    private rain_control r_control;
+    
+    public int getX_length() {
+    	return this.width;
+    }
+    
+    public int getZ_length() {
+    	return this.depth;
+    }
 
     /**
      * Create a new terrain
@@ -66,10 +88,19 @@ public class Terrain {
         this.vertices = new ArrayList< Point3D >();
         
         this.texCoords = new ArrayList< Point2D >();
+//        this.rain = new Rain_particle( this );
         
+        this.r_control = new rain_control( this );
+        this.old_sun_position = new Vector3( 
+    			this.getSunlight().getX() , 
+    			this.getSunlight().getY() ,
+    			this.getSunlight().getZ()
+    			);
     }
     
     public void init( GL3 gl ) {
+    	// it can not be used in constructor, otherwise the terrian_max_height is worng
+    	this.r_control = new rain_control( this );
     	
     	this.order_vertics();
 
@@ -85,6 +116,9 @@ public class Terrain {
     		this.roads().get( j ).setTerrian( this );
     		this.roads.get( j ).init( gl );
     	}
+    	
+//    	this.rain.init( gl );
+    	this.r_control.init( gl );
     	
     	// Question Do I need to texture init()
     	// TODO need to init road init()
@@ -163,43 +197,129 @@ public class Terrain {
     public void creatMesh() {
 
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
+    }    
+    
+    
+    private Vector3 old_sun_position;
+    
+    public void reback_sun() {
+    	this.sunlight = new Vector3( 
+    			this.old_sun_position.getX() , 
+    			this.old_sun_position.getY() ,
+    			this.old_sun_position.getZ()
+    			);
     }
     
-    public void recursively_draw ( GL3 gl , CoordFrame3D frame ) {
+    public void init_sunLight() {
+    	float temp_x = this.width + 3;
+    	float temp_z = this.depth / 2;
+    	float h = 0;
     	
+    	this.sunlight = new Vector3( temp_x , h , temp_z );
+    	
+    }
+    
+    private float angle_z = 0;
+    private Color last_color = Color.WHITE;
+    
+    public void recursively_draw ( GL3 gl , CoordFrame3D frame , Matrix4 View_trans ) {
+
+    	
+    	// first check if sun is rotated
     	
     	Vector4 temp_light_v4 = new Vector4( this.getSunlight().getX() , this.getSunlight().getY() , this.getSunlight().getZ() , 1 );
-    	Point3D temp_light = frame.getMatrix().multiply( temp_light_v4 ).asPoint3D();
-    	
+    	Point3D temp_light_1 = CoordFrame3D.identity().rotateZ( this.angle_z ).getMatrix().multiply( temp_light_v4 ).asPoint3D();
+    	Point3D temp_light = frame.getMatrix().multiply( temp_light_1.asHomogenous() ).asPoint3D();
     	Shader.setPoint3D(gl, "lightPos", temp_light );
-    	
-    	
-        Shader.setColor(gl, "lightIntensity", Color.WHITE);
-        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
-        
-        // Set the material properties
-        Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-        Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-        Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-        Shader.setFloat(gl, "phongExp", 4f);
-        Shader.setPenColor( gl , Color.WHITE);
-    	
-    	
-    	// if Terrain has offset, need to adjust frame before passing to its children
-    	this.drawSelf( gl , frame);
-    	
-    	
-    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
-    		this.trees.get( i ).drawSelf( gl , frame );
+ 	
+    	if ( this.sun_on_off == true ) {
+    		gl.glPointSize(50);
+    		this.init_sunLight();
+    		
+    		if ( this.angle_z >= 180 ) {
+        		this.angle_z = 0;
+        	}
+        	if ( this.turn_on_off_sun == true ) {
+        		this.angle_z += 0.1f;
+        	}
+                	
+        	if( this.turn_on_off_color == true ) {
+        		if ( angle_z <= 45 ) {
+        			Shader.setPenColor(gl, new Color( 0 , 0 , 0.8f ) );
+        			this.last_color = new Color( 0 , 0 , 0.8f );
+        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0 , 0.8f ) );
+        		}
+        		else if ( angle_z <= 135 ) {
+        			Shader.setPenColor(gl, new Color( 0 , 0.8f , 0 ) );
+        			this.last_color = new Color( 0 , 0.8f , 0 );
+        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0.8f , 0 ) );
+        		}
+        		else {
+        			Shader.setPenColor(gl, new Color( 0.8f , 0 , 0 ) );
+        			this.last_color = new Color( 0.8f , 0 , 0 );
+        			Shader.setColor(gl, "lightIntensity", new Color( 0.8f , 0 , 0 ) );
+        		}
+        	}
+        	else {
+        		Shader.setPenColor(gl, this.last_color );
+        		Shader.setColor(gl, "lightIntensity", Color.WHITE );
+        	}
+        	
+        	Shader.setInt(gl, "mode", 4);
+        	temp_light.draw(gl, frame);
+        	Shader.setPenColor(gl, Color.WHITE);
+        	
+        	
     	}
-    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
-    		this.roads.get( i ).drawSelf( gl , frame );
+    	else {
+    		this.reback_sun();
+    		this.angle_z = 0;
+    		Shader.setColor(gl, "lightIntensity", Color.WHITE );
     	}
+    	
+    	if ( this.normal_on_off == true ) {
+    		Shader.setInt(gl, "mode", 1 );
+    		this.drawSelf( gl , frame);
+    	 	
+	    	//---------------------------------
+	        
+	    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+	    		this.trees.get( i ).drawSelf( gl , frame );
+	    	}
+	    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
+	    		this.roads.get( i ).drawSelf( gl , frame );
+	    	}
+    		
+    	}
+    	else {
+    		Shader.setInt(gl, "mode", 2 );
+    		
+    		Shader.setInt(gl, "flash_switch", this.flash_switch );
+    		
+    		this.drawSelf( gl , frame);
+    	 	
+	    	//---------------------------------
+	        
+	    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
+	    		this.trees.get( i ).drawSelf( gl , frame );
+	    	}
+	    	for ( int i = 0 ; i < this.roads.size() ; i++ ) {
+	    		this.roads.get( i ).drawSelf( gl , frame );
+	    	}
+    	}
+    	
+
+    	
+    	if ( this.rain_on_off == true ) {
+    		Shader.setInt(gl, "mode", 3 );
+    		this.r_control.draw(gl, frame);
+    	}
+
     }
     
-    public void drawSelf( GL3 gl , CoordFrame3D frame ) {
-    	
     
+    public void drawSelf( GL3 gl , CoordFrame3D frame ) {
+    	    
     	Shader.setInt(gl, "tex", 0);
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
@@ -266,9 +386,9 @@ public class Terrain {
     int debug = 0;
     public float altitude(float x, float z) {
     	// debug for array
-    	// TODO: Implement this
-		if (x >= ( this.width - 1 ) || x < 0 || z >= ( this.depth - 1 ) || z < 0 ) return 0;
-
+		if (x >= ( this.width - 1 ) || x < 0 || z >= ( this.depth - 1 ) || z < 0 ) {
+			return 0;
+		}
 
     	float result;
         int isInteger_x = Math.round( x );
@@ -414,5 +534,81 @@ public class Terrain {
     public void destroy(GL3 gl) {
     	
     }
-
+    
+    public void print_altitude() {
+    	for ( int i = 0 ; i < this.width ; i++ ) {
+    		for ( int j = 0 ; j < this.depth ; j++ ) {
+    			System.out.print( this.altitudes[i][j] + "  " );
+    		}
+    		System.out.println();
+    	}
+    }
+    
+    public float max_height_local() {    	
+    	assert ( this.width >=1 && this.depth >= 1 );
+    	float max_height = this.altitude(0, 0);
+    	for ( int i = 0 ; i < this.width ; i++ ) {
+    		for ( int j = 0 ; j < this.depth ; j++ ) {
+    			float temp = this.altitude( i , j );
+    			if ( temp > max_height ) {
+    				max_height = temp;
+    			}
+    		}
+    	}
+    	assert ( max_height >= 0 );
+    	return max_height;
+    }
+    
+    private int flash_switch = 0;
+    
+    public void turn_off_flash() {
+    	this.flash_switch = 0;
+    }
+    
+    public void turn_on_flash() {
+    	this.flash_switch = 1;
+    }
+    
+    private boolean sun_on_off = false;
+    
+    public void turn_on_sun() {
+    	this.sun_on_off = true;
+    }
+    
+    public void turn_off_sun() {
+    	this.sun_on_off = false;
+    }
+    
+    private boolean rain_on_off = false;
+    
+    public void turn_on_rain() {
+    	this.rain_on_off = true;
+    }
+    
+    public void turn_off_rain() {
+    	this.rain_on_off = false;
+    }
+    
+    private boolean normal_on_off = true;
+    
+    public void turn_on_normal() {
+    	this.normal_on_off = true;
+    }
+    
+    public void turn_off_normal() {
+    	this.normal_on_off = false;
+    }
+    
+    private boolean turn_on_off_sun = false;
+    
+    public void sun_switch() {
+    	this.turn_on_off_sun = !this.turn_on_off_sun;
+    }
+    
+    public boolean turn_on_off_color = false;
+    
+    public void color_switch() {
+    	this.turn_on_off_color = !this.turn_on_off_color;
+    }
+    
 }

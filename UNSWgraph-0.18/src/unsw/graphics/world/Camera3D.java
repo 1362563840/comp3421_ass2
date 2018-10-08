@@ -7,6 +7,7 @@ import com.jogamp.opengl.GL3;
 
 import unsw.graphics.CoordFrame2D;
 import unsw.graphics.CoordFrame3D;
+import unsw.graphics.Matrix4;
 import unsw.graphics.Shader;
 import unsw.graphics.geometry.LineStrip2D;
 import unsw.graphics.geometry.Point2D;
@@ -26,11 +27,16 @@ public class Camera3D implements KeyListener {
     private float myScale;
     private float myAngle_X;
     private float myAngle_Z;
+    private float offset;
     private Terrain myTer;
+    
+    private int choose = 0;
 
     public Camera3D(Terrain TerUsed) {
-        myPos = new Point3D(-1, 0, -1);
-        myAngle = -135;
+//        myPos = new Point3D(-1, 0, -1);
+    	myPos = new Point3D(0, 0, 0);
+//        myAngle = -135;
+    	myAngle = 0;
         myScale = 1;
         myAngle_X = 0;
         myAngle_Z = 0;
@@ -38,9 +44,9 @@ public class Camera3D implements KeyListener {
     }
     
     public Point3D CameraNormal() {
-    	return new Point3D( (float)Math.sin( Math.toRadians( this.myAngle ) ) ,
+    	return new Point3D( - (float)Math.sin( Math.toRadians( this.myAngle ) ) ,
     						0 ,
-    						- (float)Math.cos( Math.toRadians( this.myAngle ) ) 
+    						 (float)Math.cos( Math.toRadians( this.myAngle ) ) 
     						);
     }
     
@@ -62,14 +68,24 @@ public class Camera3D implements KeyListener {
     	
     	// if camera's position is near the hill, then adjust the y direction
 //    	this.myPos = new Point3D( myPos.getX() +   ); 
-    	
     	float altitude = myTer.altitude(myPos.getX(), myPos.getZ());
         CoordFrame3D viewFrame = CoordFrame3D.identity()
                 .scale(1/myScale, 1/myScale , 1/myScale )
                 //.rotateX(-myAngle_X).rotateY(-myAngle).rotateZ(-myAngle_Z)   //.rotateY(-myAngle).rotateX(-myAngle).
-                .rotateY(-myAngle)
-                .translate(-myPos.getX(), -altitude - 1f , -myPos.getZ() );
+                .rotateY( 0 ).rotateY(-myAngle ).rotateY( 0 )
+//                .translate(-myPos.getX(), -altitude - 1f , -myPos.getZ() );
+        		.translate(-myPos.getX(), -myPos.getY() , -myPos.getZ() );
         Shader.setViewMatrix(gl, viewFrame.getMatrix());
+    }
+    
+    public Matrix4 View_trans() {
+    	float altitude = myTer.altitude(myPos.getX(), myPos.getZ());
+    	CoordFrame3D viewFrame = CoordFrame3D.identity()
+                .scale(1/myScale, 1/myScale , 1/myScale )
+                //.rotateX(-myAngle_X).rotateY(-myAngle).rotateZ(-myAngle_Z)   //.rotateY(-myAngle).rotateX(-myAngle).
+                .rotateY( 0 ).rotateY(-myAngle ).rotateY( 0 )
+                .translate(-myPos.getX(), -altitude - 1f , -myPos.getZ() );
+    	return viewFrame.getMatrix();
     }
     
     @Override
@@ -94,13 +110,13 @@ public class Camera3D implements KeyListener {
             myPos = new Point3D(x_1, myPos.getY(), z_1);
             break;
             
-//        case KeyEvent.VK_W:
-//            myPos = new Point3D(myPos.getX(), myPos.getY() + 1f , myPos.getZ() );
-//            break;
-//        
-//        case KeyEvent.VK_S:
-//            myPos = new Point3D(myPos.getX(), myPos.getY() - 1f  , myPos.getZ() );
-//            break;
+        case KeyEvent.VK_W:
+            myPos = new Point3D(myPos.getX(), myPos.getY() + 1f , myPos.getZ() );
+            break;
+        
+        case KeyEvent.VK_S:
+            myPos = new Point3D(myPos.getX(), myPos.getY() - 1f  , myPos.getZ() );
+            break;
 //            
 //        case KeyEvent.VK_A:
 //            myPos = new Point3D(myPos.getX() - (float)0.1, myPos.getY() , myPos.getZ() );
@@ -109,7 +125,7 @@ public class Camera3D implements KeyListener {
 //        case KeyEvent.VK_D:
 //            myPos = new Point3D(myPos.getX() + (float)0.1 , myPos.getY()  , myPos.getZ() );
 //            break;
-//           
+        
         }
 
     }

@@ -44,5 +44,26 @@ public class TwoTriangles3D extends Application3D {
         t1.draw(gl , frame);
         t2.draw(gl , frame);
     }
+    
+     
+    public void draw_self(GL3 gl , CoordFrame3D frame ) {
+        super.display(gl);
+        frame = frame.scale(0.5f, 0.5f, 0.5f);
+        Triangle3D t1 = new Triangle3D( -1, -1 , 1,
+        		  						1 , -1 , 1, 
+        		  						1 , 1 , 1);
+       
+        Triangle3D t2 = new Triangle3D( 0 , 1 , 0,
+				  0 , 0 , 1, 
+				  1 , 0 , 0);
+        Triangle3D t3 = new Triangle3D( 0 , 1 , 0,
+				  1 , 0 , 0, 
+				  0 , 0 , 1);
+        Triangle2D tri2 = new Triangle2D(0, 0, -1, -1, 1, -1);
+        Shader.setPenColor(gl, Color.RED);
+        t1.draw(gl , frame);
+        t2.draw(gl , frame);
+    }
+    
 
 }

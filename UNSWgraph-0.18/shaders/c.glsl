@@ -24,9 +24,14 @@ out vec3 m;
 
 out vec2 texCoordFrag;
 
-void main() {
+// debug
+in vec3 initial_pos;
 
-	  // The global position is in homogenous coordinates
+in vec3 debug;
+
+
+void main() {
+	// The global position is in homogenous coordinates
     vec4 globalPosition = model_matrix * vec4(position, 1);
 
     // The position in camera coordinates
@@ -39,5 +44,4 @@ void main() {
     m = normalize(view_matrix*model_matrix * vec4(normal, 0)).xyz;
 
     texCoordFrag = texCoord;
-
 }

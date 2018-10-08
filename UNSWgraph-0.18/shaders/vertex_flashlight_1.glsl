@@ -23,10 +23,14 @@ out vec4 viewPosition;
 out vec3 m;
 
 out vec2 texCoordFrag;
+//
+// out vec3 normal_light;
+//
+// out vec4 last_column;
 
 void main() {
 
-	  // The global position is in homogenous coordinates
+	 // The global position is in homogenous coordinates
     vec4 globalPosition = model_matrix * vec4(position, 1);
 
     // The position in camera coordinates
@@ -40,4 +44,5 @@ void main() {
 
     texCoordFrag = texCoord;
 
+    
 }
