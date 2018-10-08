@@ -150,6 +150,7 @@ public class World extends Application3D implements KeyListener{
             break;
 		
 	    case KeyEvent.VK_T:
+	    	this.sun_mode = false;
 	    	this.normal_mode = false;
 	    	this.torch_mode = true;
 	        break;

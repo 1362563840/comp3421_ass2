@@ -237,6 +237,6 @@ public class rain_test {
 	
 	
 	public void import_texture( GL3 gl ) {
-    	this.text_graph = new Texture( gl, "res/textures/rain_2.png", "png", false );
+    	this.text_graph = new Texture( gl, "res/textures/rain.png", "png", false );
     }
 }
