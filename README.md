@@ -12,12 +12,15 @@ KeyBoard Explain :
 arrow key is used as first milestone required
 
 Q : activate the sun mode
+
 P : means sun can rotate about terrain, but sun mode need to be activated
+
 O : means color is changed with three different time, but sun mode need to be activated
 
 R : activate the rain mode
 
 T : activate the night mode
+
 Space : activate the torch, but night mode need to be activated
 
 N : activate the normal mode which is just at daylight
