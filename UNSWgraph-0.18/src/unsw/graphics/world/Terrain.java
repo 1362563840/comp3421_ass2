@@ -220,8 +220,7 @@ public class Terrain {
     }
     
     private float angle_z = 0;
-    private boolean switch_light = true ;
-    private boolean switch_color = true ;
+    private Color last_color = Color.WHITE;
     
     public void recursively_draw ( GL3 gl , CoordFrame3D frame , Matrix4 View_trans ) {
 
@@ -240,25 +239,29 @@ public class Terrain {
     		if ( this.angle_z >= 180 ) {
         		this.angle_z = 0;
         	}
-        	if ( switch_light == true ) {
+        	if ( this.turn_on_off_sun == true ) {
         		this.angle_z += 0.1f;
         	}
                 	
-        	if( switch_color == true ) {
+        	if( this.turn_on_off_color == true ) {
         		if ( angle_z <= 45 ) {
         			Shader.setPenColor(gl, new Color( 0 , 0 , 0.8f ) );
+        			this.last_color = new Color( 0 , 0 , 0.8f );
         			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0 , 0.8f ) );
         		}
         		else if ( angle_z <= 135 ) {
         			Shader.setPenColor(gl, new Color( 0 , 0.8f , 0 ) );
+        			this.last_color = new Color( 0 , 0.8f , 0 );
         			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0.8f , 0 ) );
         		}
         		else {
         			Shader.setPenColor(gl, new Color( 0.8f , 0 , 0 ) );
+        			this.last_color = new Color( 0.8f , 0 , 0 );
         			Shader.setColor(gl, "lightIntensity", new Color( 0.8f , 0 , 0 ) );
         		}
         	}
         	else {
+        		Shader.setPenColor(gl, this.last_color );
         		Shader.setColor(gl, "lightIntensity", Color.WHITE );
         	}
         	
@@ -595,5 +598,17 @@ public class Terrain {
     public void turn_off_normal() {
     	this.normal_on_off = false;
     }
-
+    
+    private boolean turn_on_off_sun = false;
+    
+    public void sun_switch() {
+    	this.turn_on_off_sun = !this.turn_on_off_sun;
+    }
+    
+    public boolean turn_on_off_color = false;
+    
+    public void color_switch() {
+    	this.turn_on_off_color = !this.turn_on_off_color;
+    }
+    
 }

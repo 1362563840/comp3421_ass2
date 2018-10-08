@@ -169,8 +169,19 @@ public class World extends Application3D implements KeyListener{
 				this.sun_mode = !this.sun_mode;
 			}
 		    break;
-		}
 		
+	    case KeyEvent.VK_P:
+			if ( this.sun_mode == true ) {
+				this.terrain.sun_switch();
+			}
+		    break;
+	    case KeyEvent.VK_O:
+			if ( this.sun_mode == true ) {
+				this.terrain.color_switch();
+			}
+		    break;
+		
+		}
 	}
 	
 	@Override
