@@ -53,7 +53,6 @@ public class World extends Application3D implements KeyListener{
     public static void main(String[] args) throws FileNotFoundException {
         Terrain terrain = LevelIO.load(new File(args[0]));
         World world = new World(terrain);
-        terrain.print_altitude();
         world.start();
     }
 
@@ -64,7 +63,7 @@ public class World extends Application3D implements KeyListener{
 		this.camera3d.setView(gl);
 		
 		Shader.setColor(gl, "lightIntensity", Color.WHITE);
-        Shader.setColor(gl, "ambientIntensity", new Color(0.7f, 0.7f, 0.7f));
+        Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
         
         // Set the material properties
         Shader.setColor(gl, "ambientCoeff", Color.WHITE);

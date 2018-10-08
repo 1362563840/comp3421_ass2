@@ -139,7 +139,6 @@ public class rain_test {
      // Set the point size
         gl.glPointSize(50);
         
-        Shader.setFloat(gl, "gravity", rain_test.gravityY);
         
 	}
 	
@@ -172,13 +171,16 @@ public class rain_test {
 //        // Disable depth testing to get a nice composition
 //        gl.glDisable(GL.GL_DEPTH_TEST);
 //		Shader.setPenColor(gl, Color.YELLOW);
-
+		
+//		Shader.setPoint3D( gl , "debug_v" , new Point3D( 0 , 0.5f , 0 ) );
+//		Shader.setFloat( gl , "y_speed" , 0.5f );
         
         Shader.setFloat(gl, "time", this.time);
         // Draw the particles
-        Shader.setInt(gl, "tex", 3);
-        gl.glActiveTexture(GL.GL_TEXTURE3);
+        Shader.setInt(gl, "tex", 0);
+        gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL2.GL_TEXTURE_2D, this.text_graph.getId());
+//        System.out.println( "there" );
         
         
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);

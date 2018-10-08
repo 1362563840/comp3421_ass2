@@ -91,6 +91,11 @@ public class Terrain {
 //        this.rain = new Rain_particle( this );
         
         this.r_control = new rain_control( this );
+        this.old_sun_position = new Vector3( 
+    			this.getSunlight().getX() , 
+    			this.getSunlight().getY() ,
+    			this.getSunlight().getZ()
+    			);
     }
     
     public void init( GL3 gl ) {
@@ -194,6 +199,26 @@ public class Terrain {
     	this.triMesh = new TriangleMesh( this.vertices , true , this.texCoords );
     }    
     
+    
+    private Vector3 old_sun_position;
+    
+    public void reback_sun() {
+    	this.sunlight = new Vector3( 
+    			this.old_sun_position.getX() , 
+    			this.old_sun_position.getY() ,
+    			this.old_sun_position.getZ()
+    			);
+    }
+    
+    public void init_sunLight() {
+    	float temp_x = this.width + 3;
+    	float temp_z = this.depth / 2;
+    	float h = 0;
+    	
+    	this.sunlight = new Vector3( temp_x , h , temp_z );
+    	
+    }
+    
     private float angle_z = 0;
     private boolean switch_light = true ;
     private boolean switch_color = true ;
@@ -208,49 +233,49 @@ public class Terrain {
     	Point3D temp_light = frame.getMatrix().multiply( temp_light_1.asHomogenous() ).asPoint3D();
     	Shader.setPoint3D(gl, "lightPos", temp_light );
  	
-//    	if ( this.sun_on_off == true ) {
-//    		
-//    		if ( this.angle_z >= 180 ) {
-//        		this.angle_z = 0;
-//        	}
-//        	if ( switch_light == true ) {
-//        		this.angle_z += 0.1f;
-//        	}
-//                	
-//        	if( switch_color == true ) {
-//        		if ( angle_z <= 45 ) {
-//        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0 , 0.8f ) );
-//        		}
-//        		else if ( angle_z <= 135 ) {
-//        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0.8f , 0 ) );
-//        		}
-//        		else {
-//        			Shader.setColor(gl, "lightIntensity", new Color( 0.8f , 0 , 0 ) );
-//        		}
-//        	}
-//        	else {
-//        		Shader.setColor(gl, "lightIntensity", Color.WHITE );
-//        	}
-//        	
-//        	Shader.setInt(gl, "mode", 4);
-//        	temp_light.draw(gl, frame);
-//        	Shader.setPenColor(gl, Color.WHITE);
-//        	
-//        	
-//    	}
+    	if ( this.sun_on_off == true ) {
+    		gl.glPointSize(50);
+    		this.init_sunLight();
+    		
+    		if ( this.angle_z >= 180 ) {
+        		this.angle_z = 0;
+        	}
+        	if ( switch_light == true ) {
+        		this.angle_z += 0.1f;
+        	}
+                	
+        	if( switch_color == true ) {
+        		if ( angle_z <= 45 ) {
+        			Shader.setPenColor(gl, new Color( 0 , 0 , 0.8f ) );
+        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0 , 0.8f ) );
+        		}
+        		else if ( angle_z <= 135 ) {
+        			Shader.setPenColor(gl, new Color( 0 , 0.8f , 0 ) );
+        			Shader.setColor(gl, "lightIntensity", new Color( 0 , 0.8f , 0 ) );
+        		}
+        		else {
+        			Shader.setPenColor(gl, new Color( 0.8f , 0 , 0 ) );
+        			Shader.setColor(gl, "lightIntensity", new Color( 0.8f , 0 , 0 ) );
+        		}
+        	}
+        	else {
+        		Shader.setColor(gl, "lightIntensity", Color.WHITE );
+        	}
+        	
+        	Shader.setInt(gl, "mode", 4);
+        	temp_light.draw(gl, frame);
+        	Shader.setPenColor(gl, Color.WHITE);
+        	
+        	
+    	}
+    	else {
+    		this.reback_sun();
+    		this.angle_z = 0;
+    		Shader.setColor(gl, "lightIntensity", Color.WHITE );
+    	}
     	
     	if ( this.normal_on_off == true ) {
     		Shader.setInt(gl, "mode", 1 );
-    		Shader.setColor(gl, "lightIntensity", Color.WHITE);
-            Shader.setColor(gl, "ambientIntensity", new Color(0.7f, 0.7f, 0.7f));
-            
-            // Set the material properties
-            Shader.setColor(gl, "ambientCoeff", Color.WHITE);
-            Shader.setColor(gl, "diffuseCoeff", new Color(0.5f, 0.5f, 0.5f));
-            Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
-            Shader.setFloat(gl, "phongExp", 4f);
-            Shader.setPenColor(gl, Color.WHITE);
-    		
     		this.drawSelf( gl , frame);
     	 	
 	    	//---------------------------------
