@@ -90,7 +90,6 @@ public class Terrain {
         this.texCoords = new ArrayList< Point2D >();
 //        this.rain = new Rain_particle( this );
         
-        this.r_control = new rain_control( this );
         this.old_sun_position = new Vector3( 
     			this.getSunlight().getX() , 
     			this.getSunlight().getY() ,
@@ -99,7 +98,7 @@ public class Terrain {
     }
     
     public void init( GL3 gl ) {
-    	// it can not be used in constructor, otherwise the terrian_max_height is worng
+    	// it can not be used in constructor, otherwise the terrian_max_height is wrong
     	this.r_control = new rain_control( this );
     	
     	this.order_vertics();
@@ -292,8 +291,13 @@ public class Terrain {
     		
     	}
     	else {
-    		Shader.setInt(gl, "mode", 2 );
+    		if ( this.rain_on_off == true ) {
+    			Shader.setInt(gl, "mode", 2 );
+    			Shader.setInt(gl, "rain_mode", 1 );
+    			this.r_control.draw(gl, frame);
+    		}
     		
+    		Shader.setInt(gl, "rain_mode", 0 );
     		Shader.setInt(gl, "flash_switch", this.flash_switch );
     		
     		this.drawSelf( gl , frame);
@@ -310,7 +314,7 @@ public class Terrain {
     	
 
     	
-    	if ( this.rain_on_off == true ) {
+    	if ( this.rain_on_off == true && this.normal_on_off == true ) {
     		Shader.setInt(gl, "mode", 3 );
     		this.r_control.draw(gl, frame);
     	}

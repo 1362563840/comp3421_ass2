@@ -50,7 +50,13 @@ public class rain_control {
 	public rain_control ( Terrain terrian ) {
 		this.terrian = terrian;
 		this.terrian_max_height = this.terrian.max_height_local();
-		this.offset_height = 3;
+		
+		System.out.println( "terrian's width is " + this.terrian.getWidth() );
+		System.out.println( "terrian's depth is " + this.terrian.getDepth() );
+		
+		System.out.println( "terrian's max heigh is " + this.terrian.max_height_local() );
+	
+		this.offset_height = 3 + 0;
 		this.rand = new Random(0);
 		
 		this.life = new ArrayList< Float >();
@@ -82,6 +88,9 @@ public class rain_control {
 			Point2D temp = new Point2D( this.rand.nextFloat() * ( width - 1 ) , this.rand.nextFloat() * ( depth - 1 )  );
 			float height = this.terrian.altitude( temp.getX() , temp.getY() );
 			
+			System.out.println( " x is " + temp.getX() + " z is " + temp.getY() );
+			System.out.println( "hegiht is " + height );
+			
 			// t = s / v
 			float temp_time = ( terrian_max_height +  this.offset_height - height ) / ( 1f / 60f );
 			// consider some error
@@ -96,6 +105,11 @@ public class rain_control {
 			this.inital.add( new Point3D( temp.getX() , 
 												terrian_max_height + this.offset_height , 
 												temp.getY() ) );
+			
+			Point3D debug = new Point3D( temp.getX() , 
+											terrian_max_height + this.offset_height , 
+											temp.getY() );
+//			debug.print_out();
 			
 			this.rain.add( temp_rain );
 			this.life.add( temp_time );

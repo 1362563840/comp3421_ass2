@@ -73,8 +73,8 @@ public class Camera3D implements KeyListener {
                 .scale(1/myScale, 1/myScale , 1/myScale )
                 //.rotateX(-myAngle_X).rotateY(-myAngle).rotateZ(-myAngle_Z)   //.rotateY(-myAngle).rotateX(-myAngle).
                 .rotateY( 0 ).rotateY(-myAngle ).rotateY( 0 )
-                .translate(-myPos.getX(), -altitude - 1f , -myPos.getZ() );
-//        		.translate(-myPos.getX(), -myPos.getY() , -myPos.getZ() );
+//                .translate(-myPos.getX(), -altitude - 1f , -myPos.getZ() );
+        		.translate(-myPos.getX(), -myPos.getY() , -myPos.getZ() );
         Shader.setViewMatrix(gl, viewFrame.getMatrix());
     }
     

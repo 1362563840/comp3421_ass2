@@ -45,7 +45,7 @@ in vec4 fragColor;
 // sun_2d is for sun without texture
 uniform int sun_2d;
 
-
+uniform int rain_mode;
 
 void main()
 {
@@ -142,13 +142,24 @@ void main()
             // torch light is same as sunlight
             // but won't make effect in dayligh
             if ( flash_switch == 0 ){
-              outputColor = 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+
+                if ( rain_mode == 1 ) {
+                    outputColor = 0.1 * input_color*fragColor*texture(tex, gl_PointCoord);
+                }
+                else {
+                    outputColor = 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+                }
             }
             else {
-              outputColor = ( ambientAndDiffuse_flash*input_color*texture(tex, texCoordFrag) + vec4(specular_flash, 1.0) ) *
-                              ( 1.1 -  temp_degree / cutOff )        ;
+                if ( rain_mode == 1 ) {
+                    outputColor = input_color*fragColor*texture(tex, gl_PointCoord);
+                }
+                else{
+                    outputColor = ( ambientAndDiffuse_flash*input_color*texture(tex, texCoordFrag) + vec4(specular_flash, 1.0) ) *
+                                    ( 1.1 -  temp_degree / cutOff )        ;
 
-              outputColor = outputColor + 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+                    outputColor = outputColor + 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+                }
             }
 
         }

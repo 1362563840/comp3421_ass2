@@ -96,6 +96,12 @@ public class World extends Application3D implements KeyListener{
 		}
 		
 		if ( this.rain_mode == true ) {
+			if ( this.torch_mode == true ) {
+				
+			}
+			else {
+				super.setBackground( new Color( 211 , 211 , 211 ) );
+			}
 			this.terrain.turn_on_rain();
 		}
 		else {

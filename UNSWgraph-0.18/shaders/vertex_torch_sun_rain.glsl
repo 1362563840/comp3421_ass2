@@ -33,6 +33,8 @@ out vec4 fragColor;
 // sun_2d is for sun without texture
 uniform int sun_2d;
 
+uniform int rain_mode;
+
 void main() {
     if ( mode == 1 ) {
         // The global position is in homogenous coordinates
@@ -51,19 +53,38 @@ void main() {
     }
 
     if ( mode == 2 ) {
-        // The global position is in homogenous coordinates
-        vec4 globalPosition = model_matrix * vec4(position, 1);
+        if( rain_mode == 1 ){
+            //Velocity is passed in as the position attribute
+    		vec3 velocity = position;
 
-        // The position in camera coordinates
-        viewPosition = view_matrix * globalPosition;
+    		vec3 pos = init_position + time * velocity; //+ vec3(0, 0.5*gravity*time*time, 0);
+    		// The global position is in homogenous coordinates
+    	    vec4 globalPosition = model_matrix * vec4(pos, 1);
 
-        // The position in CVV coordinates
-        gl_Position = proj_matrix * viewPosition;
+    	    // The position in camera coordinates
+    	    viewPosition = view_matrix * globalPosition;
 
-        // Compute the normal in view coordinates
-        m = normalize(view_matrix*model_matrix * vec4(normal, 0)).xyz;
+    	    // The position in CVV coordinates
+    	    gl_Position = proj_matrix * viewPosition;
 
-        texCoordFrag = texCoord;
+    	    fragColor = color;
+    	    // fragColor.a = 1 - time * speed_color;
+        }
+        else {
+            // The global position is in homogenous coordinates
+            vec4 globalPosition = model_matrix * vec4(position, 1);
+
+            // The position in camera coordinates
+            viewPosition = view_matrix * globalPosition;
+
+            // The position in CVV coordinates
+            gl_Position = proj_matrix * viewPosition;
+
+            // Compute the normal in view coordinates
+            m = normalize(view_matrix*model_matrix * vec4(normal, 0)).xyz;
+
+            texCoordFrag = texCoord;
+        }
     }
 
     if ( mode == 3 ) {
