@@ -134,11 +134,12 @@ public class Road {
     	this.renewCoord( CoordFrame3D.identity() );
     	
     	this.create_mesh( gl );
-    	
+    	Shader.setModelMatrix( gl , CoordFrame3D.identity().getMatrix() );
         Shader.setInt(gl, "tex", 2);
         gl.glActiveTexture(GL.GL_TEXTURE2);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());
         this.triMesh.draw( gl , frame.translate(0f, 0.008f, 0f) ); 
+//        this.triMesh.draw( gl , frame ); 
 
         
         this.clear();

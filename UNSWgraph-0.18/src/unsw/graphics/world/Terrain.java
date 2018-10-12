@@ -277,11 +277,15 @@ public class Terrain {
     	}
     	
     	if ( this.normal_on_off == true ) {
+    		
+    		
     		Shader.setInt(gl, "mode", 1 );
     		this.drawSelf( gl , frame);
     	 	
+
+    		
 	    	//---------------------------------
-	        
+    		Shader.setInt(gl, "mode", 1 );
 	    	for ( int i = 0 ; i < this.trees.size() ; i++ ) {
 	    		this.trees.get( i ).drawSelf( gl , frame );
 	    	}
@@ -323,7 +327,8 @@ public class Terrain {
     
     
     public void drawSelf( GL3 gl , CoordFrame3D frame ) {
-    	    
+    	
+    	Shader.setModelMatrix( gl , CoordFrame3D.identity().getMatrix() );
     	Shader.setInt(gl, "tex", 0);
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.text_graph.getId());

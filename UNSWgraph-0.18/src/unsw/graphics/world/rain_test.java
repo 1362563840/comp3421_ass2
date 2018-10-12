@@ -186,9 +186,13 @@ public class rain_test {
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
 
         // Disable depth testing to get a nice composition
-        gl.glDisable(GL.GL_DEPTH_TEST);
+//        gl.glDisable(GL.GL_DEPTH_TEST);
+        gl.glEnable(GL.GL_BLEND);
+        // bug is here
+        // bu how to dray array in specific frame
+        Shader.setModelMatrix( gl , CoordFrame3D.identity().getMatrix() );
         gl.glDrawArrays(GL.GL_POINTS, 0, this.how_many);
-//        gl.glEnable(GL.GL_BLEND);
+//        gl.glDisable(GL.GL_BLEND);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         

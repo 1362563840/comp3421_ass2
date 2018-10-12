@@ -55,10 +55,10 @@ void main() {
     if ( mode == 2 ) {
         if( rain_mode == 1 ){
             //Velocity is passed in as the position attribute
-    		vec3 velocity = position;
+      		vec3 velocity = position;
 
-    		vec3 pos = init_position + time * velocity; //+ vec3(0, 0.5*gravity*time*time, 0);
-    		// The global position is in homogenous coordinates
+      		vec3 pos = init_position + time * velocity; //+ vec3(0, 0.5*gravity*time*time, 0);
+      		// The global position is in homogenous coordinates
     	    vec4 globalPosition = model_matrix * vec4(pos, 1);
 
     	    // The position in camera coordinates
@@ -88,11 +88,11 @@ void main() {
     }
 
     if ( mode == 3 ) {
-		//Velocity is passed in as the position attribute
-		vec3 velocity = position;
+  		//Velocity is passed in as the position attribute
+  		vec3 velocity = position;
 
-		vec3 pos = init_position + time * velocity; //+ vec3(0, 0.5*gravity*time*time, 0);
-		// The global position is in homogenous coordinates
+  		vec3 pos = init_position + time * velocity; //+ vec3(0, 0.5*gravity*time*time, 0);
+  		// The global position is in homogenous coordinates
 	    vec4 globalPosition = model_matrix * vec4(pos, 1);
 
 	    // The position in camera coordinates
