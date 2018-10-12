@@ -190,7 +190,7 @@ public class rain_test {
         gl.glEnable(GL.GL_BLEND);
         // bug is here
         // bu how to dray array in specific frame
-        Shader.setModelMatrix( gl , CoordFrame3D.identity().getMatrix() );
+        Shader.setModelMatrix( gl , frame.getMatrix() );
         gl.glDrawArrays(GL.GL_POINTS, 0, this.how_many);
 //        gl.glDisable(GL.GL_BLEND);
         gl.glEnable(GL.GL_DEPTH_TEST);
