@@ -152,11 +152,11 @@ void main()
             }
             else {
                 if ( rain_mode == 1 ) {
-                    outputColor = input_color*fragColor*texture(tex, gl_PointCoord);
+                    outputColor = input_color*fragColor*texture(tex, gl_PointCoord) * attenuation;
                 }
                 else{
                     outputColor = ( ambientAndDiffuse_flash*input_color*texture(tex, texCoordFrag) + vec4(specular_flash, 1.0) ) *
-                                    ( 1.1 -  temp_degree / cutOff )        ;
+                                    ( 1.1 -  temp_degree / cutOff );
 
                     outputColor = outputColor + 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
                 }

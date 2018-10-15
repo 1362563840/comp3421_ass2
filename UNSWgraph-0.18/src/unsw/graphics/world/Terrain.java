@@ -300,7 +300,7 @@ public class Terrain {
     			Shader.setInt(gl, "rain_mode", 1 );
     			this.r_control.draw(gl, frame);
     		}
-    		
+    		Shader.setInt(gl, "mode", 2 );
     		Shader.setInt(gl, "rain_mode", 0 );
     		Shader.setInt(gl, "flash_switch", this.flash_switch );
     		
