@@ -3,6 +3,7 @@ package unsw.graphics.world;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -30,18 +31,23 @@ public class World extends Application3D implements KeyListener{
     private float z;
     private float clockwise;
     private float anticlockwise;
-    private Camera3D camera3d;
+    //private Camera3D camera3d;
+    private Avatar ava;
+    private Camera3DWithAva avaCam;
     
     private int DarkMode;
+    private int viewMode;
     
-    public World(Terrain terrain) {
+    public World(Terrain terrain) throws IOException {
     	super("Assignment 2", 1200, 1200);
         this.terrain = terrain;
         this.clockwise = 0;
         this.anticlockwise = 0;
-        this.camera3d = new Camera3D(terrain);
-        
+        this.ava = new Avatar(new Point3D(0, 1, 0), "res/models/bunny_res4.ply");
+        //this.camera3d = new Camera3D(terrain, ava);
+        this.avaCam = new Camera3DWithAva(ava, terrain);
         this.DarkMode = 1;
+        this.viewMode = 3; // default is third person
     }
    
     /**
@@ -50,7 +56,8 @@ public class World extends Application3D implements KeyListener{
      * @param args - The first argument is a level file in JSON format
      * @throws FileNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException {
+    //public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         Terrain terrain = LevelIO.load(new File(args[0]));
         World world = new World(terrain);
         world.start();
@@ -60,7 +67,7 @@ public class World extends Application3D implements KeyListener{
 	public void display(GL3 gl) {		
 		super.display(gl);
 		CoordFrame3D frame = CoordFrame3D.identity();
-		this.camera3d.setView(gl);
+		//this.camera3d.setView(gl);
 		
 		Shader.setColor(gl, "lightIntensity", Color.WHITE);
         Shader.setColor(gl, "ambientIntensity", new Color(0.4f, 0.4f, 0.4f));
@@ -71,12 +78,19 @@ public class World extends Application3D implements KeyListener{
         Shader.setColor(gl, "specularCoeff", new Color(0.3f, 0.3f, 0.3f));
         Shader.setFloat(gl, "phongExp", 4f);
         Shader.setPenColor(gl, Color.WHITE);
-		
-		
+
+        //this.ava.drawSelf(gl);
+        if (viewMode == 3) {
+        	avaCam.setViewThird(gl);
+        	ava.drawSelf(gl);
+        }
+		else avaCam.setViewFirst(gl);
 		if ( this.normal_mode == true ) {
 			this.terrain.turn_on_normal();
 			super.setBackground( Color.WHITE );	
-			this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
+			//this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
+			this.terrain.recursively_draw( gl , frame , avaCam.getThirdFrameMatrix() );
+            //this.camera3d.draw(gl, frame);
 		}
 		else {
 			this.terrain.turn_off_normal();
@@ -85,7 +99,9 @@ public class World extends Application3D implements KeyListener{
 			Shader.setFloat(gl, "constant", 1f );
 			Shader.setFloat(gl, "linear", 0.09f );
 			Shader.setFloat(gl, "quadratic", 0.032f );
-			this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
+			//this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
+			this.terrain.recursively_draw( gl , frame , avaCam.getThirdFrameMatrix() );
+            //this.camera3d.draw(gl, frame);
 		}
 		
 		if( this.torch_on_off == true ) {
@@ -124,6 +140,8 @@ public class World extends Application3D implements KeyListener{
 		
 		// Terrain recursively destory
 		this.terrain.destroy( gl );
+        this.ava.destory(gl);
+        //this.camera3d.destory(gl);
 	}
 
 	@Override
@@ -131,12 +149,15 @@ public class World extends Application3D implements KeyListener{
 		super.init(gl);	
 
 		this.getWindow().addKeyListener( this );
-		this.getWindow().addKeyListener( this.camera3d );
+		//this.getWindow().addKeyListener( this.camera3d );
+		this.getWindow().addKeyListener(avaCam);
 		this.z = -15;
 		this.z = -15;
 		this.main_frame = CoordFrame3D.identity().translate( 0 , 0 , z );
 		// Our codes :
 		this.terrain.init( gl );
+		//this.camera3d.init(gl);
+        this.ava.init(gl);
 		//TODO terrian init() need to be called
 	}
 	
@@ -187,7 +208,12 @@ public class World extends Application3D implements KeyListener{
 				this.terrain.color_switch();
 			}
 		    break;
-		
+	    case KeyEvent.VK_1:
+	    	viewMode = 1;
+	    	break;
+	    case KeyEvent.VK_3:
+	    	viewMode = 3;
+	    	break;
 		}
 	}
 	

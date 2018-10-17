@@ -13,6 +13,8 @@ import unsw.graphics.geometry.LineStrip2D;
 import unsw.graphics.geometry.Point2D;
 import unsw.graphics.geometry.Point3D;
 
+import java.io.IOException;
+
 
 /**
  * The 3Dcamera for the assignment2
@@ -29,18 +31,22 @@ public class Camera3D implements KeyListener {
     private float myAngle_Z;
     private float offset;
     private Terrain myTer;
+    private Avatar myAva;
     
     private int choose = 0;
 
-    public Camera3D(Terrain TerUsed) {
-//        myPos = new Point3D(-1, 0, -1);
-    	myPos = new Point3D(0, 0, 0);
-//        myAngle = -135;
-    	myAngle = 0;
+    public Camera3D(Terrain TerUsed, Avatar ava) {
+        myPos = new Point3D(-2, 0, -2);
+//    	myPos = new Point3D(0, 0, 0);
+        myAngle = -135;
+//    	myAngle = 0;
         myScale = 1;
         myAngle_X = 0;
         myAngle_Z = 0;
         myTer = TerUsed;
+        myAva = ava;
+        //attachedAva = new Avatar(new Point3D(0, 0, 0), "res/models/bunny_res4.ply");
+        //attachedAva.setRotateY(0);
     }
     
     public Point3D CameraNormal() {
@@ -53,11 +59,20 @@ public class Camera3D implements KeyListener {
     public Point3D CameraPostion() {
     	return this.myPos;
     }
-    
-    
+
+    public void init(GL3 gl) {
+        myAva.init(gl);
+    }
+
     public void draw(GL3 gl, CoordFrame3D frame) {
         CoordFrame3D cameraFrame = frame.translate(myPos)
                 .rotateY(myAngle);
+        //myAva.init(gl);
+        myAva.drawSelf(gl);
+    }
+
+    public void destory(GL3 gl) {
+       myAva.destory(gl);
     }
 
     /**
@@ -93,15 +108,23 @@ public class Camera3D implements KeyListener {
         switch(e.getKeyCode()) {
         case KeyEvent.VK_LEFT:
             myAngle += 5;
+            //attachedAva.setRotateY(attachedAva.getRotateY()+5);
             break;
         case KeyEvent.VK_RIGHT: 
         	myAngle -= 5;
+            //attachedAva.setRotateY(attachedAva.getRotateY()-5);
             break;
         case KeyEvent.VK_DOWN:
         	float x = this.myPos.getX() + (float)Math.sin( Math.toRadians( this.myAngle ) );
         	float z = this.myPos.getZ() + (float)Math.cos( Math.toRadians( this.myAngle ) );
-            myPos = new Point3D(x , myPos.getY()  , z );
-            //System.out.println(throughWall());
+        	myPos = new Point3D(x, myPos.getY(), z);
+
+        	float x_a = x-0.1f; //this.attachedAva.getPosition().getX() + (float)Math.sin( Math.toRadians( this.myAngle ) );
+        	float z_a = z-0.1f; //this.attachedAva.getPosition().getZ() + (float)Math.cos( Math.toRadians( this.myAngle ) );
+            float alt = myTer.altitude(x_a, z_a);
+            System.out.println("New x_a is "+x_a+" new z_a is "+z_a);
+            myAva.setNewPos(new Point3D(x_a, -alt-1f, z_a));
+           
             break;
         case KeyEvent.VK_UP:
         	float x_1 = this.myPos.getX() - (float)Math.sin( Math.toRadians( this.myAngle ) );
@@ -129,6 +152,9 @@ public class Camera3D implements KeyListener {
         }
 
     }
+
+
+
 
     /**
      * Move camera along the hill
