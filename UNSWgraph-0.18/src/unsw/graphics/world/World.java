@@ -43,7 +43,7 @@ public class World extends Application3D implements KeyListener{
         this.terrain = terrain;
         this.clockwise = 0;
         this.anticlockwise = 0;
-        this.ava = new Avatar(new Point3D(0, 1, 0), "res/models/bunny_res4.ply");
+        this.ava = new Avatar(new Point3D(0, 0, 0), "res/models/bunny_res4.ply");
         //this.camera3d = new Camera3D(terrain, ava);
         this.avaCam = new Camera3DWithAva(ava, terrain);
         this.DarkMode = 1;

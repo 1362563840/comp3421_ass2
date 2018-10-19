@@ -27,7 +27,7 @@ public class Avatar {
     public Avatar(Point3D position, String modelFile) throws IOException {
         this.position = position;
         this.model = new TriangleMesh(modelFile, true, true);
-        this.rotateY = 45;
+        this.rotateY = -135;
     }
 
     public Point3D getPosition() { return position; }
@@ -49,15 +49,14 @@ public class Avatar {
     }
 
     public void drawSelf(GL3 gl) {
-        //Shader.setPenColor(gl, Color.CYAN);
         Shader.setInt(gl, "tex", 0);
 
         gl.glActiveTexture(GL.GL_TEXTURE0);
         gl.glBindTexture(GL.GL_TEXTURE_2D, skin.getId());
         
-        System.out.println("It is drawing");
         CoordFrame3D modelFrame = CoordFrame3D.identity().translate(position)
                 .rotateY(rotateY).scale(1, 1, 1);
+        Shader.setModelMatrix(gl, modelFrame.getMatrix());
         model.draw(gl, modelFrame);
     }
 

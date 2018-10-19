@@ -49,7 +49,7 @@ public class Camera3DWithAva implements KeyListener {
 	 */
 	public void setViewThird(GL3 gl) {
 		CoordFrame3D viewFrame = CoordFrame3D.identity()
-				.translate(-2, 0.5f, -2)
+				.translate(0, 0, -1.5f)
 				.rotateY(-myAva.getRotateY())
 				.translate(-myAva.getPosition().getX(), -myAva.getPosition().getY(), -myAva.getPosition().getZ());
 		Shader.setViewMatrix(gl, viewFrame.getMatrix());
@@ -85,16 +85,20 @@ public class Camera3DWithAva implements KeyListener {
         	
             break;
         case KeyEvent.VK_DOWN:
+        	//System.out.println("RotateY is: "+ myAva.getRotateY());
         	float xAvaD = myAva.getPosition().getX() + (float)Math.sin(Math.toRadians(myAva.getRotateY()));
-        	float zAvaD = myAva.getPosition().getZ() + (float)Math.sin(Math.toRadians(myAva.getRotateY()));
+        	float zAvaD = myAva.getPosition().getZ() + (float)Math.cos(Math.toRadians(myAva.getRotateY()));
         	height = myTer.altitude(xAvaD, zAvaD);
+        	//System.out.println("New position has X:"+xAvaD+" Y: "+height+ " Z: "+zAvaD);
         	myAva.setNewPos(new Point3D(xAvaD, height, zAvaD));
            
             break;
         case KeyEvent.VK_UP:
+        	//System.out.println("RotateY is: "+ myAva.getRotateY());
         	float xAvaU = myAva.getPosition().getX() - (float)Math.sin(Math.toRadians(myAva.getRotateY()));
-        	float zAvaU = myAva.getPosition().getZ() - (float)Math.sin(Math.toRadians(myAva.getRotateY()));
+        	float zAvaU = myAva.getPosition().getZ() - (float)Math.cos(Math.toRadians(myAva.getRotateY()));
         	height = myTer.altitude(xAvaU, zAvaU);
+        	//System.out.println("New position has X:"+xAvaU+" Y: "+height+ " Z: "+zAvaU);
         	myAva.setNewPos(new Point3D(xAvaU, height, zAvaU));
         	
             break;
