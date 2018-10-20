@@ -49,7 +49,7 @@ public class Camera3DWithAva implements KeyListener {
 	 */
 	public void setViewThird(GL3 gl) {
 		CoordFrame3D viewFrame = CoordFrame3D.identity()
-				.translate(0, 0, -1.5f)
+				.translate(0, -0.5f, -1.1f)
 				.rotateY(-myAva.getRotateY())
 				.translate(-myAva.getPosition().getX(), -myAva.getPosition().getY(), -myAva.getPosition().getZ());
 		Shader.setViewMatrix(gl, viewFrame.getMatrix());
