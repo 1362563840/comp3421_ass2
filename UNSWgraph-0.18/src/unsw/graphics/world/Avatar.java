@@ -42,16 +42,17 @@ public class Avatar {
 
     public void init(GL3 gl) {
         model.init(gl);
-        Shader shader = new Shader(gl, "shaders/vertex_tex_phong.glsl",
-                "shaders/fragment_tex_phong.glsl");
+//        Shader shader = new Shader(gl, "shaders/vertex_tex_phong.glsl",
+//                "shaders/fragment_tex_phong.glsl");
         skin = new Texture(gl, "res/textures/rock.bmp", "bmp", false);
-        shader.use(gl);
+//        shader.use(gl);
     }
 
     public void drawSelf(GL3 gl) {
-        Shader.setInt(gl, "tex", 0);
+    	Shader.setInt(gl, "mode", 1);
+        Shader.setInt(gl, "tex", 4);
 
-        gl.glActiveTexture(GL.GL_TEXTURE0);
+        gl.glActiveTexture(GL.GL_TEXTURE4);
         gl.glBindTexture(GL.GL_TEXTURE_2D, skin.getId());
         
         CoordFrame3D modelFrame = CoordFrame3D.identity().translate(position)

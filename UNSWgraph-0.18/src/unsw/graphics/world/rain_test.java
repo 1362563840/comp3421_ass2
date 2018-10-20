@@ -177,8 +177,8 @@ public class rain_test {
         
         Shader.setFloat(gl, "time", this.time);
         // Draw the particles
-        Shader.setInt(gl, "tex", 0);
-        gl.glActiveTexture(GL.GL_TEXTURE0);
+        Shader.setInt(gl, "tex", 3);
+        gl.glActiveTexture(GL.GL_TEXTURE3);
         gl.glBindTexture(GL2.GL_TEXTURE_2D, this.text_graph.getId());
 //        System.out.println( "there" );
         
