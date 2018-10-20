@@ -44,10 +44,10 @@ public class World extends Application3D implements KeyListener{
         this.clockwise = 0;
         this.anticlockwise = 0;
         this.ava = new Avatar(new Point3D(0, 0, 0), "res/models/bunny_res4.ply");
-        //this.camera3d = new Camera3D(terrain, ava);
         this.avaCam = new Camera3DWithAva(ava, terrain);
         this.DarkMode = 1;
         this.viewMode = 3; // default is third person
+        this.terrain.setBindAva(ava);
     }
    
     /**
@@ -82,15 +82,14 @@ public class World extends Application3D implements KeyListener{
         //this.ava.drawSelf(gl);
         if (viewMode == 3) {
         	avaCam.setViewThird(gl);
-        	ava.drawSelf(gl);
+        	//ava.drawSelf(gl);
         }
 		else avaCam.setViewFirst(gl);
 		if ( this.normal_mode == true ) {
 			this.terrain.turn_on_normal();
 			super.setBackground( Color.WHITE );	
 			//this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
-			this.terrain.recursively_draw( gl , frame , avaCam.getThirdFrameMatrix() );
-            //this.camera3d.draw(gl, frame);
+			this.terrain.recursively_draw( gl , frame , avaCam.getThirdFrameMatrix(), viewMode );
 		}
 		else {
 			this.terrain.turn_off_normal();
@@ -100,8 +99,7 @@ public class World extends Application3D implements KeyListener{
 			Shader.setFloat(gl, "linear", 0.09f );
 			Shader.setFloat(gl, "quadratic", 0.032f );
 			//this.terrain.recursively_draw( gl , frame , this.camera3d.View_trans() );
-			this.terrain.recursively_draw( gl , frame , avaCam.getThirdFrameMatrix() );
-            //this.camera3d.draw(gl, frame);
+			this.terrain.recursively_draw( gl , frame , avaCam.getThirdFrameMatrix(), viewMode );
 		}
 		
 		if( this.torch_on_off == true ) {

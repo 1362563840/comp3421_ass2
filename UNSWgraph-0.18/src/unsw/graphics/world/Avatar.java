@@ -39,7 +39,7 @@ public class Avatar {
     public void setNewPos(Point3D newPos) { 
     	position = newPos; 
     }
-
+    
     public void init(GL3 gl) {
         model.init(gl);
 //        Shader shader = new Shader(gl, "shaders/vertex_tex_phong.glsl",

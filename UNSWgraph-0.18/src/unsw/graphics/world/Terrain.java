@@ -62,6 +62,8 @@ public class Terrain {
     private Color specularCoeff;
     private float phongExp;
     
+    private Avatar myAva;
+    
     private rain_control r_control;
     
     public int getX_length() {
@@ -86,6 +88,7 @@ public class Terrain {
         roads = new ArrayList<Road>();
         this.sunlight = sunlight;
         this.vertices = new ArrayList< Point3D >();
+       
         
         this.texCoords = new ArrayList< Point2D >();
 //        this.rain = new Rain_particle( this );
@@ -95,6 +98,12 @@ public class Terrain {
     			this.getSunlight().getY() ,
     			this.getSunlight().getZ()
     			);
+        
+        
+    }
+    
+    public void setBindAva(Avatar ava) {
+    	myAva = ava;
     }
     
     public void init( GL3 gl ) {
@@ -221,7 +230,8 @@ public class Terrain {
     private float angle_z = 0;
     private Color last_color = Color.WHITE;
     
-    public void recursively_draw ( GL3 gl , CoordFrame3D frame , Matrix4 View_trans ) {
+    
+    public void recursively_draw ( GL3 gl , CoordFrame3D frame , Matrix4 View_trans, int viewMode ) {
 
     	
     	// first check if sun is rotated
@@ -322,7 +332,10 @@ public class Terrain {
     		Shader.setInt(gl, "mode", 3 );
     		this.r_control.draw(gl, frame);
     	}
-
+    	
+    	if (viewMode == 3) {
+    		myAva.drawSelf(gl);
+    	}
     }
     
     
