@@ -308,6 +308,9 @@ public class Terrain {
     		if ( this.rain_on_off == true ) {
     			Shader.setInt(gl, "mode", 2 );
     			Shader.setInt(gl, "rain_mode", 1 );
+    			
+    			this.r_control.become_night();
+    			
     			this.r_control.draw(gl, frame);
     		}
     		Shader.setInt(gl, "mode", 2 );
@@ -329,6 +332,7 @@ public class Terrain {
 
     	
     	if ( this.rain_on_off == true && this.normal_on_off == true ) {
+    		this.r_control.become_day();
     		Shader.setInt(gl, "mode", 3 );
     		this.r_control.draw(gl, frame);
     	}

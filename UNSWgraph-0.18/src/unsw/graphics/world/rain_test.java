@@ -26,6 +26,16 @@ import unsw.graphics.geometry.Point3D;
  */
 public class rain_test {
 	
+	private boolean night_mode = false;
+	
+	public void become_night() {
+		this.night_mode = true;
+	}
+	
+	public void become_day() {
+		this.night_mode = false;
+	}
+	
 	private final int how_many = 1;
 
 	private Point3D init_pos;
@@ -182,12 +192,19 @@ public class rain_test {
         gl.glBindTexture(GL2.GL_TEXTURE_2D, this.text_graph.getId());
 //        System.out.println( "there" );
         
+        if ( this.night_mode == true ) {
+//        	gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+        }
+        else {
+//        	gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+//        	gl.glEnable(GL.GL_BLEND);
+        }
         
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
 
         // Disable depth testing to get a nice composition
 //        gl.glDisable(GL.GL_DEPTH_TEST);
-        gl.glEnable(GL.GL_BLEND);
+//        gl.glEnable(GL.GL_BLEND);
         // bug is here
         // bu how to dray array in specific frame
         Shader.setModelMatrix( gl , frame.getMatrix() );

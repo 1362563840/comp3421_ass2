@@ -3,6 +3,8 @@ package unsw.graphics.world;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL3;
 
 import unsw.graphics.CoordFrame3D;
@@ -25,6 +27,16 @@ import unsw.graphics.geometry.Point3D;
  *
  */
 public class rain_control {
+	
+	private boolean night_mode = false;
+	
+	public void become_night() {
+		this.night_mode = true;
+	}
+	
+	public void become_day() {
+		this.night_mode = false;
+	}
 	
 	private Random rand;
 	private Terrain terrian;
@@ -146,6 +158,14 @@ public class rain_control {
 		
 		// increment the counter for current_life
 		for ( int i = 0 ; i < this.rain.size() ; i++ ) {
+			
+			if ( this.night_mode == true ) {
+				this.rain.get( i ).become_night();
+	        }
+	        else {
+	        	this.rain.get( i ).become_day();
+	        }
+			
 			this.rain.get( i ).drawself(gl, frame);
 			this.current_life.set( i , this.current_life.get( i ) + 1f );
 		}

@@ -164,8 +164,15 @@ void main()
 
         }
         else {
+            if ( rain_mode == 1 ) {
+                outputColor = 0.1 * input_color*texture(tex, gl_PointCoord) * attenuation;
+            }
+            else {
+                outputColor = 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+            }
+
           // at dark, sunlight is only ten percent of daylight
-          outputColor = 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
+          // outputColor = 0.1 * ambientAndDiffuse*input_color*texture(tex, texCoordFrag) + vec4(specular, 1.0);
         }
         // }
         // else{
